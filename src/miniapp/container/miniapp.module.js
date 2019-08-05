@@ -4,7 +4,7 @@ import styles from "./miniapp.css";
 class MiniAppContainer {
   constructor() {
     this.state = {
-      miniapps: []
+      apps: []
     };
     this.events();
     this.getMiniApps();
@@ -47,7 +47,9 @@ class MiniAppContainer {
 
   render() {
     const { apps } = this.state;
-    Array.from(apps).forEach(miniapp => new Card(miniapp));
+    Array.from(apps).forEach(
+      (miniapp, index) => new Card({ ...miniapp, index })
+    );
   }
 }
 

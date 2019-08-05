@@ -5,17 +5,18 @@ class Card {
       miniapp: props
     };
     this.render();
-    this.registerEvent();
+    this.events();
   }
 
-  registerEvent() {
-    const miniappContainer = document.getElementsByClassName(
-      "miniapp-container"
-    );
-
-    const clickHandler = () => {
-      var miniAppId = Number(e.target.getAttribute("data-action"));
-      console.log("CLICK ON MINIAPP ", miniAppId);
+  events() {
+    const {
+      miniapp: { index }
+    } = this.state;
+    const miniappContainer = document.getElementsByClassName("miniapp")[index];
+    console.log(miniappContainer, "LOL ");
+    const clickHandler = e => {
+      var miniAppId = e.target.getAttribute("class");
+      console.log("CLICK ON MINIAPP ", miniAppId, e.target);
       // TODO : Fire Android Action for open Miniapp
       /* Android.onAction(
           '{"action": "open_activity","type": "tag","referrer": "' +
@@ -26,16 +27,14 @@ class Card {
         );*/
     };
 
-    Array.from(miniappContainer).forEach(element => {
-      element.addEventListener("click", clickHandler);
-    });
+    miniappContainer.addEventListener("click", clickHandler);
   }
 
   render() {
     const { miniapp } = this.state;
     const node = document.createElement("div");
     node.setAttribute("class", "miniapp");
-    node.setAttribute("data-action", miniapp.id);
+    node.setAttribute("data-action", miniapp.index);
 
     node.innerHTML = `<div class="miniappHeader"><img class="miniappIcon" src="${
       miniapp.icon
