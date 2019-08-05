@@ -1,0 +1,12 @@
+.miniapp-container {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  text-align: center;
+  font-family: Roboto;
+  height: 72.5vw;
+  margin-top: 10vw;
+}
+.miniapp-container > .miniapp:first-child {
+  margin-left: 3.33%;
+}
