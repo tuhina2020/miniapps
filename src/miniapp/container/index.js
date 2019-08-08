@@ -11,12 +11,10 @@ class MiniAppContainer {
   }
 
   getMiniApps() {
-    // API call to get miniapps
-    // const { miniapps } = props;
+    const url = new URL(document.location.href);
+    const postId = url.searchParams.get("postId");
     const requestObj = {
-      url:
-        "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=56"
-      // url: "https://jsonplaceholder.typicode.com/todos/1"
+      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`
     };
     utils
       .request(requestObj)

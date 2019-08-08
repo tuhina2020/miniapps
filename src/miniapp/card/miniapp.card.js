@@ -10,15 +10,13 @@ class Card {
 
   events() {
     console.log("APPS ARE HERE 3", this.state.miniapp);
-    const {
-      miniapp: { id }
-    } = this.state;
-    console.log("APPS ARE HERE 4", id);
-    const miniappContainer = document.getElementById(id);
+    const { miniapp } = this.state;
+    const miniappContainer = document.getElementById(miniapp.id);
     console.log(miniappContainer, "LOL ");
     const clickHandler = e => {
       var miniAppId = e.target.getAttribute("class");
       console.log("CLICK ON MINIAPP ", miniAppId, e.target);
+      location.href = miniapp.link;
       // TODO : Fire Android Action for open Miniapp
       /* Android.onAction(
           '{"action": "open_activity","type": "tag","referrer": "' +
