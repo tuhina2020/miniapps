@@ -1,30 +1,23 @@
 import styles from "./card.css";
 class Card {
   constructor(props) {
-    console.log("APPS ARE HERE 1", props);
     this.state = {
       miniapp: props
     };
-    console.log("APPS ARE HERE 2", this.state);
   }
 
   events() {
-    console.log("APPS ARE HERE 3", this.state.miniapp);
     const { miniapp } = this.state;
     const miniappContainer = document.getElementById(miniapp.id);
-    console.log(miniappContainer, "LOL ");
     const clickHandler = e => {
-      var miniAppId = e.target.getAttribute("class");
-      console.log("CLICK ON MINIAPP ", miniAppId, e.target);
-      location.href = miniapp.link;
+      // location.href = miniapp.link;
       // TODO : Fire Android Action for open Miniapp
-      /* Android.onAction(
-          '{"action": "open_activity","type": "tag","referrer": "' +
-            referrer_tag_opened +
-            '","tagId": ' +
-            tagId +
-            "}'"
-        );*/
+      var json = {
+        type: "web_post",
+        webUrl: miniapp.link,
+        postId: "-11"
+      };
+      Android.onAction(JSON.stringify(json));
     };
 
     miniappContainer.addEventListener("click", clickHandler);

@@ -16,69 +16,43 @@ class MiniAppContainer {
     const requestObj = {
       url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`
     };
-    utils
-      .request(requestObj)
-      .then(res => {
-        this.state = {
-          apps: [
-            {
-              id: "Ludo",
-              name: "Ludo With Friends",
-              icon: "https://static.gamezop.com/SkhljT2fdgb/thumb.png",
-              link: "https://www.gamezop.com/g/SkhljT2fdgb?id=peSLSV&sub=enk",
-              image: "https://static.gamezop.com/SkhljT2fdgb/square.png"
-            },
-            {
-              id: "SwayBay",
-              name: "Sway Bay",
-              icon: "https://static.gamezop.com/B1PMIp4XCe/thumb.png",
-              link: "https://www.gamezop.com/g/B1PMIp4XCe?id=peSLSV&sub=enk",
-              image: "https://static.gamezop.com/B1PMIp4XCe/square.png"
-            }
-          ]
-        };
-        this.render();
-        return Promise.resolve();
-      })
-      .catch(() => {
-        this.state = {
-          apps: [
-            {
-              id: "Ludo",
-              name: "Ludo With Friends",
-              icon: "https://static.gamezop.com/SkhljT2fdgb/thumb.png",
-              link: "https://www.gamezop.com/g/SkhljT2fdgb?id=peSLSV&sub=enk",
-              image: "https://static.gamezop.com/SkhljT2fdgb/square.png"
-            },
-            {
-              id: "SwayBay",
-              name: "Sway Bay",
-              icon: "https://static.gamezop.com/B1PMIp4XCe/thumb.png",
-              link: "https://www.gamezop.com/g/B1PMIp4XCe?id=peSLSV&sub=enk",
-              image: "https://static.gamezop.com/B1PMIp4XCe/square.png"
-            }
-          ]
-        };
-        this.render();
-        return Promise.resolve();
-      });
+    utils.request(requestObj).then(res => {
+      this.state = res;
+      this.render();
+      return Promise.resolve();
+    });
   }
 
   events() {}
 
+  addHeader() {
+    const { title } = this.state;
+    const header = document.getElementById("header");
+    const titleDiv = document.createElement("div");
+    titleDiv.setAttribute("class", "title");
+    const title_text = document.createElement("span");
+    title_text.setAttribute("class", "title-text");
+    title_text.innerHTML = title;
+    titleDiv.appendChild(title_text);
+    header.appendChild(titleDiv);
+    // const miniappContainer = document.getElementById("app");
+    // miniappContainer.appendChild(header);
+  }
+
   render() {
     const { apps } = this.state;
-    console.log("APPS ARE HERE ", apps);
+    const miniappContainer = document.getElementById("app");
+    console.log("APPS ARE HERE ", this.state);
     Array.from(apps).forEach((miniapp, index) => {
       console.log("INDIVAI : vv", miniapp);
       const miniappCard = new Card(miniapp);
       console.log("INDIVAI : vvv", miniapp);
       const node = miniappCard.render();
       console.log("INDIVAI : vvvv :", node);
-      const miniappContainer = document.getElementById("app");
       miniappContainer.appendChild(node);
       miniappCard.events();
     });
+    this.addHeader();
   }
 }
 
