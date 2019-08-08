@@ -4,7 +4,6 @@
   overflow-y: hidden;
   text-align: center;
   font-family: Roboto;
-  height: 50vw;
 }
 .container > .miniapp:first-child {
   margin-left: 3.33%;
