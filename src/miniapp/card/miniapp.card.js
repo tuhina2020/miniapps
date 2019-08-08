@@ -1,18 +1,21 @@
 import styles from "./card.css";
 class Card {
   constructor(props) {
+    console.log("APPS ARE HERE 1", props);
     this.state = {
       miniapp: props
     };
-    this.render();
+    console.log("APPS ARE HERE 2", this.state);
     this.events();
   }
 
   events() {
+    console.log("APPS ARE HERE 3", this.state.miniapp);
     const {
-      miniapp: { index }
+      miniapp: { id }
     } = this.state;
-    const miniappContainer = document.getElementsByClassName("miniapp")[index];
+    console.log("APPS ARE HERE 4", miniapp);
+    const miniappContainer = document.getElementsById(id);
     console.log(miniappContainer, "LOL ");
     const clickHandler = e => {
       var miniAppId = e.target.getAttribute("class");
@@ -35,6 +38,7 @@ class Card {
     const node = document.createElement("div");
     node.setAttribute("class", "miniapp");
     node.setAttribute("data-action", miniapp.index);
+    node.setAttribute("id", miniapp.id);
 
     node.innerHTML = `<div class="miniappHeader"><img class="miniappIcon" src="${
       miniapp.icon
@@ -42,8 +46,7 @@ class Card {
       miniapp.name
     }</div></div></div></div><img class='miniappImg' src='${miniapp.image}'>`;
 
-    const miniappContainer = document.getElementById("app");
-    miniappContainer.append(node);
+    return node;
   }
 }
 
