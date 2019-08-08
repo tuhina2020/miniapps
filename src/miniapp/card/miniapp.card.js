@@ -12,7 +12,7 @@ class Card {
     const clickHandler = e => {
       // location.href = miniapp.link;
       // TODO : Fire Android Action for open Miniapp
-      var json = {
+      const json = {
         type: "web_post",
         webUrl: miniapp.link,
         postId: "-11"

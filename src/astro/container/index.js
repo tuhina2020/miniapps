@@ -1,10 +1,9 @@
 import ZodiacMulti from "@/astro/zodiacMulti";
 import * as utils from "@/utils";
-// import styles from "./miniapp.css";
+import styles from "./index.css";
 class AstroAppContainer {
   constructor() {
     this.state = {};
-    this.events();
     this.getZodiacs();
   }
 
@@ -18,6 +17,7 @@ class AstroAppContainer {
       console.log(res, "this is it");
       this.state = res;
       this.render();
+      this.events();
       return Promise.resolve();
     });
   }
@@ -29,6 +29,7 @@ class AstroAppContainer {
     Array.from(contentItem).forEach((sign, index) => {
       const multi = new ZodiacMulti({ ...sign, index });
       const node = multi.render();
+      multi.events();
       const appContainer = document.getElementById("app");
       appContainer.append(node);
     });

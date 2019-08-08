@@ -1,11 +1,11 @@
 import styles from "./index.css";
-import ZodiacSingle from "@/astro/zodiacSingle";
 
-class ZodiacMulti {
+class ZodiacSingle {
   constructor(props) {
     this.state = {
       data: props
     };
+    this.events();
   }
 
   events() {
@@ -13,12 +13,10 @@ class ZodiacMulti {
       data: { Sunsign }
     } = this.state;
     const astroContainer = document.getElementsById(Sunsign);
-    const miniappContainer = document.getElementById("app");
+    console.log(astroContainer, "LOL ");
     const clickHandler = e => {
-      const zodiac = new ZodiacSingle(this.state.data);
-      const node = zodiac.render();
-      miniappContainer.appendChild(node);
-      zodiac.events();
+      var miniAppId = e.target.getAttribute("class");
+      return new ZodiacSingle(this.state.data);
     };
 
     astroContainer.addEventListener("click", clickHandler);
@@ -37,4 +35,4 @@ class ZodiacMulti {
   }
 }
 
-export default ZodiacMulti;
+export default ZodiacSingle;
