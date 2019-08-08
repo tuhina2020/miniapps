@@ -6,7 +6,6 @@ class Card {
       miniapp: props
     };
     console.log("APPS ARE HERE 2", this.state);
-    this.events();
   }
 
   events() {
@@ -14,8 +13,8 @@ class Card {
     const {
       miniapp: { id }
     } = this.state;
-    console.log("APPS ARE HERE 4", miniapp);
-    const miniappContainer = document.getElementsById(id);
+    console.log("APPS ARE HERE 4", id);
+    const miniappContainer = document.getElementById(id);
     console.log(miniappContainer, "LOL ");
     const clickHandler = e => {
       var miniAppId = e.target.getAttribute("class");
@@ -37,7 +36,6 @@ class Card {
     const { miniapp } = this.state;
     const node = document.createElement("div");
     node.setAttribute("class", "miniapp");
-    node.setAttribute("data-action", miniapp.index);
     node.setAttribute("id", miniapp.id);
 
     node.innerHTML = `<div class="miniappHeader"><img class="miniappIcon" src="${

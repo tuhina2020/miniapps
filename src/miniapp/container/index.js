@@ -79,6 +79,7 @@ class MiniAppContainer {
       console.log("INDIVAI : vvvv :", node);
       const miniappContainer = document.getElementById("app");
       miniappContainer.appendChild(node);
+      miniappCard.events();
     });
   }
 }

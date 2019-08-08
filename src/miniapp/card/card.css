@@ -12,7 +12,6 @@
 .miniappImg {
   object-fit: cover;
   border-radius: 4px;
-  height: 100%;
   width: 100%;
   object-position: center;
 }
