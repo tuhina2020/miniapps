@@ -35,20 +35,14 @@ class MiniAppContainer {
     title_text.innerHTML = title;
     titleDiv.appendChild(title_text);
     header.appendChild(titleDiv);
-    // const miniappContainer = document.getElementById("app");
-    // miniappContainer.appendChild(header);
   }
 
   render() {
     const { apps } = this.state;
     const miniappContainer = document.getElementById("app");
-    console.log("APPS ARE HERE ", this.state);
     Array.from(apps).forEach((miniapp, index) => {
-      console.log("INDIVAI : vv", miniapp);
       const miniappCard = new Card(miniapp);
-      console.log("INDIVAI : vvv", miniapp);
       const node = miniappCard.render();
-      console.log("INDIVAI : vvvv :", node);
       miniappContainer.appendChild(node);
       miniappCard.events();
     });
