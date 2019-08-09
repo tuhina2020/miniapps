@@ -13,14 +13,16 @@ class MiniAppContainer {
   getMiniApps() {
     const url = new URL(document.location.href);
     const postId = url.searchParams.get("postId");
-    const header = Android.get("userInfo").replace(
+    const headers = Android.get("userInfo").replace(
       new RegExp("\n", "g"),
       "\\n"
     );
+    // const headers = "abs";
     const requestObj = {
       url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
-      header
+      headers: { Authorization: headers }
     };
+    debugger;
     utils.request(requestObj).then(res => {
       this.state = res;
       this.render();
