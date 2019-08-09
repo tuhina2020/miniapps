@@ -17,12 +17,10 @@ class MiniAppContainer {
       new RegExp("\n", "g"),
       "\\n"
     );
-    // const headers = "abs";
     const requestObj = {
       url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
       headers: { Authorization: headers }
     };
-    debugger;
     utils.request(requestObj).then(res => {
       this.state = res;
       this.render();

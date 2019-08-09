@@ -1,3 +1,16 @@
+import Aries from "@/astro/assets/zodiac/Aries.svg";
+import Libra from "@/astro/assets/zodiac/Libra.svg";
+import Aquarius from "@/astro/assets/zodiac/Aquarius.svg";
+import Sagittarius from "@/astro/assets/zodiac/Sagittarius.svg";
+import Gemini from "@/astro/assets/zodiac/Gemini.svg";
+import Leo from "@/astro/assets/zodiac/Leo.svg";
+import Pisces from "@/astro/assets/zodiac/Pisces.svg";
+import Cancer from "@/astro/assets/zodiac/Cancer.svg";
+import Scorpio from "@/astro/assets/zodiac/Scorpio.svg";
+import Capricorn from "@/astro/assets/zodiac/Capricorn.svg";
+import Virgo from "@/astro/assets/zodiac/Virgo.svg";
+import Taurus from "@/astro/assets/zodiac/Taurus.svg";
+
 export const request = ({ url, headers, method = "GET", body }) =>
   fetch(url, {
     method,
@@ -5,17 +18,18 @@ export const request = ({ url, headers, method = "GET", body }) =>
     body
   }).then(response => response.json());
 
-export const ZODIAC_DATES = [
-  { start: "21 Mar", end: "20 Apr" },
-  { start: "21 Apr", end: "21 May" },
-  { start: "22 May", end: "21 Jun" },
-  { start: "22 Jun", end: "22 Jul" },
-  { start: "23 July", end: "21 Aug" },
-  { start: "22 Aug", end: "23 Sep" },
-  { start: "24 Sep", end: "23 Oct" },
-  { start: "24 Oct", end: "22 Nov" },
-  { start: "23 Nov", end: "22 Dec" },
-  { start: "23 Dec", end: "20 Jan" },
-  { start: "21 Jan", end: "19 Feb" },
-  { start: "20 Feb", end: "20 Mar" }
-];
+export const zodiacData = index =>
+  [
+    { start: "21 Mar", end: "20 Apr", image: Aries },
+    { start: "21 Apr", end: "21 May", image: Taurus },
+    { start: "22 May", end: "21 Jun", image: Gemini },
+    { start: "22 Jun", end: "22 Jul", image: Cancer },
+    { start: "23 July", end: "21 Aug", image: Leo },
+    { start: "22 Aug", end: "23 Sep", image: Virgo },
+    { start: "24 Sep", end: "23 Oct", image: Libra },
+    { start: "24 Oct", end: "22 Nov", image: Scorpio },
+    { start: "23 Nov", end: "22 Dec", image: Sagittarius },
+    { start: "23 Dec", end: "20 Jan", image: Capricorn },
+    { start: "21 Jan", end: "19 Feb", image: Aquarius },
+    { start: "20 Feb", end: "20 Mar", image: Pisces }
+  ][index];

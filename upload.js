@@ -12,6 +12,23 @@ const FOLDER_LOOKUP = {
   astro: "miniapp/astrology"
 };
 
+const getContentType = filename => {
+  const TYPE = {
+    "application/gzip": new RegExp(/\.gz/),
+    "text/html": new RegExp(/\.html/),
+    "application/javascript": new RegExp(/\.js/),
+    "image/svg+xml": new RegExp(/\.svg/)
+  };
+  const keys = Object.keys(TYPE);
+
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const regex = TYPE[key];
+    if (regex.test(filename)) return key;
+  }
+  return "text/html";
+};
+
 function s3Upload(uploadParams, callback) {
   s3.upload(uploadParams, (err, data) => {
     if (err) {
@@ -47,16 +64,19 @@ function uploadRSSFolder() {
 
       // read file contents
       const stream = fs.createReadStream(filePath);
+      const ContentType = getContentType(fileName);
       const uploadParams = {
         Bucket: S3_SITEMAPS_BUCKET,
         Key: `${FOLDER_LOOKUP[app]}/${fileName}`,
         Body: stream,
-        ContentType: "text/html",
+        ContentType,
         ACL: "public-read"
       };
-      console.log(`UPLOADING : ${FOLDER_LOOKUP[app]}/${fileName}`);
-      return s3Upload(uploadParams, next);
+      console.log(
+        `UPLOADING : ${FOLDER_LOOKUP[app]}/${fileName}   ${ContentType}`
+      );
       // return next();
+      return s3Upload(uploadParams, next);
     };
 
     async.each(files, iterator, err => console.log("Uploaded to s3 ", err));

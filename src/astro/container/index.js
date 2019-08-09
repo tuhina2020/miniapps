@@ -9,10 +9,17 @@ class AstroAppContainer {
 
   getZodiacs() {
     // API call to get zodiac data
+    // const headers = Android.get("userInfo").replace(
+    //   new RegExp("\n", "g"),
+    //   "\\n"
+    // );
+    const headers = "lol";
     const requestObj = {
       url:
-        "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps/274bd6ea-9fa6-4b77-8a0c-665b816c4a8b/meta"
+        "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps/274bd6ea-9fa6-4b77-8a0c-665b816c4a8b/meta",
+      headers: { Authorization: headers }
     };
+
     utils
       .request(requestObj)
       .then(res => {
@@ -537,14 +544,26 @@ class AstroAppContainer {
       });
   }
 
-  events() {}
+  events() {
+    const {
+      DailyHoroscope: { contentItem }
+    } = this.state;
+    document.addEventListener("DOMContentLoaded", () => {
+      Array.from(contentItem).forEach((sign, index) => {
+        const childnode = this.createZodiac({ ...sign, index });
+        node.appendChild(childnode);
+      });
+    });
+  }
 
   createZodiac(sign) {
     const multi = new ZodiacMulti(sign);
     const childnode = multi.render();
-    multi.events();
+    multi.events(childnode);
     return childnode;
   }
+
+  createHeader() {}
 
   render() {
     const {
@@ -554,8 +573,8 @@ class AstroAppContainer {
     const appContainer = document.getElementById("app");
     node.setAttribute("class", "zodiac-group");
     console.log("CREATING MULTI CHILD", this.state);
-    Array.from(contentItem).forEach(sign => {
-      const childnode = this.createZodiac(sign);
+    Array.from(contentItem).forEach((sign, index) => {
+      const childnode = this.createZodiac({ ...sign, index });
       node.appendChild(childnode);
     });
     appContainer.appendChild(node);
