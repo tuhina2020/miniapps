@@ -15,13 +15,15 @@ class ZodiacSingle {
       data: { categories }
     } = this.state;
     const contentNode = document.createElement("div");
+    contentNode.setAttribute("class", "zodiac-content-container");
     categories.forEach(category => {
       const node = document.createElement("div");
-      node.innerHTML = `<div class='zodiac-content'> <div class='category-name'>${
+      node.setAttribute("class", "zodiac-content");
+      node.innerHTML = `<div class='category-name'>${
         category.category_name
       } </div><div class='category-description'> ${
         category.description
-      } </div></div>`;
+      } </div>`;
       contentNode.appendChild(node);
     });
     return contentNode;

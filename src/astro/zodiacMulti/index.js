@@ -13,14 +13,18 @@ class ZodiacMulti {
   }
 
   events(node) {
-    const miniappContainer = document.getElementById("app");
+    // const miniappContainer = document.getElementById("app");
+    const {
+      data: { index }
+    } = this.state;
     const clickHandler = e => {
-      const zodiac = new ZodiacSingle(this.state.data);
-      const Single = zodiac.render();
-      miniappContainer.innerHTML = "";
-      console.log("WE ARE HERE TO CLICK : ", Single);
-      miniappContainer.appendChild(Single);
-      zodiac.events();
+      window.location.href = `?zodiac=${index}`;
+      // const zodiac = new ZodiacSingle(this.state.data);
+      // const Single = zodiac.render();
+      // miniappContainer.innerHTML = "";
+      // console.log("WE ARE HERE TO CLICK : ", Single);
+      // miniappContainer.appendChild(Single);
+      // zodiac.events();
     };
     node.addEventListener("click", clickHandler);
   }

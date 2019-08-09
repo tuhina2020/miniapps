@@ -1,9 +1,14 @@
 import ZodiacMulti from "@/astro/zodiacMulti";
+import ZodiacSingle from "@/astro/zodiacSingle";
 import * as utils from "@/utils";
 import styles from "./index.css";
 class AstroAppContainer {
   constructor() {
-    this.state = {};
+    const url = new URL(document.location.href);
+    const zodiac = parseInt(
+      url.searchParams.get("zodiac") && url.searchParams.get("zodiac")
+    );
+    this.state = { zodiac };
     this.getZodiacs();
   }
 
@@ -24,13 +29,12 @@ class AstroAppContainer {
       .request(requestObj)
       .then(res => {
         console.log(res, "this is it");
-        this.state = res;
+        this.state = Object.assign(this.state, res);
         this.render();
-        this.events();
         return Promise.resolve();
       })
       .catch(() => {
-        this.state = {
+        const res = {
           DailyHoroscope: {
             id: 101070819,
             lang: "hindi",
@@ -538,26 +542,24 @@ class AstroAppContainer {
             ]
           }
         };
+        this.state = Object.assign(this.state, res);
         this.render();
-        this.events();
         return Promise.resolve();
       });
   }
 
-  events() {
-    const {
-      DailyHoroscope: { contentItem }
-    } = this.state;
-    document.addEventListener("DOMContentLoaded", () => {
-      Array.from(contentItem).forEach((sign, index) => {
-        const childnode = this.createZodiac({ ...sign, index });
-        node.appendChild(childnode);
-      });
-    });
+  renderSingleZodiac(data) {
+    const zodiac = new ZodiacSingle(data);
+    const miniappContainer = document.getElementById("app");
+    const Single = zodiac.render();
+    miniappContainer.innerHTML = "";
+    console.log("WE ARE HERE TO CLICK : ", Single);
+    miniappContainer.appendChild(Single);
+    zodiac.events();
   }
 
-  createZodiac(sign) {
-    const multi = new ZodiacMulti(sign);
+  renderMultipleZodiac(data) {
+    const multi = new ZodiacMulti(data);
     const childnode = multi.render();
     multi.events(childnode);
     return childnode;
@@ -567,14 +569,17 @@ class AstroAppContainer {
 
   render() {
     const {
-      DailyHoroscope: { contentItem }
+      DailyHoroscope: { contentItem },
+      zodiac
     } = this.state;
+    if (zodiac)
+      return this.renderSingleZodiac({ ...contentItem[zodiac], index: zodiac });
     const node = document.createElement("div");
     const appContainer = document.getElementById("app");
     node.setAttribute("class", "zodiac-group");
     console.log("CREATING MULTI CHILD", this.state);
     Array.from(contentItem).forEach((sign, index) => {
-      const childnode = this.createZodiac({ ...sign, index });
+      const childnode = this.renderMultipleZodiac({ ...sign, index });
       node.appendChild(childnode);
     });
     appContainer.appendChild(node);
