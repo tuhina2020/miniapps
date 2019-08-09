@@ -15,3 +15,10 @@ export const request = ({ url, headers = {}, method = "GET", body }) => {
     body
   }).then(response => response.json());
 };
+
+export const ZODIAC_DATES = [
+  { start: "21 Mar", end: "20 Apr" },
+  { start: "21 Apr", end: "21 May" },
+  { start: "22 May", end: "21 Jun" },
+  { start: "22 Jun", end: "21 Jul" }
+];

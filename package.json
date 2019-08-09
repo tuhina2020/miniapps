@@ -9,7 +9,8 @@
     "dev": "webpack --mode development",
     "serve": "webpack-dev-server --mode=development --hot",
     "watch": "webpack --mode development -w && reload -b -d dist -p 8000",
-    "upload:miniapp": "node upload.js miniapp"
+    "upload:miniapp": "node upload.js miniapp",
+    "upload:astro": "node upload.js astro"
   },
   "author": "",
   "license": "ISC",

@@ -1,0 +1,15 @@
+.zodiac-multi {
+  width: 41.67vw;
+  height: 41.67vw;
+  color: white;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  margin: 3.5vw 2.5vw;
+}
+
+.sunsign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

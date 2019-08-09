@@ -13,14 +13,30 @@ class MiniAppContainer {
   getMiniApps() {
     const url = new URL(document.location.href);
     const postId = url.searchParams.get("postId");
+    const header = Android.get("userInfo").replace(
+      new RegExp("\n", "g"),
+      "\\n"
+    );
     const requestObj = {
-      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`
+      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
+      header
     };
     utils.request(requestObj).then(res => {
       this.state = res;
       this.render();
       return Promise.resolve();
     });
+  }
+
+  addToken() {
+    const header = Android.get("userInfo").replace(
+      new RegExp("\n", "g"),
+      "\\n"
+    );
+    const tokenDiv = document.createElement("div");
+    tokenDiv.innerHTML = header;
+    const tokenHead = document.getElementById("token");
+    tokenHead.appendChild(tokenDiv);
   }
 
   events() {}
@@ -47,6 +63,7 @@ class MiniAppContainer {
       miniappCard.events();
     });
     this.addHeader();
+    // this.addToken();
   }
 }
 
