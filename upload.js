@@ -7,6 +7,11 @@ const async = require("async");
 
 const app = process.argv.slice(2)[0];
 
+const FOLDER_LOOKUP = {
+  miniapp: "miniapp",
+  astro: "miniapp/astrology"
+};
+
 function s3Upload(uploadParams, callback) {
   s3.upload(uploadParams, (err, data) => {
     if (err) {
@@ -44,13 +49,14 @@ function uploadRSSFolder() {
       const stream = fs.createReadStream(filePath);
       const uploadParams = {
         Bucket: S3_SITEMAPS_BUCKET,
-        Key: `${app}/${fileName}`,
+        Key: `${FOLDER_LOOKUP[app]}/${fileName}`,
         Body: stream,
         ContentType: "text/html",
         ACL: "public-read"
       };
-      console.log(`UPLOADING : ${app}/${fileName}`);
+      console.log(`UPLOADING : ${FOLDER_LOOKUP[app]}/${fileName}`);
       return s3Upload(uploadParams, next);
+      // return next();
     };
 
     async.each(files, iterator, err => console.log("Uploaded to s3 ", err));
