@@ -33,3 +33,12 @@ export const zodiacData = index =>
     { start: "21 Jan", end: "19 Feb", image: Aquarius },
     { start: "20 Feb", end: "20 Mar", image: Pisces }
   ][index];
+
+export const createNewDiv = ({ type, setAttribute }) => {
+  let property;
+  const container = document.createElement(type);
+  for (property in setAttribute) {
+    container.setAttribute(property, setAttribute[property]);
+  }
+  return container;
+};

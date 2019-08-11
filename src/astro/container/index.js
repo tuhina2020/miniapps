@@ -2,6 +2,7 @@ import ZodiacMulti from "@/astro/zodiacMulti";
 import ZodiacSingle from "@/astro/zodiacSingle";
 import * as utils from "@/utils";
 import styles from "./index.css";
+import Border from "@/astro/assets/zodiac/Border.svg";
 class AstroAppContainer {
   constructor() {
     const url = new URL(document.location.href);
@@ -567,6 +568,44 @@ class AstroAppContainer {
 
   createHeader() {}
 
+  // renderBorder() {
+  //   const node = document.createElement("div");
+  //   node.setAttribute("class", "zodiac-border-container");
+  //   node.setAttribute("style", `background-image:url(${Border})`);
+  //   // const imageNode = document.createElement("img");
+  //   // imageNode.setAttribute("class", "zodiac-border");
+  //   // imageNode.setAttribute("src", Border);
+  //   // node.appendChild(imageNode);
+  //   return node;
+  // }
+
+  renderTitle() {
+    const node = utils.createNewDiv({
+      type: "div",
+      setAttribute: { class: "zodiac-title" }
+    });
+    node.innerText = "Select Your SunSign";
+    return node;
+  }
+
+  renderZodiacGroup() {
+    const {
+      DailyHoroscope: { contentItem }
+    } = this.state;
+
+    const node = utils.createNewDiv({
+      type: "div",
+      setAttribute: { class: "zodiac-group" }
+    });
+
+    Array.from(contentItem).forEach((sign, index) => {
+      const childnode = this.renderMultipleZodiac({ ...sign, index });
+      node.appendChild(childnode);
+    });
+
+    return node;
+  }
+
   render() {
     const {
       DailyHoroscope: { contentItem },
@@ -574,15 +613,14 @@ class AstroAppContainer {
     } = this.state;
     if (zodiac)
       return this.renderSingleZodiac({ ...contentItem[zodiac], index: zodiac });
-    const node = document.createElement("div");
     const appContainer = document.getElementById("app");
-    node.setAttribute("class", "zodiac-group");
-    console.log("CREATING MULTI CHILD", this.state);
-    Array.from(contentItem).forEach((sign, index) => {
-      const childnode = this.renderMultipleZodiac({ ...sign, index });
-      node.appendChild(childnode);
-    });
-    appContainer.appendChild(node);
+    const container = document.createElement("div");
+    container.setAttribute("class", "zodiac-group-container");
+    const title = this.renderTitle();
+    const zodiacGroup = this.renderZodiacGroup();
+    container.appendChild(title);
+    container.appendChild(zodiacGroup);
+    appContainer.appendChild(container);
   }
 }
 

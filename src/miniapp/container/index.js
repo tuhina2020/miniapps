@@ -17,6 +17,8 @@ class MiniAppContainer {
       new RegExp("\n", "g"),
       "\\n"
     );
+    const appVersion = Android.get("appVersion");
+    this.state.appVersion = appVersion;
     const requestObj = {
       url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
       headers: { Authorization: headers }
@@ -29,12 +31,9 @@ class MiniAppContainer {
   }
 
   addToken() {
-    const header = Android.get("userInfo").replace(
-      new RegExp("\n", "g"),
-      "\\n"
-    );
+    const { appVersion } = this.state;
     const tokenDiv = document.createElement("div");
-    tokenDiv.innerHTML = header;
+    tokenDiv.innerHTML = appVersion;
     const tokenHead = document.getElementById("token");
     tokenHead.appendChild(tokenDiv);
   }
@@ -54,7 +53,7 @@ class MiniAppContainer {
   }
 
   render() {
-    const { apps } = this.state;
+    const { apps, appVersion } = this.state;
     const miniappContainer = document.getElementById("app");
     Array.from(apps).forEach((miniapp, index) => {
       const miniappCard = new Card(miniapp);
@@ -63,7 +62,7 @@ class MiniAppContainer {
       miniappCard.events();
     });
     this.addHeader();
-    // this.addToken();
+    this.addToken();
   }
 }
 

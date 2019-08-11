@@ -18,3 +18,15 @@
 .zodiac-name {
   margin-top: 7vw;
 }
+
+.category-name {
+  font-size: 4.4vw;
+  margin-bottom: 0.5vw;
+}
+.category-description {
+  font-size: 3.88vw;
+}
+
+.zodiac-content {
+  margin: 6.67vw 15vw;
+}
