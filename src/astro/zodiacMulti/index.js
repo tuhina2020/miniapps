@@ -9,7 +9,6 @@ class ZodiacMulti {
       data: props,
       id
     };
-    console.log("THIS IS MULT STATE 1", this.state);
   }
 
   events(node) {
@@ -35,13 +34,12 @@ class ZodiacMulti {
       id
     } = this.state;
     const ZODIAC_DATA = zodiacData(index);
-    console.log("CREATING MULTI CHILD 1", Sunsign);
     const node = document.createElement("div");
     node.setAttribute("class", "zodiac-multi");
     node.setAttribute("data-action", Sunsign);
     node.innerHTML = `<div id=${id} class='sunsign'><img src = ${
       ZODIAC_DATA.image
-    } class='zodiac-img'><div class='outer-sign'><div>${Sunsign}</div><div class='date'>${
+    } class='zodiac-img'><div class='outer-sign'><div class='zodiac-text'>${Sunsign}</div><div class='zodiac-date'>${
       ZODIAC_DATA.start
     } - ${ZODIAC_DATA.end}</div></div></div>`;
     return node;

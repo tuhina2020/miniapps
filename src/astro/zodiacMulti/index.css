@@ -17,7 +17,9 @@
 }
 
 .zodiac-img {
-  width: 50%;
+  width: 100%;
+  height: auto;
+  margin: 5.55vw;
 }
 
 .outer-sign {
@@ -26,4 +28,14 @@
   align-items: center;
   justify-content: center;
   margin-top: 2vw;
+}
+.zodiac-text {
+  line-height: 6.11vw;
+}
+
+.zodiac-date {
+  line-height: 4.17vw;
+  font-size: 3.33vw;
+  font-style: normal;
+  font-weight: normal;
 }

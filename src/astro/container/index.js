@@ -10,7 +10,19 @@ class AstroAppContainer {
       url.searchParams.get("zodiac") && url.searchParams.get("zodiac")
     );
     this.state = { zodiac };
+    this.getFonts();
     this.getZodiacs();
+  }
+
+  getFonts() {
+    const link = utils.createNewDiv({
+      type: "link",
+      setAttribute: {
+        href: "https://fonts.googleapis.com/css?family=Quicksand&display=swap",
+        rel: "stylesheet"
+      }
+    });
+    document.head.appendChild(link);
   }
 
   getZodiacs() {
@@ -29,7 +41,6 @@ class AstroAppContainer {
     utils
       .request(requestObj)
       .then(res => {
-        console.log(res, "this is it");
         this.state = Object.assign(this.state, res);
         this.render();
         return Promise.resolve();
@@ -554,7 +565,6 @@ class AstroAppContainer {
     const miniappContainer = document.getElementById("app");
     const Single = zodiac.render();
     miniappContainer.innerHTML = "";
-    console.log("WE ARE HERE TO CLICK : ", Single);
     miniappContainer.appendChild(Single);
     zodiac.events();
   }
@@ -565,19 +575,6 @@ class AstroAppContainer {
     multi.events(childnode);
     return childnode;
   }
-
-  createHeader() {}
-
-  // renderBorder() {
-  //   const node = document.createElement("div");
-  //   node.setAttribute("class", "zodiac-border-container");
-  //   node.setAttribute("style", `background-image:url(${Border})`);
-  //   // const imageNode = document.createElement("img");
-  //   // imageNode.setAttribute("class", "zodiac-border");
-  //   // imageNode.setAttribute("src", Border);
-  //   // node.appendChild(imageNode);
-  //   return node;
-  // }
 
   renderTitle() {
     const node = utils.createNewDiv({
@@ -611,11 +608,15 @@ class AstroAppContainer {
       DailyHoroscope: { contentItem },
       zodiac
     } = this.state;
-    if (zodiac)
+    if (zodiac || zodiac === 0) {
+      console.log("ZODIAC FOUND AT : ", zodiac, contentItem[zodiac]);
       return this.renderSingleZodiac({ ...contentItem[zodiac], index: zodiac });
+    }
     const appContainer = document.getElementById("app");
-    const container = document.createElement("div");
-    container.setAttribute("class", "zodiac-group-container");
+    const container = utils.createNewDiv({
+      type: "div",
+      setAttribute: { class: "zodiac-group-container" }
+    });
     const title = this.renderTitle();
     const zodiacGroup = this.renderZodiacGroup();
     container.appendChild(title);

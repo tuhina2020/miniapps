@@ -34,6 +34,7 @@ class ZodiacSingle {
       data: { Sunsign, index, categories }
     } = this.state;
     const ZODIAC_DATA = zodiacData(index);
+    console.log("CREATING SINGLE : ", index, ZODIAC_DATA);
     const node = document.createElement("div");
     const contentNode = this.renderContent();
     node.setAttribute("class", "zodiac-single");
