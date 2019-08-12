@@ -7,16 +7,31 @@ class Card {
   }
 
   events() {
-    const { miniapp } = this.state;
-    const miniappContainer = document.getElementById(miniapp.id);
+    const {
+      miniapp: { id, link, appVersion, name, icon, postId }
+    } = this.state;
+    const miniappContainer = document.getElementById(id);
     const clickHandler = e => {
       // location.href = miniapp.link;
       // TODO : Fire Android Action for open Miniapp
-      const json = {
-        type: "web_post",
-        webUrl: miniapp.link,
-        postId: "-11"
-      };
+      let json;
+      if (appVersion && parseInt(appVersion) > 4125) {
+        json = {
+          type: "launch_mini_app",
+          miniAppData: {
+            miniAppId: id,
+            miniAppName: name,
+            miniAppReferrer: `Trending_discovery_${postId}`,
+            miniAppIconUrl: icon,
+            miniAppPwaUrl: link
+          }
+        };
+      } else
+        json = {
+          type: "web_post",
+          webUrl: link,
+          postId: "-11"
+        };
       Android.onAction(JSON.stringify(json));
     };
 
