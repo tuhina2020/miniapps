@@ -1,6 +1,6 @@
 .zodiac-multi {
-  width: 41.67vw;
-  height: 41.67vw;
+  width: 43.61vw;
+  height: 43.61vw;
   color: white;
   font-family: Quicksand;
   font-style: normal;
@@ -18,8 +18,8 @@
 
 .zodiac-img {
   width: 100%;
-  height: auto;
-  margin: 5.55vw;
+  height: 18.61vw;
+  margin: 5vw 0;
 }
 
 .outer-sign {
@@ -27,10 +27,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 2vw;
+  background: #b8814a;
+  width: fit-content;
+  border-radius: 0px 0px 12px 12px;
 }
 .zodiac-text {
   line-height: 6.11vw;
+  font-size: 5vw;
 }
 
 .zodiac-date {
@@ -38,4 +41,5 @@
   font-size: 3.33vw;
   font-style: normal;
   font-weight: normal;
+  /* margin-bottom: 2vw; */
 }

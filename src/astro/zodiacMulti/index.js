@@ -1,6 +1,7 @@
 import styles from "./index.css";
 import ZodiacSingle from "@/astro/zodiacSingle";
 import { zodiacData } from "@/utils";
+import SmallBorder from "@/astro/assets/zodiac/smallborder.svg";
 class ZodiacMulti {
   constructor(props) {
     const dt = new Date();
@@ -12,19 +13,10 @@ class ZodiacMulti {
   }
 
   events(node) {
-    // const miniappContainer = document.getElementById("app");
     const {
       data: { index }
     } = this.state;
-    const clickHandler = e => {
-      window.location.href = `?zodiac=${index}`;
-      // const zodiac = new ZodiacSingle(this.state.data);
-      // const Single = zodiac.render();
-      // miniappContainer.innerHTML = "";
-      // console.log("WE ARE HERE TO CLICK : ", Single);
-      // miniappContainer.appendChild(Single);
-      // zodiac.events();
-    };
+    const clickHandler = e => (window.location.href = `?zodiac=${index}`);
     node.addEventListener("click", clickHandler);
   }
 
@@ -36,6 +28,10 @@ class ZodiacMulti {
     const ZODIAC_DATA = zodiacData(index);
     const node = document.createElement("div");
     node.setAttribute("class", "zodiac-multi");
+    node.setAttribute(
+      "style",
+      `background-image:url(${SmallBorder});background-size: cover;`
+    );
     node.setAttribute("data-action", Sunsign);
     node.innerHTML = `<div id=${id} class='sunsign'><img src = ${
       ZODIAC_DATA.image
