@@ -1,6 +1,6 @@
 import styles from "./index.css";
 import ZodiacSingle from "@/astro/zodiacSingle";
-import { zodiacData } from "@/utils";
+import * as utils from "@/utils";
 import SmallBorder from "@/astro/assets/zodiac/smallborder.svg";
 class ZodiacMulti {
   constructor(props) {
@@ -25,7 +25,7 @@ class ZodiacMulti {
       data: { Sunsign, index },
       id
     } = this.state;
-    const ZODIAC_DATA = zodiacData(index);
+    const ZODIAC_DATA = utils.zodiacData(index);
     const node = utils.createNewDiv({
       type: "div",
       setAttribute: {
