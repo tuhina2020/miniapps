@@ -46,20 +46,29 @@ class ZodiacSingle {
     const ZODIAC_DATA = utils.zodiacData(index);
     const contentNode = this.renderContent();
 
+    const parent = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-parent",
+        style: `background:url(${Border}) no-repeat center;background-size: contain;`
+      }
+    });
+
     const node = utils.createNewDiv({
       type: "div",
       setAttribute: {
-        class: "zodiac-single",
-        style: `background:url(${Border}) no-repeat center;background-size: contain;`
+        class: "zodiac-single"
+        // style: `background:url(${Border}) no-repeat center;background-size: contain;`
       }
     });
 
     node.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><img src = ${
       ZODIAC_DATA.image
     } class='zodiac-single-img'><div class='zodiac-name'>${Sunsign}</div></div>`;
-    node.appendChild(contentNode);
+    parent.appendChild(node);
+    parent.appendChild(contentNode);
 
-    return node;
+    return parent;
   }
 }
 

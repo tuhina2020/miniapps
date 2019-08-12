@@ -6,6 +6,7 @@
 
 .zodiac-single img {
   width: 50vw;
+  margin-top: 7.5vw;
 }
 
 .zodiac-single-container {
@@ -29,4 +30,10 @@
 
 .zodiac-content {
   margin: 6.67vw 15vw;
+  color: white;
+}
+
+.zodiac-parent {
+  height: 95vh;
+  margin: 4vw 0;
 }
