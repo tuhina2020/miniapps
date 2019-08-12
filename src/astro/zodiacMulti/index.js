@@ -26,18 +26,21 @@ class ZodiacMulti {
       id
     } = this.state;
     const ZODIAC_DATA = zodiacData(index);
-    const node = document.createElement("div");
-    node.setAttribute("class", "zodiac-multi");
-    node.setAttribute(
-      "style",
-      `background-image:url(${SmallBorder});background-size: cover;`
-    );
-    node.setAttribute("data-action", Sunsign);
+    const node = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-multi",
+        style: `background-image:url(${SmallBorder});background-size: cover;`,
+        "data-action": Sunsign
+      }
+    });
+
     node.innerHTML = `<div id=${id} class='sunsign'><img src = ${
       ZODIAC_DATA.image
     } class='zodiac-img'><div class='outer-sign'><div class='zodiac-text'>${Sunsign}</div><div class='zodiac-date'>${
       ZODIAC_DATA.start
     } - ${ZODIAC_DATA.end}</div></div></div>`;
+
     return node;
   }
 }
