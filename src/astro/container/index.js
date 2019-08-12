@@ -27,11 +27,11 @@ class AstroAppContainer {
 
   getZodiacs() {
     // API call to get zodiac data
-    // const headers = Android.get("userInfo").replace(
-    //   new RegExp("\n", "g"),
-    //   "\\n"
-    // );
-    const headers = "lol";
+    const headers = Android.get("userInfo").replace(
+      new RegExp("\n", "g"),
+      "\\n"
+    );
+    // const headers = "lol";
     const requestObj = {
       url:
         "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps/274bd6ea-9fa6-4b77-8a0c-665b816c4a8b/meta",
@@ -609,7 +609,6 @@ class AstroAppContainer {
       zodiac
     } = this.state;
     if (zodiac || zodiac === 0) {
-      console.log("ZODIAC FOUND AT : ", zodiac, contentItem[zodiac]);
       return this.renderSingleZodiac({ ...contentItem[zodiac], index: zodiac });
     }
     const appContainer = document.getElementById("app");

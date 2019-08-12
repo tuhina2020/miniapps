@@ -6,7 +6,14 @@
 html {
   background-color: black;
 }
-/* 
-.zodiac-border-container {
-  background: url("@/astro/assets/zodiac/Border.svg");
-} */
+
+.zodiac-title {
+  color: white;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 5.55vw;
+  line-height: 6.94vw;
+  text-align: center;
+  margin: 7vw;
+}

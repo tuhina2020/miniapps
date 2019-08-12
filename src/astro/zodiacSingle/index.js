@@ -50,7 +50,7 @@ class ZodiacSingle {
       type: "div",
       setAttribute: {
         class: "zodiac-parent",
-        style: `background:url(${Border}) no-repeat center;background-size: contain;`
+        style: `background:url(${Border}) no-repeat;background-size: contain;`
       }
     });
 
@@ -62,7 +62,9 @@ class ZodiacSingle {
       }
     });
 
-    node.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><img src = ${
+    node.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><div class='zodiac-title-date'>${new Date()
+      .toString()
+      .slice(4, 10)}</div><img src = ${
       ZODIAC_DATA.image
     } class='zodiac-single-img'><div class='zodiac-name'>${Sunsign}</div></div>`;
     parent.appendChild(node);
