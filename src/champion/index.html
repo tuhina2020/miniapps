@@ -337,6 +337,8 @@
             return (
               '<tr class="' +
               (meInTopList ? "active open-profile" : "open-profile") +
+              " id=" +
+              user.userId +
               '">' +
               _rowTemplate(user) +
               "</tr>"
@@ -355,12 +357,15 @@
           "</tbody></table>";
         var openProfileDivs = document.getElementsByClassName("open-profile");
 
-        var clickHandler = function() {
-          Android.onAction(
-            '{"type" : "web_post", "referrer" : "Pass", "postId" : -12, "webUrl" : "' +
-              window.redirectLocation +
-              '" }'
-          );
+        var clickHandler = function(e) {
+          const id = event.target.id;
+          const json = {
+            self: false,
+            type: "profile",
+            action: "open_activity",
+            userId: parseInt(id)
+          };
+          Android.onAction(JSON.stringify(json));
         };
 
         for (var i = 0; i < openProfileDivs.length; i++) {
