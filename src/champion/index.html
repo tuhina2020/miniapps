@@ -357,19 +357,25 @@
           "</tbody></table>";
         var openProfileDivs = document.getElementsByClassName("open-profile");
 
-        var clickHandler = function(e) {
-          const id = event.target.id;
+        var clickHandler = function(id) {
           const json = {
             self: false,
             type: "profile",
             action: "open_activity",
-            userId: parseInt(id)
+            userId: id
           };
           Android.onAction(JSON.stringify(json));
         };
 
         for (var i = 0; i < openProfileDivs.length; i++) {
-          openProfileDivs[i].addEventListener("click", clickHandler, false);
+          const div = openProfileDivs[i];
+          div.addEventListener(
+            "click",
+            function() {
+              clickHandler(div.id);
+            },
+            false
+          );
         }
       }
 
