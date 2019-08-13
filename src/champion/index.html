@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Champions Leaderboard</title>
+
+    <style>
+      *,
+      :after,
+      :before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body,
+      html {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 4px;
+        position: relative;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+          Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+        color: #212121;
+        background-color: #f1f1f1;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      b {
+        font-weight: 500;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      p {
+        margin: 0;
+      }
+
+      .bg-graphics {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .text-ellipsis {
+        max-width: 30vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      section {
+        border-radius: 15px 15px 4px 4px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+      }
+      header,
+      footer {
+        background-color: #00acc1;
+      }
+      table tr.active {
+        background-color: #0097a7 !important;
+      }
+      header,
+      footer,
+      table tr.active {
+        color: white;
+      }
+      header {
+        padding: 12px 16px;
+        font-size: 1em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      footer {
+        height: 36px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table td {
+        padding: 20px 15px;
+        padding: 5vw 2vw;
+      }
+      table td:nth-child(2) {
+        padding-left: 0;
+      }
+      table tr {
+        background-color: #e0f7fa;
+      }
+      table tr:nth-child(even) {
+        background-color: #b2ebf2;
+      }
+      .avatar-wrapper {
+        position: relative;
+        padding-left: 4em;
+        padding-left: 13vw;
+      }
+      .avatar {
+        width: 3.2em;
+        width: 10vw;
+        height: 3.2em;
+        height: 10vw;
+        border-radius: 50%;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-top: -1.6em;
+        margin-top: -5vw;
+        border: 2px solid #fff;
+        background-color: white;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.2);
+      }
+      .avatar-wrapper h3 {
+        margin-bottom: 5px;
+      }
+      .avatar-wrapper p {
+        color: #616161;
+      }
+      .active .avatar-wrapper p {
+        color: white;
+      }
+      .font-bold {
+        font-weight: 600;
+      }
+      h2 {
+        font-size: 1.3em;
+        font-size: 4vw;
+      }
+      p {
+        font-size: 0.8em;
+      }
+      th {
+        padding: 10px 4px;
+        background: #47acc1;
+        text-align: center;
+        color: white;
+      }
+      .conditionsApply {
+        font-weight: 400;
+        background: #e0f7fa;
+        padding: 5px;
+        color: black;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section>
+      <header class="leaderboardTitle text-center font-bold">
+        Leaderboard
+      </header>
+      <main id="root">
+        <center style="padding: 2em 0;font-size: 2em;">
+          Please wait...
+        </center>
+      </main>
+      <!-- <footer></footer> -->
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+    <script type="text/javascript">
+      "use strict";
+
+      var monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
+      document.getElementsByClassName("leaderboardTitle")[0].innerText =
+        monthNames[new Date().getMonth()] + " Leaderboard";
+
+      var championStrings = {
+        English:
+          "Score is calculated on basis of Share+Like you gather from registered profiles for top 3 ShareChat camera videos of every day.",
+        Hindi:
+          "हर दिन में ShareChat कैमरा  से बनाए  हुए वीडियोस से टॉप 3  वीडियोस को रजिस्टर्ड  प्रोफिल द्वारा मिले गए लाइक और शेयर के आधार पर स्कोर कैलकुलेशन किया जाएगा।",
+        Marathi:
+          "Sharechat चॅम्पिअन्स ,प्रत्येक दिवशी Sharechat कॅमेऱ्यातून बनविलेल्या व्हिडिओंपैकी सर्वोत्तम ३ व्हिडिओला नोंदणीकृत प्रोफिलेमधुन मिळालेल्या  लाईक आणि शेअरच्या आधारे गुणसंख्या मोजणी केली जाईल. ",
+        Malayalam:
+          "നിങ്ങളുടെ സ്കോർ തീരുമാനിക്കുന്നത് ഓരോ ദിവസവും  ഷെയർ ചാറ്റ് ക്യാമെറയിൽ നിങ്ങൾ ഷൂട്ട് ചെയ്യുന്ന നിങ്ങളുടെ ഏറ്റവും മികച്ച 3 വീഡിയോകൾക്ക്, രജിസ്റ്റേർഡ് പ്രൊഫൈലുകളിൽ നിന്ന് ലഭിക്കുന്ന ലൈക്കും ഷെയറും അനുസരിച്ചാണ്.",
+        Tamil:
+          "உங்கள் ஸ்கோரனது ஒரு நாளில் ஷேர்சாட் கேமரா மூலம் எடுக்கப்பட்ட சிறந்த 3 விடியோக்கு registered profile  இருந்து வரும் ஷேர் & லைக் வைத்து கணக்கிடப்படும்.",
+        Gujarati:
+          "તમારા સ્કોરની ગણતરી દરરોજના શેરચેટ કેમેરાથી બનેલા વિડિઓ પર રજીસ્ટર પ્રોફાઈલની મદદથી મળેલ લાઈક અને શેરના આધારે કરવામાં આવશે",
+        Punjabi:
+          "ਤੁਹਾਡਾ ਸਕੋਰ ਸ਼ੇਅਰਚੈਟ ਕੈਮਰਾ ਨਾਲ ਬਣਾਈ ਗਈ ਹਰ ਦਿਨ ਦੀ ਟਾਪ 3 ਵੀਡਿਓਜ਼ ਤੇ, ਰਜਿਸਟਰਡ ਪ੍ਰੋਫ਼ਾਈਲ ਦੁਆਰਾ ਮਿਲੇ ਸ਼ੇਅਰ ਅਤੇ ਲਾਈਕਸ ਦੇ ਅਧਾਰ ਤੇ ਗਿਣਿਆ ਜਾਏਗਾ |",
+        Telugu:
+          "హలో ఛాంపియన్స్ మీ ప్రొఫైల్ లో  ప్రతి రోజు sharechat కెమెరా తో చేసిన వీడియోస్ లో టాప్ 3 వీడియోస్ కి రెజిస్టర్డ్ ప్రొఫైల్స్ నుంచి వచ్చే లైక్స్ మరియు షేర్స్ తో మీ స్కోర్ క్యాలికులెట్ చెయ్యబడుతుంది. ",
+        Bengali:
+          "আপনার প্রোফাইলের স্কোর গণনা করা হয়েছে প্রত্যেক দিনের টপ ৩টি ভিডিওর শেয়ার+লাইক এর ভিত্তিতে যা শেয়ারচ্যাট ক্যামেরা দিয়ে বানানো হয়েছে !",
+        Kannada:
+          "ಸ್ಕೋರ್ ಅನ್ನು ರಿಜಿಸ್ಟರ್ ಪ್ರೊಫೈಲ್ ಗಳಿಂದ  ಬಂದಂತಹ ಟಾಪ್ 3 ವೀಡಿಯೋಸ್ ಗಳಿಗೆ  ಪ್ರತಿ ದಿನ ಪರಿಗಣಿಸುತ್ತೆವೆ. ಸ್ಕೋರ್, ವೀಡಿಯೋ ಗೆ ಬಂದಂತಹ  ಶೇರ್ಸ್ ಮತ್ತು ಲೈಕ್ಸ್ ನ ಆಧಾರದ ಮೇಲೆ ಇರುತ್ತದೆ. ಶೇರ್ ಚಾಟ್ ಕ್ಯಾಮೆರಾ ಉಪಯೋಗಿಸಿ ಮಾಡಿದ ವೀಡಿಯೋಸ್ ಗಳನ್ನೂ ಮಾತ್ರ ಪರಿಗಣಿಸಲಾಗುವುದು . ",
+        Odia:
+          "ପ୍ରତି ଦିନରେ ଆପଣଙ୍କ ରେଜିଷ୍ଟ୍ରର୍ଡ ପ୍ରୋଫାଇଲର ଟପ 3 ଶେୟରଚେଟ୍ କ୍ୟାମେରା ଫିଲଟର ବ୍ୟବହୃତ ଭିଡ଼ିଓରେ ମିଳିଥିବା ଲାଇକ+ଶେୟର ଆଧାରରେ ସ୍କୋର ନିର୍ଦ୍ଧାରିତ ହେବ।",
+        Assamese:
+          "শ্বেয়াৰ চাট কেমেৰা ব্য়ৱহাৰ কৰি আপোনাৰ ৰেজিষ্টাৰ প্ৰফাইলৰে পোষ্ট কৰা প্ৰত্য়েক দিনৰ টপ ৩ ভিডিঅ'ত লাভ কৰা শ্বেয়াৰ, লাইকৰ ওপৰত ভিত্তি কৰি আপোনাৰ স্ক'ৰ নিৰ্ণয় কৰা হয়।"
+      };
+
+      const payload = {
+        data: {
+          championsData: [
+            {
+              userId: "234",
+              status: 1,
+              views: 900,
+              createdOn: null,
+              updatedOn: "2019-08-10T08:04:29.789637000Z",
+              rank: 1,
+              user: {
+                handle: "mitesh96",
+                name: "Mitesh",
+                profile_thumb:
+                  "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
+              }
+            },
+            {
+              userId: "231",
+              status: 2,
+              views: 550,
+              createdOn: null,
+              updatedOn: "2019-08-10T08:03:42.542230000Z",
+              rank: 2,
+              user: {
+                handle: "mitesh96",
+                name: "Mitesh",
+                profile_thumb:
+                  "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
+              }
+            },
+            {
+              userId: "177",
+              status: 1,
+              views: 300,
+              createdOn: null,
+              updatedOn: "2019-08-10T08:32:17.313911000Z",
+              rank: 3,
+              user: {
+                handle: "mitesh96",
+                name: "Mitesh",
+                profile_thumb:
+                  "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
+              }
+            },
+            {
+              userId: "232",
+              status: 1,
+              views: 250,
+              createdOn: null,
+              updatedOn: "2019-08-10T08:04:14.866029000Z",
+              rank: 4,
+              user: {
+                handle: "mitesh96",
+                name: "Mitesh",
+                profile_thumb:
+                  "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
+              }
+            },
+            {
+              userId: "181",
+              status: 1,
+              views: 230,
+              createdOn: null,
+              updatedOn: "2019-08-10T08:32:37.274067000Z",
+              rank: 5,
+              user: {
+                handle: "mitesh96",
+                name: "Mitesh",
+                profile_thumb:
+                  "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
+              }
+            }
+          ]
+        },
+        userData: {
+          userId: "177",
+          status: 1,
+          views: 300,
+          createdOn: null,
+          updatedOn: "2019-08-10T08:32:17.313911000Z",
+          rank: 3,
+          user: {
+            handle: "mitesh96",
+            name: "Mitesh",
+            profile_thumb:
+              "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
+          }
+        }
+      };
+      function _getRounded(n) {
+        return Math.floor(n * 100) / 100;
+      }
+      function _rowTemplate(user) {
+        return (
+          "<td><h2>#" +
+          user.rank +
+          '</h2></td><td><div class="avatar-wrapper"><div class="bg-graphics avatar" style="background-image: url(\'' +
+          user.user.profile_thumb +
+          '\');"></div><h3 class="text-ellipsis">' +
+          user.user.name +
+          '</h3><p class="text-ellipsis"><b>@' +
+          user.user.handle +
+          '</b></p></div></td><td class="text-center"><h2 class="font-bold">' +
+          user.views +
+          "</h2></td>"
+        );
+      }
+      function renderHTML(response) {
+        var arr = response.data.championsData;
+        var myRank = response.userData.rank;
+        var myData = response.userData;
+
+        var contentToInject = arr
+          .map(function(user, index) {
+            var meInTopList = index + 1 === myRank;
+            return (
+              '<tr class="' +
+              (meInTopList ? "active open-profile" : "open-profile") +
+              '">' +
+              _rowTemplate(user) +
+              "</tr>"
+            );
+          })
+          .join("");
+
+        if (myRank > arr.length) {
+          contentToInject +=
+            '<tr class="active open-profile">' + _rowTemplate(myData) + "</tr>";
+        }
+
+        document.getElementById("root").innerHTML =
+          "<table><thead><th>Rank</th><th>Champion</th><th>Views</th></thead><tbody>" +
+          contentToInject +
+          "</tbody></table>";
+        var openProfileDivs = document.getElementsByClassName("open-profile");
+
+        var clickHandler = function() {
+          Android.onAction(
+            '{"type" : "web_post", "referrer" : "Pass", "postId" : -12, "webUrl" : "' +
+              window.redirectLocation +
+              '" }'
+          );
+        };
+
+        for (var i = 0; i < openProfileDivs.length; i++) {
+          openProfileDivs[i].addEventListener("click", clickHandler, false);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        axios({
+          method: "POST",
+          data: {
+            authToken: Android.get("userInfo").replace(
+              new RegExp("\n", "g"),
+              "\\n"
+            )
+          },
+          url:
+            "https://apis.sharechat.com/webcard-service/v1.0.0/getYoutuberRanks",
+          headers: {
+            Authorization: Android.get("userInfo").replace(
+              new RegExp("\n", "g"),
+              "\\n"
+            )
+          }
+        })
+          .then(function(response) {
+            // renderHTML(payload);
+            renderHTML(response.data);
+          })
+          .catch(function(err) {
+            // renderHTML(payload);
+          });
+      });
+    </script>
+  </body>
+</html>

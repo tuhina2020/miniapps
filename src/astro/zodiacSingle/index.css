@@ -1,11 +1,17 @@
 .zodiac-single {
   color: white;
   font-size: 6.67vw;
+  position: fixed;
+  text-align: center;
+  width: 50vw;
+  left: 25vw;
+  z-index: 10;
+  top: 11vw;
 }
 
 .zodiac-single img {
   width: 50vw;
-  margin-top: 7.5vw;
+  margin-top: 10vw;
 }
 
 .zodiac-single-container {
@@ -16,7 +22,7 @@
 }
 
 .zodiac-name {
-  margin-top: 7vw;
+  margin: 14vw 0 6vw 0;
 }
 
 .category-name {
@@ -34,16 +40,16 @@
 }
 
 .zodiac-parent {
-  margin: 15vw 4vw;
+  /* margin: 11.1vw 7vw; */
 }
 
 .zodiac-title-date {
   font-weight: bold;
   font-size: 3.88vw;
-  line-height: 10vw;
-  text-align: center;
+  line-height: 14vw;
 }
 
 .zodiac-content-container {
-  /* padding-bottom: 10vw; */
+  position: relative;
+  top: 100vw;
 }

@@ -58,14 +58,14 @@ class ZodiacSingle {
     const header = utils.createNewDiv({
       type: "div",
       setAttribute: {
-        style: `background:url(${BorderTop}) no-repeat;background-size: contain;`
+        style: `background:url(${BorderTop}) no-repeat center; width: 100%;background-size: contain;height: 30vw;position: fixed;top: 11.11vw;`
       }
     });
 
     const footer = utils.createNewDiv({
       type: "div",
       setAttribute: {
-        style: `background:url(${BorderBottom}) no-repeat;background-size: contain;`
+        style: `background:url(${BorderBottom}) no-repeat center;width: 100%;height: 30vw;background-size: contain;position: fixed;top: 11.11vw;left: 0;`
       }
     });
 
@@ -77,15 +77,18 @@ class ZodiacSingle {
       }
     });
 
-    zodiacContent.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><div class='zodiac-title-date'>${new Date()
+    zodiacContent.innerHTML = `<div class='zodiac-title-date'>${new Date()
       .toString()
-      .slice(4, 10)}</div><img src = ${
+      .slice(
+        4,
+        10
+      )}</div><div id=${Sunsign} class='zodiac-single-container' ><img src = ${
       ZODIAC_DATA.image
     } class='zodiac-single-img' ><div class='zodiac-name'>${Sunsign}</div></div>`;
     parent.appendChild(header);
     parent.appendChild(zodiacContent);
     parent.appendChild(contentNode);
-    parent.appendChild(footer);
+    // parent.appendChild(footer);
 
     return parent;
   }

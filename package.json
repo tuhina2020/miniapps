@@ -6,11 +6,13 @@
   "scripts": {
     "build:astro": "webpack --mode production --type astro",
     "build:miniapp": "webpack --mode production --type miniapp",
+    "build:champion": "rm -rf ./dist && mkdir dist && cp ./src/champion/index.html ./dist",
     "dev": "webpack --mode development",
     "serve": "webpack-dev-server --mode=development --hot",
     "watch": "webpack --mode development -w && reload -b -d dist -p 8000",
     "upload:miniapp": "node upload.js miniapp",
-    "upload:astro": "node upload.js astro"
+    "upload:astro": "node upload.js astro",
+    "upload:champion": "node upload.js champion"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "braces": ">=2.3.1",
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.1.0",
     "file-loader": "^4.2.0",
     "fs": "0.0.1-security",
