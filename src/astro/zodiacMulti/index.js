@@ -1,5 +1,4 @@
 import styles from "./index.css";
-import ZodiacSingle from "@/astro/zodiacSingle";
 import * as utils from "@/utils";
 import SmallBorder from "@/astro/assets/zodiac/smallborder.svg";
 class ZodiacMulti {
@@ -10,6 +9,7 @@ class ZodiacMulti {
       data: props,
       id
     };
+    document.title = "ShareChat | Astrology";
   }
 
   events(node) {

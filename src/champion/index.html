@@ -231,7 +231,7 @@
               user: {
                 handle: "mitesh96",
                 name: "Mitesh",
-                profile_thumb:
+                profileThumb:
                   "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
               }
             },
@@ -245,7 +245,7 @@
               user: {
                 handle: "mitesh96",
                 name: "Mitesh",
-                profile_thumb:
+                profileThumb:
                   "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
               }
             },
@@ -259,7 +259,7 @@
               user: {
                 handle: "mitesh96",
                 name: "Mitesh",
-                profile_thumb:
+                profileThumb:
                   "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
               }
             },
@@ -273,7 +273,7 @@
               user: {
                 handle: "mitesh96",
                 name: "Mitesh",
-                profile_thumb:
+                profileThumb:
                   "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
               }
             },
@@ -287,7 +287,7 @@
               user: {
                 handle: "mitesh96",
                 name: "Mitesh",
-                profile_thumb:
+                profileThumb:
                   "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
               }
             }
@@ -303,7 +303,7 @@
           user: {
             handle: "mitesh96",
             name: "Mitesh",
-            profile_thumb:
+            profileThumb:
               "https://cdn.sharechat.com/thumb_sharechat_random_profile_6.jpg"
           }
         }
@@ -316,7 +316,7 @@
           "<td><h2>#" +
           user.rank +
           '</h2></td><td><div class="avatar-wrapper"><div class="bg-graphics avatar" style="background-image: url(\'' +
-          user.user.profile_thumb +
+          user.user.profileThumb +
           '\');"></div><h3 class="text-ellipsis">' +
           user.user.name +
           '</h3><p class="text-ellipsis"><b>@' +
@@ -380,29 +380,30 @@
       }
 
       document.addEventListener("DOMContentLoaded", function() {
+        let Authorization;
+        try {
+          Authorization = Android.get("userInfo").replace(
+            new RegExp("\n", "g"),
+            "\\n"
+          );
+        } catch (e) {
+          Authorization =
+            "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n";
+        }
         axios({
           method: "POST",
-          data: {
-            authToken: Android.get("userInfo").replace(
-              new RegExp("\n", "g"),
-              "\\n"
-            )
-          },
           url:
             "https://apis.sharechat.com/webcard-service/v1.0.0/getYoutuberRanks",
           headers: {
-            Authorization: Android.get("userInfo").replace(
-              new RegExp("\n", "g"),
-              "\\n"
-            )
+            Authorization: Authorization
           }
         })
           .then(function(response) {
-            // renderHTML(payload);
-            renderHTML(response.data);
+            renderHTML(payload);
+            // renderHTML(response.data);
           })
           .catch(function(err) {
-            // renderHTML(payload);
+            renderHTML(payload);
           });
       });
     </script>

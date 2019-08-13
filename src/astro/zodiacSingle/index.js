@@ -1,7 +1,7 @@
 import styles from "./index.css";
 import * as utils from "@/utils";
 import BorderTop from "@/astro/assets/zodiac/BorderTop.svg";
-import BorderBottom from "@/astro/assets/zodiac/BorderTop.svg";
+import BorderBottom from "@/astro/assets/zodiac/BorderBottom.svg";
 
 class ZodiacSingle {
   constructor(props) {
@@ -10,12 +10,31 @@ class ZodiacSingle {
     };
   }
 
-  events() {}
+  events() {
+    console.log("REGISTERING EVENTS");
+    const parent = document.getElementsByClassName("zodiac-parent")[0];
+    const ele = document.getElementsByClassName("zodiac-content-container")[0];
+    parent.onscroll = e => {
+      console.log(`PARENT SCROLL : ${e.target.scrollTop}`);
+      ele.scroll();
+    };
+    ele.onscroll = e => {
+      console.log(`CONTENT SCROLL : ${e.target.scrollTop}`);
+      console.log("THIS IS ME : ");
+    };
+  }
 
   renderContent() {
     const {
-      data: { categories }
+      data: { Sunsign, categories, index }
     } = this.state;
+    const ZODIAC_DATA = utils.zodiacData(index);
+    const contentParentNode = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-content-parent"
+      }
+    });
 
     const contentNode = utils.createNewDiv({
       type: "div",
@@ -23,6 +42,18 @@ class ZodiacSingle {
         class: "zodiac-content-container"
       }
     });
+
+    const zodiacContent = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-single"
+        // style: `background:url(${Border}) no-repeat center;background-size: contain;`
+      }
+    });
+
+    zodiacContent.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><img src = ${
+      ZODIAC_DATA.image
+    } class='zodiac-single-img' ><div class='zodiac-name'>${Sunsign}</div></div>`;
 
     categories.forEach(category => {
       const node = utils.createNewDiv({
@@ -37,14 +68,61 @@ class ZodiacSingle {
       contentNode.appendChild(node);
     });
 
-    return contentNode;
+    contentParentNode.appendChild(zodiacContent);
+
+    contentParentNode.appendChild(contentNode);
+
+    return contentParentNode;
+  }
+
+  renderBorders() {
+    const header = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        id: "header-fancy",
+        style: `background:url(${BorderTop}) no-repeat center; width: 100%;background-size: contain;height: 30vw;position: fixed;top: 0;`
+      }
+    });
+
+    const footer = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        id: "footer-fancy",
+        style: `background:url(${BorderBottom}) no-repeat center; width: 100%;background-size: contain;height: 30vw;position: fixed;bottom: 0;`
+      }
+    });
+
+    const titleDate = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-title-date"
+      }
+    });
+
+    titleDate.innerHTML = new Date().toString().slice(4, 10);
+
+    const borderDiv = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-side-borders"
+      }
+    });
+
+    const marginContainer = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "staticBars"
+      }
+    });
+
+    marginContainer.appendChild(header);
+    marginContainer.appendChild(titleDate);
+    marginContainer.appendChild(borderDiv);
+    marginContainer.appendChild(footer);
+    return marginContainer;
   }
 
   render() {
-    const {
-      data: { Sunsign, index, categories }
-    } = this.state;
-    const ZODIAC_DATA = utils.zodiacData(index);
     const contentNode = this.renderContent();
 
     const parent = utils.createNewDiv({
@@ -55,40 +133,10 @@ class ZodiacSingle {
       }
     });
 
-    const header = utils.createNewDiv({
-      type: "div",
-      setAttribute: {
-        style: `background:url(${BorderTop}) no-repeat center; width: 100%;background-size: contain;height: 30vw;position: fixed;top: 11.11vw;`
-      }
-    });
+    const marginContainer = this.renderBorders();
 
-    const footer = utils.createNewDiv({
-      type: "div",
-      setAttribute: {
-        style: `background:url(${BorderBottom}) no-repeat center;width: 100%;height: 30vw;background-size: contain;position: fixed;top: 11.11vw;left: 0;`
-      }
-    });
-
-    const zodiacContent = utils.createNewDiv({
-      type: "div",
-      setAttribute: {
-        class: "zodiac-single"
-        // style: `background:url(${Border}) no-repeat center;background-size: contain;`
-      }
-    });
-
-    zodiacContent.innerHTML = `<div class='zodiac-title-date'>${new Date()
-      .toString()
-      .slice(
-        4,
-        10
-      )}</div><div id=${Sunsign} class='zodiac-single-container' ><img src = ${
-      ZODIAC_DATA.image
-    } class='zodiac-single-img' ><div class='zodiac-name'>${Sunsign}</div></div>`;
-    parent.appendChild(header);
-    parent.appendChild(zodiacContent);
+    parent.appendChild(marginContainer);
     parent.appendChild(contentNode);
-    // parent.appendChild(footer);
 
     return parent;
   }

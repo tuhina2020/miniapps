@@ -10,6 +10,7 @@ class AstroAppContainer {
       url.searchParams.get("zodiac") && url.searchParams.get("zodiac")
     );
     this.state = { zodiac };
+    document.title = "ShareChat | Astrology";
     this.getFonts();
     this.getZodiacs();
   }
@@ -37,17 +38,22 @@ class AstroAppContainer {
 
   getZodiacs() {
     // API call to get zodiac data
-    // const Authorization = Android.get("userInfo").replace(
-    //   new RegExp("\n", "g"),
-    //   "\\n"
-    // );
-    // const headers = "lol";
+    let Authorization;
+    try {
+      Authorization = Android.get("userInfo").replace(
+        new RegExp("\n", "g"),
+        "\\n"
+      );
+    } catch (e) {
+      Authorization =
+        "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n";
+    }
+
     const requestObj = {
       url:
         "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapp/274bd6ea-9fa6-4b77-8a0c-665b816c4a8b/meta?lang=Hindi",
       headers: {
-        Authorization:
-          "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n"
+        Authorization
       }
     };
 
