@@ -1,6 +1,7 @@
 import styles from "./index.css";
 import * as utils from "@/utils";
-import Border from "@/astro/assets/zodiac/Border.svg";
+import BorderTop from "@/astro/assets/zodiac/BorderTop.svg";
+import BorderBottom from "@/astro/assets/zodiac/BorderTop.svg";
 
 class ZodiacSingle {
   constructor(props) {
@@ -49,12 +50,26 @@ class ZodiacSingle {
     const parent = utils.createNewDiv({
       type: "div",
       setAttribute: {
-        class: "zodiac-parent",
-        style: `background:url(${Border}) no-repeat;background-size: contain;`
+        class: "zodiac-parent"
+        // style: `background:url(${BorderTop}) no-repeat;background-size: contain;`
       }
     });
 
-    const node = utils.createNewDiv({
+    const header = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        style: `background:url(${BorderTop}) no-repeat;background-size: contain;`
+      }
+    });
+
+    const footer = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        style: `background:url(${BorderBottom}) no-repeat;background-size: contain;`
+      }
+    });
+
+    const zodiacContent = utils.createNewDiv({
       type: "div",
       setAttribute: {
         class: "zodiac-single"
@@ -62,13 +77,15 @@ class ZodiacSingle {
       }
     });
 
-    node.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><div class='zodiac-title-date'>${new Date()
+    zodiacContent.innerHTML = `<div id=${Sunsign} class='zodiac-single-container' ><div class='zodiac-title-date'>${new Date()
       .toString()
       .slice(4, 10)}</div><img src = ${
       ZODIAC_DATA.image
-    } class='zodiac-single-img'><div class='zodiac-name'>${Sunsign}</div></div>`;
-    parent.appendChild(node);
+    } class='zodiac-single-img' ><div class='zodiac-name'>${Sunsign}</div></div>`;
+    parent.appendChild(header);
+    parent.appendChild(zodiacContent);
     parent.appendChild(contentNode);
+    parent.appendChild(footer);
 
     return parent;
   }
