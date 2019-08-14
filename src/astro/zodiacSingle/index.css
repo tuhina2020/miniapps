@@ -6,7 +6,6 @@
 
 .zodiac-single img {
   width: 50vw;
-  margin-top: 10vw;
 }
 
 .zodiac-single-container {
@@ -56,9 +55,9 @@
 .zodiac-content-parent {
   position: relative;
   margin: auto;
-  top: 20vw;
+  top: 18vw;
   width: 80vw;
-  height: 85vh;
+  height: 83vh;
   overflow: scroll;
   display: flex;
   flex-direction: column;

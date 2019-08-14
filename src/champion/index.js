@@ -175,8 +175,13 @@ function renderHTML(response) {
 
   if (myRank > arr.length) {
     contentToInject +=
-      '<tr class="active open-profile">' + _rowTemplate(myData) + "</tr>";
+      '<tr class="active open-profile" id=' +
+      myData.userId +
+      ">" +
+      _rowTemplate(myData) +
+      "</tr>";
   }
+  console.log(myData);
 
   document.getElementById("root").innerHTML =
     "<table><thead><th>Rank</th><th>Youtuber</th><th>Views</th></thead><tbody>" +
