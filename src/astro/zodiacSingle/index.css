@@ -55,25 +55,21 @@
 
 .zodiac-content-parent {
   position: relative;
+  margin: auto;
   top: 20vw;
-  width: 100vw;
-  height: 80vh;
+  width: 80vw;
+  height: 85vh;
   overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: black;
+  -webkit-mask-image: linear-gradient(to top, transparent 5%, black 15%);
+  mask-image: linear-gradient(to bottom, transparent 25%, black 100%);
 }
-
-/* .zodiac-content-parent::before {
-  background-image: linear-gradient(black, rgba(255, 255, 255, 0.001));
-}
-
-.zodiac-content-parent::after {
-  background-image: linear-gradient(black, rgba(255, 255, 255, 0.001));
-} */
 
 .zodiac-content-container {
-  margin: 0 18vw;
+  margin: 0 5vw;
 }
 
 .zodiac-side-borders {
