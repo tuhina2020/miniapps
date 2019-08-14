@@ -337,9 +337,10 @@
             return (
               '<tr class="' +
               (meInTopList ? "active open-profile" : "open-profile") +
+              '"' +
               " id=" +
               user.userId +
-              '">' +
+              ">" +
               _rowTemplate(user) +
               "</tr>"
             );
