@@ -5,7 +5,6 @@ import BorderBottom from "@/astro/assets/zodiac/BorderBottom.svg";
 
 class ZodiacSingle {
   constructor(props) {
-    console.log(props, " SINGLE ZODIAC");
     this.state = {
       data: props
     };
