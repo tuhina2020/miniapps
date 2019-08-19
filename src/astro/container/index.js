@@ -5,14 +5,28 @@ import styles from "./index.css";
 import Border from "@/astro/assets/zodiac/Border.svg";
 class AstroAppContainer {
   constructor() {
-    const url = new URL(document.location.href);
-    const zodiac = parseInt(
-      url.searchParams.get("zodiac") && url.searchParams.get("zodiac")
-    );
-    this.state = { zodiac };
     document.title = "ShareChat | Astrology";
+    this.state = {};
     this.getFonts();
+    this.getParams();
+    this.setAuthorization();
     this.getZodiacs();
+  }
+
+  setAuthorization() {
+    let Authorization;
+    try {
+      Authorization = Android.get("userInfo").replace(
+        new RegExp("\n", "g"),
+        "\\n"
+      );
+    } catch (e) {
+      Authorization = "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n".replace(
+        new RegExp("\n", "g"),
+        "\\n"
+      );
+    }
+    this.state.Authorization = Authorization;
   }
 
   getFonts() {
@@ -24,6 +38,38 @@ class AstroAppContainer {
       }
     });
     document.head.appendChild(link);
+  }
+
+  getParams() {
+    const url = new URL(document.location.href);
+    const zodiac = parseInt(
+      url.searchParams.get("zodiac") && url.searchParams.get("zodiac")
+    );
+    const postId = url.searchParams.get("postId");
+    const Referrer =
+      url.searchParams.get("referrer") || `Trending_discovery_${postId}`;
+    this.state.zodiac = zodiac;
+    this.state.Referrer = Referrer;
+  }
+
+  sendOpenEvent() {
+    const { Authorization, Referrer } = this.state;
+    const requestObj = {
+      method: "POST",
+      url: "https://apis.sharechat.com/miniapp-service/v1.0.0/event",
+      headers: { Authorization },
+      body: {
+        eventName: "MiniAppOpened",
+        appName: "Astrology",
+        appID: "274bd6ea-9fa6-4b77-8a0c-665b816c4a8b",
+        Referrer
+      }
+    };
+
+    return utils
+      .request(requestObj)
+      .then(v => console.log(v))
+      .catch(err => console.log(err));
   }
 
   createError(err) {
@@ -38,20 +84,11 @@ class AstroAppContainer {
 
   getZodiacs() {
     // API call to get zodiac data
-    let Authorization;
-    try {
-      Authorization = Android.get("userInfo").replace(
-        new RegExp("\n", "g"),
-        "\\n"
-      );
-    } catch (e) {
-      Authorization =
-        "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n";
-    }
+    const { Authorization } = this.state;
 
     const requestObj = {
       url:
-        "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapp/274bd6ea-9fa6-4b77-8a0c-665b816c4a8b/meta?lang=Hindi",
+        "https://apis.sharechat.com/miniapp-service/v1.0.0/miniapp/274bd6ea-9fa6-4b77-8a0c-665b816c4a8b/meta",
       headers: {
         Authorization
       }
@@ -626,10 +663,16 @@ class AstroAppContainer {
   render() {
     const {
       DailyHoroscope: { contentItem },
-      zodiac
+      zodiac,
+      Authorization
     } = this.state;
+
     if (zodiac || zodiac === 0) {
-      return this.renderSingleZodiac({ ...contentItem[zodiac], index: zodiac });
+      return this.renderSingleZodiac({
+        ...contentItem[zodiac],
+        index: zodiac,
+        Authorization
+      });
     }
     const appContainer = document.getElementById("app");
     const container = utils.createNewDiv({
@@ -641,6 +684,7 @@ class AstroAppContainer {
     container.appendChild(title);
     container.appendChild(zodiacGroup);
     appContainer.appendChild(container);
+    this.sendOpenEvent();
   }
 }
 

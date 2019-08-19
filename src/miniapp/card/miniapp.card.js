@@ -15,23 +15,24 @@ class Card {
       // location.href = miniapp.link;
       // TODO : Fire Android Action for open Miniapp
       let json;
-      if (appVersion && parseInt(appVersion) > 4125) {
-        json = {
-          type: "launch_mini_app",
-          miniAppData: {
-            miniAppId: id,
-            miniAppName: name,
-            miniAppReferrer: `Trending_discovery_${postId}`,
-            miniAppIconUrl: icon,
-            miniAppPwaUrl: link
-          }
-        };
-      } else
-        json = {
-          type: "web_post",
-          webUrl: link,
-          postId: "-11"
-        };
+      // if (appVersion) {
+      json = {
+        type: "launch_mini_app",
+        miniAppData: {
+          miniAppId: id,
+          miniAppName: name,
+          miniAppReferrer: `Trending_discovery_${postId}`,
+          miniAppIconUrl: icon,
+          miniAppPwaUrl: link
+        }
+      };
+      // } else
+      //   json = {
+      //     type: "web_post",
+      //     webUrl: link,
+      //     postId: "-11"
+      //   };
+      console.log(json);
       Android.onAction(JSON.stringify(json));
     };
 

@@ -5,23 +5,33 @@ import BorderBottom from "@/astro/assets/zodiac/BorderBottom.svg";
 
 class ZodiacSingle {
   constructor(props) {
+    console.log(props, " SINGLE ZODIAC");
     this.state = {
       data: props
     };
   }
 
-  events() {
-    console.log("REGISTERING EVENTS");
-    const parent = document.getElementsByClassName("zodiac-parent")[0];
-    const ele = document.getElementsByClassName("zodiac-content-container")[0];
-    parent.onscroll = e => {
-      console.log(`PARENT SCROLL : ${e.target.scrollTop}`);
-      ele.scroll();
+  events() {}
+
+  sendOpenEvent() {
+    const {
+      data: { Authorization, index }
+    } = this.state;
+    const requestObj = {
+      method: "POST",
+      url: "https://apis.sharechat.com/miniapp-service/v1.0.0/event",
+      headers: { Authorization },
+      body: {
+        eventName: "horoscopeOpened",
+        appName: "Astrology",
+        appID: "274bd6ea-9fa6-4b77-8a0c-665b816c4a8b",
+        ID: utils.zodiacData(index) && utils.zodiacData(index).name
+      }
     };
-    ele.onscroll = e => {
-      console.log(`CONTENT SCROLL : ${e.target.scrollTop}`);
-      console.log("THIS IS ME : ");
-    };
+    return utils
+      .request(requestObj)
+      .then(v => console.log(v))
+      .catch(err => console.log(err));
   }
 
   renderContent() {
@@ -55,10 +65,14 @@ class ZodiacSingle {
       ZODIAC_DATA.image
     } class='zodiac-single-img' ><div class='zodiac-name'>${Sunsign}</div></div>`;
 
-    categories.forEach(category => {
+    categories.forEach((category, index) => {
       const node = utils.createNewDiv({
         type: "div",
-        setAttribute: { class: "zodiac-content" }
+        setAttribute: {
+          class: "zodiac-content",
+          style:
+            index === categories.length - 1 ? "padding-bottom:25vw;" : undefined
+        }
       });
       node.innerHTML = `<div class='category-name'>${
         category.category_name
@@ -137,7 +151,7 @@ class ZodiacSingle {
 
     parent.appendChild(marginContainer);
     parent.appendChild(contentNode);
-
+    this.sendOpenEvent();
     return parent;
   }
 }

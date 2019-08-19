@@ -15,23 +15,23 @@ export const request = ({ url, headers, method = "GET", body }) =>
   fetch(url, {
     method,
     headers,
-    body
+    body: JSON.stringify(body)
   }).then(response => response.json());
 
 export const zodiacData = index =>
   [
-    { start: "21 Mar", end: "20 Apr", image: Aries },
-    { start: "21 Apr", end: "21 May", image: Taurus },
-    { start: "22 May", end: "21 Jun", image: Gemini },
-    { start: "22 Jun", end: "22 Jul", image: Cancer },
-    { start: "23 July", end: "21 Aug", image: Leo },
-    { start: "22 Aug", end: "23 Sep", image: Virgo },
-    { start: "24 Sep", end: "23 Oct", image: Libra },
-    { start: "24 Oct", end: "22 Nov", image: Scorpio },
-    { start: "23 Nov", end: "22 Dec", image: Sagittarius },
-    { start: "23 Dec", end: "20 Jan", image: Capricorn },
-    { start: "21 Jan", end: "19 Feb", image: Aquarius },
-    { start: "20 Feb", end: "20 Mar", image: Pisces }
+    { start: "21 Mar", end: "20 Apr", image: Aries, name: "Aries" },
+    { start: "21 Apr", end: "21 May", image: Taurus, name: "Taurus" },
+    { start: "22 May", end: "21 Jun", image: Gemini, name: "Gemini" },
+    { start: "22 Jun", end: "22 Jul", image: Cancer, name: "Cancer" },
+    { start: "23 July", end: "21 Aug", image: Leo, name: "Leo" },
+    { start: "22 Aug", end: "23 Sep", image: Virgo, name: "Virgo" },
+    { start: "24 Sep", end: "23 Oct", image: Libra, name: "Libra" },
+    { start: "24 Oct", end: "22 Nov", image: Scorpio, name: "Scorpio" },
+    { start: "23 Nov", end: "22 Dec", image: Sagittarius, name: "Sagittarius" },
+    { start: "23 Dec", end: "20 Jan", image: Capricorn, name: "Capricorn" },
+    { start: "21 Jan", end: "19 Feb", image: Aquarius, name: "Aquarius" },
+    { start: "20 Feb", end: "20 Mar", image: Pisces, name: "Pisces" }
   ][index];
 
 export const createNewDiv = ({ type, setAttribute }) => {

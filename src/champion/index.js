@@ -181,7 +181,6 @@ function renderHTML(response) {
       _rowTemplate(myData) +
       "</tr>";
   }
-  console.log(myData);
 
   document.getElementById("root").innerHTML =
     "<table><thead><th>Rank</th><th>Youtuber</th><th>Views</th></thead><tbody>" +
