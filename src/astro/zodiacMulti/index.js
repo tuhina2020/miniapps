@@ -1,37 +1,46 @@
 import styles from "./index.css";
-import ZodiacSingle from "@/astro/zodiacSingle";
-
+import * as utils from "@/utils";
+import SmallBorder from "@/astro/assets/zodiac/smallborder.svg";
 class ZodiacMulti {
   constructor(props) {
+    const dt = new Date();
+    const id = dt.setMinutes(dt.getMinutes() + Math.floor(Math.random() * 30));
     this.state = {
-      data: props
+      data: props,
+      id
     };
-    this.events();
+    document.title = "ShareChat | Astrology";
   }
 
-  events() {
+  events(node) {
     const {
-      data: { Sunsign }
+      data: { index }
     } = this.state;
-    const astroContainer = document.getElementsById(Sunsign);
-    console.log(astroContainer, "LOL ");
-    const clickHandler = e => {
-      var miniAppId = e.target.getAttribute("class");
-      return new ZodiacSingle(this.state.data);
-    };
-
-    astroContainer.addEventListener("click", clickHandler);
+    const clickHandler = e => (window.location.href = `?zodiac=${index}`);
+    node.addEventListener("click", clickHandler);
   }
 
   render() {
     const {
-      data: { Sunsign }
+      data: { Sunsign, index },
+      id
     } = this.state;
-    const node = document.createElement("div");
-    node.setAttribute("class", "zodiac-multi");
-    node.setAttribute("data-action", Sunsign);
+    const ZODIAC_DATA = utils.zodiacData(index);
+    const node = utils.createNewDiv({
+      type: "div",
+      setAttribute: {
+        class: "zodiac-multi",
+        style: `background-image:url(${SmallBorder});background-size: cover;`,
+        "data-action": Sunsign
+      }
+    });
 
-    node.innerHTML = `<div id=${Sunsign}></div>`;
+    node.innerHTML = `<div id=${id} class='sunsign'><img src = ${
+      ZODIAC_DATA.image
+    } class='zodiac-img'><div class='outer-sign'><div class='zodiac-text'>${Sunsign}</div><div class='zodiac-date'>${
+      ZODIAC_DATA.start
+    } - ${ZODIAC_DATA.end}</div></div></div>`;
+
     return node;
   }
 }

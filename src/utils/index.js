@@ -1,17 +1,44 @@
-export const request = ({ url, headers = {}, method = "GET", body }) => {
-  const requestHeaders = Object.assign(
-    {
-      Authorization: " B+GQoX3RUWtU36SYaT5Ib7TATFjq+IPYsOPoTX7GXp2J2EGctu4GkT9vPS2y4eXTmJfBmi6lYYRu\nBQFbxAiFvISUYmKRwunYueow+fAJ4O6wQCtevLRxSFcGkMeDnBtRFnv3F9ogfrHxxW3FohmmX/GZ\nwpj0FdPTk37F+5Eovbd2mDJFHwv9xC6jd5EvKTzrzghf0pv2gh9/H7JvSEjot7AnCJXdUyTPsppa\nAppEmuobzZF6+oNd3Jg8QFfo3it7oCRvoiqi6keM852xxKO0cthrJBWBIs3ohGQ13I+eAx1mLLgn\nREv7TvJrMAXVzRvWeZ3wZYOTHiynHCpMkoKk5A==".replace(
-        new RegExp("\n", "g"),
-        "\\n"
-      )
-    },
-    headers
-  );
+import Aries from "@/astro/assets/zodiac/Aries.svg";
+import Libra from "@/astro/assets/zodiac/Libra.svg";
+import Aquarius from "@/astro/assets/zodiac/Aquarius.svg";
+import Sagittarius from "@/astro/assets/zodiac/Sagittarius.svg";
+import Gemini from "@/astro/assets/zodiac/Gemini.svg";
+import Leo from "@/astro/assets/zodiac/Leo.svg";
+import Pisces from "@/astro/assets/zodiac/Pisces.svg";
+import Cancer from "@/astro/assets/zodiac/Cancer.svg";
+import Scorpio from "@/astro/assets/zodiac/Scorpio.svg";
+import Capricorn from "@/astro/assets/zodiac/Capricorn.svg";
+import Virgo from "@/astro/assets/zodiac/Virgo.svg";
+import Taurus from "@/astro/assets/zodiac/Taurus.svg";
 
-  return fetch(url, {
+export const request = ({ url, headers, method = "GET", body }) =>
+  fetch(url, {
     method,
-    headers: requestHeaders,
+    headers,
     body
   }).then(response => response.json());
+
+export const zodiacData = index =>
+  [
+    { start: "21 Mar", end: "20 Apr", image: Aries },
+    { start: "21 Apr", end: "21 May", image: Taurus },
+    { start: "22 May", end: "21 Jun", image: Gemini },
+    { start: "22 Jun", end: "22 Jul", image: Cancer },
+    { start: "23 July", end: "21 Aug", image: Leo },
+    { start: "22 Aug", end: "23 Sep", image: Virgo },
+    { start: "24 Sep", end: "23 Oct", image: Libra },
+    { start: "24 Oct", end: "22 Nov", image: Scorpio },
+    { start: "23 Nov", end: "22 Dec", image: Sagittarius },
+    { start: "23 Dec", end: "20 Jan", image: Capricorn },
+    { start: "21 Jan", end: "19 Feb", image: Aquarius },
+    { start: "20 Feb", end: "20 Mar", image: Pisces }
+  ][index];
+
+export const createNewDiv = ({ type, setAttribute }) => {
+  let property;
+  const container = document.createElement(type);
+  for (property in setAttribute) {
+    container.setAttribute(property, setAttribute[property]);
+  }
+  return container;
 };

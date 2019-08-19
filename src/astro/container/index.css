@@ -1,0 +1,19 @@
+.zodiac-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+html {
+  background-color: black;
+}
+
+.zodiac-title {
+  color: white;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 5.55vw;
+  line-height: 6.94vw;
+  text-align: center;
+  margin: 7vw;
+}

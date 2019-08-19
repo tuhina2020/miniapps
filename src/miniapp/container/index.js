@@ -13,8 +13,16 @@ class MiniAppContainer {
   getMiniApps() {
     const url = new URL(document.location.href);
     const postId = url.searchParams.get("postId");
+    const headers = Android.get("userInfo").replace(
+      new RegExp("\n", "g"),
+      "\\n"
+    );
+    const appVersion = Android.get("appVersion");
+    this.state.appVersion = appVersion;
+    this.state.postId = postId;
     const requestObj = {
-      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`
+      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
+      headers: { Authorization: headers }
     };
     utils.request(requestObj).then(res => {
       this.state = res;
@@ -22,6 +30,14 @@ class MiniAppContainer {
       return Promise.resolve();
     });
   }
+
+  // addToken() {
+  //   const { appVersion } = this.state;
+  //   const tokenDiv = document.createElement("div");
+  //   tokenDiv.innerHTML = appVersion;
+  //   const tokenHead = document.getElementById("token");
+  //   tokenHead.appendChild(tokenDiv);
+  // }
 
   events() {}
 
@@ -38,15 +54,16 @@ class MiniAppContainer {
   }
 
   render() {
-    const { apps } = this.state;
+    const { apps, appVersion, postId } = this.state;
     const miniappContainer = document.getElementById("app");
     Array.from(apps).forEach((miniapp, index) => {
-      const miniappCard = new Card(miniapp);
+      const miniappCard = new Card({ ...miniapp, appVersion, postId });
       const node = miniappCard.render();
       miniappContainer.appendChild(node);
       miniappCard.events();
     });
     this.addHeader();
+    // this.addToken();
   }
 }
 

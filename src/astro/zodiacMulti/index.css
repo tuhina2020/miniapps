@@ -1,0 +1,45 @@
+.zodiac-multi {
+  width: 43.6vw;
+  height: 43.6vw;
+  color: white;
+  font-family: Quicksand;
+  font-style: normal;
+  font-weight: bold;
+  margin: 3.5vw 2.5vw;
+}
+
+.sunsign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.zodiac-img {
+  width: 100%;
+  height: 18.61vw;
+  margin: 5vw 0;
+}
+
+.outer-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2vw;
+  justify-content: center;
+  width: fit-content;
+  border-radius: 0px 0px 12px 12px;
+}
+.zodiac-text {
+  line-height: 6.11vw;
+  font-size: 5vw;
+}
+
+.zodiac-date {
+  line-height: 4.17vw;
+  font-size: 3.33vw;
+  font-style: normal;
+  font-weight: normal;
+  /* margin-bottom: 2vw; */
+}

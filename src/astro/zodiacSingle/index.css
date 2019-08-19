@@ -1,0 +1,88 @@
+.zodiac-single {
+  color: white;
+  font-size: 6.67vw;
+  text-align: center;
+}
+
+.zodiac-single img {
+  width: 50vw;
+  margin-top: 10vw;
+}
+
+.zodiac-single-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.zodiac-name {
+  margin: 14vw 0 6vw 0;
+}
+
+.category-name {
+  font-size: 4.4vw;
+  margin-bottom: 2.77vw;
+  font-weight: bold;
+}
+.category-description {
+  font-size: 3.88vw;
+}
+
+.zodiac-content {
+  margin: 6.67vw 0;
+  color: white;
+}
+
+.zodiac-parent {
+  font-family: Quicksand;
+  font-style: normal;
+  width: 100vw;
+  height: 100vh;
+}
+
+.zodiac-title-date {
+  font-weight: bold;
+  font-size: 3.88vw;
+  color: white;
+  position: fixed;
+  text-align: center;
+  width: 50vw;
+  left: 25vw;
+  z-index: 10;
+  top: 4.3vw;
+}
+
+.zodiac-content-parent {
+  position: relative;
+  margin: auto;
+  top: 20vw;
+  width: 80vw;
+  height: 85vh;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  -webkit-mask-image: linear-gradient(to top, transparent 5%, black 15%);
+  mask-image: linear-gradient(to bottom, transparent 25%, black 100%);
+}
+
+.zodiac-content-container {
+  margin: 0 5vw;
+}
+
+.zodiac-side-borders {
+  height: 60vh;
+  width: 83vw;
+  position: fixed;
+  top: 20vh;
+  border-left: 1px solid #b8814a;
+  border-right: 1px solid #b8814a;
+}
+
+.staticBars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

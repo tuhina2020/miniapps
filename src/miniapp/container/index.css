@@ -1,7 +1,5 @@
 .container {
   display: flex;
-  overflow-x: scroll;
-  overflow-y: hidden;
   text-align: center;
   font-family: Roboto;
 }
