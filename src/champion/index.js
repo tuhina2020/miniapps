@@ -212,6 +212,15 @@ function renderError(err) {
   ele.innerHTML = err.toString();
 }
 
+function renderUnAuthorised() {
+  const err = document.createElement("center");
+  err.setAttribute("style", "padding: 2em 0;font-size: 2em;");
+  err.innerText = " Not Authorised";
+  const node = document.getElementById("root");
+  node.innerHTML = "";
+  node.appendChild(err);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   let Authorization;
   try {
@@ -220,10 +229,13 @@ document.addEventListener("DOMContentLoaded", function() {
       "\\n"
     );
   } catch (e) {
-    Authorization = "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n".replace(
-      new RegExp("\n", "g"),
-      "\\n"
-    );
+    console.log("TESTING", navigator.userAgent);
+    if (navigator.userAgent.match(/Mozilla/i)) {
+      Authorization = "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n".replace(
+        new RegExp("\n", "g"),
+        "\\n"
+      );
+    }
   }
   axios({
     method: "POST",
@@ -236,8 +248,9 @@ document.addEventListener("DOMContentLoaded", function() {
       renderHTML(response.data);
     })
     .catch(function(err) {
-      console.log("YOYO", err);
-      renderError(err);
-      renderHTML(payload);
+      console.log("YOYO", err.response.status);
+      if (err.response.status === 401) renderUnAuthorised();
+      // renderError(err);
+      // renderHTML(payload);
     });
 });
