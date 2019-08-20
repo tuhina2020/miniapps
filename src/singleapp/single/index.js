@@ -5,7 +5,37 @@ class SingleApp {
     this.state = props;
   }
 
-  events() {}
+  events() {
+    const { id, link, appVersion, name, icon, postId } = this.state;
+    console.log(this.state, "INSIDE EVENTS");
+    const button = document.getElementById(id);
+    const clickHandler = e => {
+      // location.href = miniapp.link;
+      // TODO : Fire Android Action for open Miniapp
+      let json;
+      // if (appVersion) {
+      json = {
+        type: "launch_mini_app",
+        miniAppData: {
+          miniAppId: id,
+          miniAppName: name,
+          miniAppReferrer: `Webpost_${postId}`,
+          miniAppIconUrl: icon,
+          miniAppPwaUrl: link
+        }
+      };
+      // } else
+      //   json = {
+      //     type: "web_post",
+      //     webUrl: link,
+      //     postId: "-11"
+      //   };
+      console.log(json);
+      Android.onAction(JSON.stringify(json));
+    };
+
+    button.addEventListener("click", clickHandler);
+  }
 
   render() {
     const {
@@ -13,14 +43,13 @@ class SingleApp {
       button: {
         color: { background },
         text
-      }
+      },
+      id
     } = this.state;
     const node = utils.createNewDiv({
       type: "div",
       setAttribute: { class: "single-container" }
     });
-
-    // console.log(this.state, "INSIDE SINGLE MINIAPP SWQUARE");
 
     const img = utils.createNewDiv({
       type: "img",
@@ -34,6 +63,7 @@ class SingleApp {
       type: "button",
       setAttribute: {
         class: "cta-container",
+        id,
         style: `background:#${background};`
       }
     });

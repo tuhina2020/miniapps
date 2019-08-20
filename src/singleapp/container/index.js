@@ -4,7 +4,6 @@ import styles from "./index.css";
 
 class SingleAppContainer {
   constructor() {
-    console.log("SINGLE APP");
     this.state = {
       apps: []
     };
@@ -44,7 +43,6 @@ class SingleAppContainer {
     utils
       .request(requestObj)
       .then(res => {
-        console.log(res);
         this.state = Object.assign(this.state, res);
         this.render();
         return Promise.resolve();
@@ -79,7 +77,7 @@ class SingleAppContainer {
   render() {
     const { apps, appVersion, postId } = this.state;
     const miniappContainer = document.getElementById("app");
-    return this.renderSingleApp(apps[0]);
+    return this.renderSingleApp({ ...apps[0], postId, appVersion });
   }
 }
 
