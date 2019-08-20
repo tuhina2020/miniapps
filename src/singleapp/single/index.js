@@ -48,7 +48,7 @@ class SingleApp {
     } = this.state;
     const node = utils.createNewDiv({
       type: "div",
-      setAttribute: { class: "single-container" }
+      setAttribute: { class: "single-container", id }
     });
 
     const img = utils.createNewDiv({
@@ -63,7 +63,6 @@ class SingleApp {
       type: "button",
       setAttribute: {
         class: "cta-container",
-        id,
         style: `background:#${background};`
       }
     });
