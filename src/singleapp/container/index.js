@@ -1,9 +1,10 @@
-import Card from "@/miniapp/card/miniapp.card.js";
+import Single from "@/singleapp/single";
 import * as utils from "@/utils";
 import styles from "./index.css";
 
-class MiniAppContainer {
+class SingleAppContainer {
   constructor() {
+    console.log("SINGLE APP");
     this.state = {
       apps: []
     };
@@ -43,6 +44,7 @@ class MiniAppContainer {
     utils
       .request(requestObj)
       .then(res => {
+        console.log(res);
         this.state = Object.assign(this.state, res);
         this.render();
         return Promise.resolve();
@@ -51,14 +53,6 @@ class MiniAppContainer {
         console.log(err);
       });
   }
-
-  // addToken() {
-  //   const { appVersion } = this.state;
-  //   const tokenDiv = document.createElement("div");
-  //   tokenDiv.innerHTML = appVersion;
-  //   const tokenHead = document.getElementById("token");
-  //   tokenHead.appendChild(tokenDiv);
-  // }
 
   events() {}
 
@@ -85,15 +79,8 @@ class MiniAppContainer {
   render() {
     const { apps, appVersion, postId } = this.state;
     const miniappContainer = document.getElementById("app");
-    Array.from(apps).forEach((miniapp, index) => {
-      const miniappCard = new Card({ ...miniapp, appVersion, postId });
-      const node = miniappCard.render();
-      miniappContainer.appendChild(node);
-      miniappCard.events();
-    });
-    this.addHeader();
-    // this.addToken();
+    return this.renderSingleApp(apps[0]);
   }
 }
 
-export default MiniAppContainer;
+export default SingleAppContainer;

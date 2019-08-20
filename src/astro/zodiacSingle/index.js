@@ -1,5 +1,6 @@
 import styles from "./index.css";
 import * as utils from "@/utils";
+import { zodiacData } from "@/astro/helpers";
 import BorderTop from "@/astro/assets/zodiac/BorderTop.svg";
 import BorderBottom from "@/astro/assets/zodiac/BorderBottom.svg";
 
@@ -24,7 +25,7 @@ class ZodiacSingle {
         eventName: "horoscopeOpened",
         appName: "Astrology",
         appID: "274bd6ea-9fa6-4b77-8a0c-665b816c4a8b",
-        ID: utils.zodiacData(index) && utils.zodiacData(index).name
+        ID: zodiacData(index) && zodiacData(index).name
       }
     };
     return utils
@@ -37,7 +38,7 @@ class ZodiacSingle {
     const {
       data: { Sunsign, categories, index }
     } = this.state;
-    const ZODIAC_DATA = utils.zodiacData(index);
+    const ZODIAC_DATA = zodiacData(index);
     const contentParentNode = utils.createNewDiv({
       type: "div",
       setAttribute: {
