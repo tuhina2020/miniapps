@@ -63,15 +63,25 @@ class MiniAppContainer {
   events() {}
 
   addHeader() {
+    const body = document.getElementsByTagName("body")[0];
+    const container = body.children[1];
     const { title } = this.state;
-    const header = document.getElementById("header");
-    const titleDiv = document.createElement("div");
-    titleDiv.setAttribute("class", "title");
-    const title_text = document.createElement("span");
-    title_text.setAttribute("class", "title-text");
+    const header = utils.createNewDiv({
+      type: "div",
+      setAttribute: { id: "header" }
+    });
+    const titleDiv = utils.createNewDiv({
+      type: "div",
+      setAttribute: { class: "title" }
+    });
+    const title_text = utils.createNewDiv({
+      type: "span",
+      setAttribute: { id: "title-text" }
+    });
     title_text.innerHTML = title;
     titleDiv.appendChild(title_text);
     header.appendChild(titleDiv);
+    body.insertBefore(header, container);
   }
 
   renderSingleApp(app) {
@@ -85,13 +95,13 @@ class MiniAppContainer {
   render() {
     const { apps, appVersion, postId } = this.state;
     const miniappContainer = document.getElementById("app");
+    this.addHeader();
     Array.from(apps).forEach((miniapp, index) => {
       const miniappCard = new Card({ ...miniapp, appVersion, postId });
       const node = miniappCard.render();
       miniappContainer.appendChild(node);
       miniappCard.events();
     });
-    this.addHeader();
     // this.addToken();
   }
 }

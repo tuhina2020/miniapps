@@ -1,11 +1,10 @@
 .cta-container {
   position: fixed;
   margin: auto;
-  bottom: 43vh;
+  bottom: 45vh;
   left: 17.5vw;
   width: 65%;
-  height: 8vh;
-  background: white;
+  height: 7vh;
   font-size: 6vw;
   border: none;
 }
