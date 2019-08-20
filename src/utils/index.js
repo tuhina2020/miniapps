@@ -11,12 +11,14 @@ import Capricorn from "@/astro/assets/zodiac/Capricorn.svg";
 import Virgo from "@/astro/assets/zodiac/Virgo.svg";
 import Taurus from "@/astro/assets/zodiac/Taurus.svg";
 
-export const request = ({ url, headers, method = "GET", body }) =>
-  fetch(url, {
+export const request = ({ url, headers, method = "GET", body }) => {
+  headers = Object.assign(headers, { "content-type": "application/json" });
+  return fetch(url, {
     method,
     headers,
     body: JSON.stringify(body)
   }).then(response => response.json());
+};
 
 export const zodiacData = index =>
   [
