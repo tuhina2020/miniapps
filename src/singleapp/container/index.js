@@ -54,6 +54,14 @@ class SingleAppContainer {
 
   events() {}
 
+  // addToken() {
+  //   const { appVersion } = this.state;
+  //   const tokenDiv = document.createElement("div");
+  //   tokenDiv.innerHTML = appVersion;
+  //   const tokenHead = document.getElementById("token");
+  //   tokenHead.appendChild(tokenDiv);
+  // }
+
   addHeader() {
     const { title } = this.state;
     const header = document.getElementById("header");
@@ -70,13 +78,14 @@ class SingleAppContainer {
     const single = new Single(app);
     const node = single.render();
     const miniappContainer = document.getElementById("app");
+    // this.addToken();
     miniappContainer.appendChild(node);
     single.events();
   }
 
   render() {
     const { apps, appVersion, postId } = this.state;
-    const miniappContainer = document.getElementById("app");
+    // const miniappContainer = document.getElementById("app");
     return this.renderSingleApp({ ...apps[0], postId, appVersion });
   }
 }

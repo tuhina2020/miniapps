@@ -52,14 +52,6 @@ class MiniAppContainer {
       });
   }
 
-  // addToken() {
-  //   const { appVersion } = this.state;
-  //   const tokenDiv = document.createElement("div");
-  //   tokenDiv.innerHTML = appVersion;
-  //   const tokenHead = document.getElementById("token");
-  //   tokenHead.appendChild(tokenDiv);
-  // }
-
   events() {}
 
   addHeader() {
@@ -102,7 +94,6 @@ class MiniAppContainer {
       miniappContainer.appendChild(node);
       miniappCard.events();
     });
-    // this.addToken();
   }
 }
 

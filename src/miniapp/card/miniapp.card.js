@@ -12,27 +12,25 @@ class Card {
     } = this.state;
     const miniappContainer = document.getElementById(id);
     const clickHandler = e => {
-      // location.href = miniapp.link;
-      // TODO : Fire Android Action for open Miniapp
       let json;
-      // if (appVersion) {
-      json = {
-        type: "launch_mini_app",
-        miniAppData: {
-          miniAppId: id,
-          miniAppName: name,
-          miniAppReferrer: `Trending_discovery_${postId}`,
-          miniAppIconUrl: icon,
-          miniAppPwaUrl: link
-        }
-      };
-      // } else
-      //   json = {
-      //     type: "web_post",
-      //     webUrl: link,
-      //     postId: "-11"
-      //   };
-      console.log(json);
+      if (appVersion >= 4731) {
+        json = {
+          type: "launch_mini_app",
+          miniAppData: {
+            miniAppId: id,
+            miniAppName: name,
+            miniAppReferrer: `Trending_discovery_${postId}`,
+            miniAppIconUrl: icon,
+            miniAppPwaUrl: link
+          }
+        };
+      } else
+        json = {
+          type: "web_post",
+          webUrl: link,
+          postId: "-11"
+        };
+      console.log(json, appVersion);
       Android.onAction(JSON.stringify(json));
     };
 

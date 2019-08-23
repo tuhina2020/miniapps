@@ -10,26 +10,24 @@ class SingleApp {
     console.log(this.state, "INSIDE EVENTS");
     const button = document.getElementById(id);
     const clickHandler = e => {
-      // location.href = miniapp.link;
-      // TODO : Fire Android Action for open Miniapp
       let json;
-      // if (appVersion) {
-      json = {
-        type: "launch_mini_app",
-        miniAppData: {
-          miniAppId: id,
-          miniAppName: name,
-          miniAppReferrer: `Webpost_${postId}`,
-          miniAppIconUrl: icon,
-          miniAppPwaUrl: link
-        }
-      };
-      // } else
-      //   json = {
-      //     type: "web_post",
-      //     webUrl: link,
-      //     postId: "-11"
-      //   };
+      if (appVersion >= 4731) {
+        json = {
+          type: "launch_mini_app",
+          miniAppData: {
+            miniAppId: id,
+            miniAppName: name,
+            miniAppReferrer: `Webpost_${postId}`,
+            miniAppIconUrl: icon,
+            miniAppPwaUrl: link
+          }
+        };
+      } else
+        json = {
+          type: "web_post",
+          webUrl: link,
+          postId: "-12"
+        };
       console.log(json);
       Android.onAction(JSON.stringify(json));
     };
@@ -41,7 +39,7 @@ class SingleApp {
     const {
       squareIcon,
       button: {
-        color: { background },
+        color: { background, text: textColor },
         text
       },
       id
@@ -63,7 +61,7 @@ class SingleApp {
       type: "button",
       setAttribute: {
         class: "cta-container",
-        style: `background:#${background};`
+        style: `background:#${background};color:#${textColor}`
       }
     });
     cta.innerText = text;

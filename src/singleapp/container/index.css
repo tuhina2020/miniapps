@@ -1,15 +1,8 @@
 .container {
-  display: flex;
-  text-align: center;
-  font-family: Roboto;
-}
-.container > .miniapp:first-child {
-  margin-left: 3.33%;
-}
-.title {
-  font-weight: bold;
-  font-size: 3.9vw;
-  color: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  width: inherit;
+  height: inherit;
+  position: relative;
 }
 #header {
   font-size: 4vw;

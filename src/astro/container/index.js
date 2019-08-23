@@ -7,26 +7,12 @@ class AstroAppContainer {
   constructor() {
     document.title = "ShareChat | Astrology";
     this.state = {};
-    this.getFonts();
     this.getParams();
-    this.setAuthorization();
+    this.state.Authorization = utils.getAuthorization(this.state);
+    this.state.AppVersion = utils.getAppVersion();
+    this.getFonts();
     this.getZodiacs();
-  }
-
-  setAuthorization() {
-    let Authorization;
-    try {
-      Authorization = Android.get("userInfo").replace(
-        new RegExp("\n", "g"),
-        "\\n"
-      );
-    } catch (e) {
-      Authorization = "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n".replace(
-        new RegExp("\n", "g"),
-        "\\n"
-      );
-    }
-    this.state.Authorization = Authorization;
+    // console.log(this.state);
   }
 
   getFonts() {
@@ -42,14 +28,12 @@ class AstroAppContainer {
 
   getParams() {
     const url = new URL(document.location.href);
-    const zodiac = parseInt(
+    this.state.zodiac = parseInt(
       url.searchParams.get("zodiac") && url.searchParams.get("zodiac")
     );
     const postId = url.searchParams.get("postId");
-    const Referrer =
-      url.searchParams.get("referrer") || `Trending_discovery_${postId}`;
-    this.state.zodiac = zodiac;
-    this.state.Referrer = Referrer;
+    this.state.Referrer = `Trending_discovery_${postId}`;
+    this.state.Authorization = url.searchParams.get("Authorization");
   }
 
   sendOpenEvent() {
@@ -131,7 +115,7 @@ class AstroAppContainer {
       default: "Select Your SunSign"
     };
     node.innerText =
-      SELECTION_TEXT[lang.toLowerCase()] || SELECTION_TEXT[DEFAULT];
+      SELECTION_TEXT[lang.toLowerCase()] || SELECTION_TEXT["default"];
     return node;
   }
 

@@ -22,7 +22,7 @@ class ZodiacSingle {
       url: "https://apis.sharechat.com/miniapp-service/v1.0.0/event",
       headers: { Authorization },
       body: {
-        eventName: "horoscopeOpened",
+        eventName: "HoroscopeOpened",
         appName: "Astrology",
         appID: "274bd6ea-9fa6-4b77-8a0c-665b816c4a8b",
         ID: zodiacData(index) && zodiacData(index).name
