@@ -8,12 +8,12 @@ class Card {
 
   events() {
     const {
-      miniapp: { id, link, appVersion, name, icon, postId }
+      miniapp: { id, link, appVersion, name, icon, postId, fullScreen }
     } = this.state;
     const miniappContainer = document.getElementById(id);
     const clickHandler = e => {
       let json;
-      if (appVersion >= 4731) {
+      if (fullScreen === "1") {
         json = {
           type: "launch_mini_app",
           miniAppData: {
@@ -30,7 +30,7 @@ class Card {
           webUrl: link,
           postId: "-11"
         };
-      console.log(json, appVersion);
+      console.log(json);
       Android.onAction(JSON.stringify(json));
     };
 
@@ -43,11 +43,7 @@ class Card {
     node.setAttribute("class", "miniapp");
     node.setAttribute("id", miniapp.id);
 
-    node.innerHTML = `<div class="miniappHeader"><img class="miniappIcon" src="${
-      miniapp.icon
-    }"><div class="miniappHeading"><div class="miniappName">${
-      miniapp.name
-    }</div></div></div></div><img class='miniappImg' src='${miniapp.image}'>`;
+    node.innerHTML = `<div class="miniappHeader"><img class="miniappIcon" src="${miniapp.icon}"><div class="miniappHeading"><div class="miniappName">${miniapp.name}</div></div></div></div><img class='miniappImg' src='${miniapp.image}'>`;
 
     return node;
   }

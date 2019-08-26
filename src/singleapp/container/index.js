@@ -7,35 +7,22 @@ class SingleAppContainer {
     this.state = {
       apps: []
     };
-    this.setAuthorization();
+    // this.setAuthorization();
+    this.getParams();
+    this.state.Authorization = utils.getAuthorization(this.state);
+    this.state.appVersion = utils.getAppVersion();
     this.events();
     this.getMiniApps();
   }
 
-  setAuthorization() {
-    let Authorization, appVersion;
-    try {
-      Authorization = Android.get("userInfo").replace(
-        new RegExp("\n", "g"),
-        "\\n"
-      );
-      appVersion = Android.get("appVersion");
-    } catch (e) {
-      Authorization = "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n".replace(
-        new RegExp("\n", "g"),
-        "\\n"
-      );
-      appVersion = 10;
-    }
-    this.state.appVersion = appVersion;
-    this.state.Authorization = Authorization;
+  getParams() {
+    const url = new URL(document.location.href);
+    this.state.postId = url.searchParams.get("postId");
+    this.state.Authorization = url.searchParams.get("Authorization");
   }
 
   getMiniApps() {
-    const url = new URL(document.location.href);
-    const postId = url.searchParams.get("postId");
-    this.state.postId = postId;
-    const { Authorization } = this.state;
+    const { Authorization, postId } = this.state;
     const requestObj = {
       url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
       headers: { Authorization }

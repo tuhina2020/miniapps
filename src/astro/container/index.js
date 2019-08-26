@@ -9,7 +9,7 @@ class AstroAppContainer {
     this.state = {};
     this.getParams();
     this.state.Authorization = utils.getAuthorization(this.state);
-    this.state.AppVersion = utils.getAppVersion();
+    this.state.appVersion = utils.getAppVersion();
     this.getFonts();
     this.getZodiacs();
     // console.log(this.state);

@@ -8,6 +8,7 @@ class MiniAppContainer {
       apps: []
     };
     this.setAuthorization();
+    this.getParams();
     this.events();
     this.getMiniApps();
   }
@@ -31,11 +32,14 @@ class MiniAppContainer {
     this.state.Authorization = Authorization;
   }
 
-  getMiniApps() {
+  getParams() {
     const url = new URL(document.location.href);
-    const postId = url.searchParams.get("postId");
-    this.state.postId = postId;
-    const { Authorization } = this.state;
+    this.state.postId = url.searchParams.get("postId");
+    this.state.fullScreen = url.searchParams.get("fullScreen");
+  }
+
+  getMiniApps() {
+    const { Authorization, postId } = this.state;
     const requestObj = {
       url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
       headers: { Authorization }
@@ -85,11 +89,16 @@ class MiniAppContainer {
   }
 
   render() {
-    const { apps, appVersion, postId } = this.state;
+    const { apps, appVersion, postId, fullScreen } = this.state;
     const miniappContainer = document.getElementById("app");
     this.addHeader();
     Array.from(apps).forEach((miniapp, index) => {
-      const miniappCard = new Card({ ...miniapp, appVersion, postId });
+      const miniappCard = new Card({
+        ...miniapp,
+        appVersion,
+        postId,
+        fullScreen
+      });
       const node = miniappCard.render();
       miniappContainer.appendChild(node);
       miniappCard.events();

@@ -17,7 +17,8 @@ class ZodiacMulti {
     const {
       data: { index }
     } = this.state;
-    const clickHandler = e => (window.location.href = `?zodiac=${index}`);
+    const clickHandler = e => utils.addOrUpdateUrlParam("zodiac", index);
+
     node.addEventListener("click", clickHandler);
   }
 

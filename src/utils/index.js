@@ -23,6 +23,7 @@ const handleToken = token => token.replace(new RegExp("\n", "g"), "\\n");
 
 export const getAuthorization = state => {
   let Authorization;
+  console.log(state);
   if (state.Authorization) {
     Authorization = handleToken(state.Authorization);
   } else {
@@ -44,4 +45,17 @@ export const getAppVersion = () => {
     appVersion = 10;
   }
   return appVersion;
+};
+
+export const addOrUpdateUrlParam = (name, value) => {
+  var href = window.location.href;
+  var regex = new RegExp("[&\\?]" + name + "=");
+  if (regex.test(href)) {
+    regex = new RegExp("([&\\?])" + name + "=\\d+");
+    window.location.href = href.replace(regex, "$1" + name + "=" + value);
+  } else {
+    if (href.indexOf("?") > -1)
+      window.location.href = href + "&" + name + "=" + value;
+    else window.location.href = href + "?" + name + "=" + value;
+  }
 };
