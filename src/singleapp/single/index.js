@@ -11,7 +11,7 @@ class SingleApp {
     const button = document.getElementById(id);
     const clickHandler = e => {
       let json;
-      if (appVersion >= 4731) {
+      if (appVersion >= 4698) {
         json = {
           type: "launch_mini_app",
           miniAppData: {
