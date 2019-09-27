@@ -1,4 +1,5 @@
 import styles from "./card.css";
+import * as utils from "@/utils";
 class Card {
   constructor(props) {
     this.state = {
@@ -8,7 +9,16 @@ class Card {
 
   events() {
     const {
-      miniapp: { id, link, appVersion, name, icon, postId, fullScreen }
+      miniapp: {
+        id,
+        link,
+        appVersion,
+        name,
+        icon,
+        postId,
+        fullScreen,
+        referrer
+      }
     } = this.state;
     const miniappContainer = document.getElementById(id);
     const clickHandler = e => {
@@ -19,22 +29,48 @@ class Card {
           miniAppData: {
             miniAppId: id,
             miniAppName: name,
-            miniAppReferrer: `Trending_discovery_${postId}`,
+            miniAppReferrer: referrer
+              ? referrer
+              : `Trending_discovery_${postId}`,
             miniAppIconUrl: icon,
             miniAppPwaUrl: link
           }
         };
-      } else
+      } else {
         json = {
           type: "web_post",
           webUrl: link,
           postId: "-11"
         };
+        this.sendOpenEvent();
+      }
       console.log(json);
       Android.onAction(JSON.stringify(json));
     };
 
     miniappContainer.addEventListener("click", clickHandler);
+  }
+
+  sendOpenEvent() {
+    const {
+      miniapp: { id, name, Authorization, referrer, postId }
+    } = this.state;
+    const requestObj = {
+      method: "POST",
+      url: "https://apis.sharechat.com/miniapp-service/v1.0.0/event",
+      headers: { Authorization },
+      body: {
+        eventName: "MiniAppOpened",
+        appName: name,
+        appId: id,
+        referrer: referrer ? referrer : `Trending_discovery_${postId}`
+      }
+    };
+
+    return utils
+      .request(requestObj)
+      .then(v => console.log(v))
+      .catch(err => console.log(err));
   }
 
   render() {

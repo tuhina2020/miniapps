@@ -36,12 +36,17 @@ class MiniAppContainer {
     const url = new URL(document.location.href);
     this.state.postId = url.searchParams.get("postId");
     this.state.fullScreen = url.searchParams.get("fullScreen");
+    this.state.referrer = url.searchParams.get("referrer");
   }
 
   getMiniApps() {
-    const { Authorization, postId } = this.state;
+    const { Authorization, postId, appVersion } = this.state;
     const requestObj = {
-      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
+      url:
+        `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}` +
+        (appVersion > 4735 && appVersion < 500000
+          ? `&nativeAppIds=4349eaf0-b308-4ba1-9b9b-c3d8c4a220ee`
+          : "") + (this.state.referrer ? `&referrer=${this.state.referrer}` : ''),
       headers: { Authorization }
     };
     utils
@@ -89,7 +94,14 @@ class MiniAppContainer {
   }
 
   render() {
-    const { apps, appVersion, postId, fullScreen } = this.state;
+    const {
+      apps,
+      appVersion,
+      postId,
+      fullScreen,
+      Authorization,
+      referrer
+    } = this.state;
     const miniappContainer = document.getElementById("app");
     this.addHeader();
     Array.from(apps).forEach((miniapp, index) => {
@@ -97,7 +109,9 @@ class MiniAppContainer {
         ...miniapp,
         appVersion,
         postId,
-        fullScreen
+        fullScreen,
+        Authorization,
+        referrer
       });
       const node = miniappCard.render();
       miniappContainer.appendChild(node);

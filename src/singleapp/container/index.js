@@ -19,12 +19,13 @@ class SingleAppContainer {
     const url = new URL(document.location.href);
     this.state.postId = url.searchParams.get("postId");
     this.state.Authorization = url.searchParams.get("Authorization");
+    this.state.referrer = url.searchParams.get("referrer");
   }
 
   getMiniApps() {
     const { Authorization, postId } = this.state;
     const requestObj = {
-      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}`,
+      url: `https://apis.sharechat.com/miniapp-service/v1.0.0/miniapps?type=webcard&postId=${postId}` + (this.state.referrer ? `&referrer=${this.state.referrer}` : ''),
       headers: { Authorization }
     };
     utils
@@ -71,9 +72,9 @@ class SingleAppContainer {
   }
 
   render() {
-    const { apps, appVersion, postId } = this.state;
+    const { apps, appVersion, postId, referrer } = this.state;
     // const miniappContainer = document.getElementById("app");
-    return this.renderSingleApp({ ...apps[0], postId, appVersion });
+    return this.renderSingleApp({ ...apps[0], postId, appVersion, referrer });
   }
 }
 

@@ -161,7 +161,7 @@ class AstroAppContainer {
     container.appendChild(title);
     container.appendChild(zodiacGroup);
     appContainer.appendChild(container);
-    this.sendOpenEvent();
+    // this.sendOpenEvent();
   }
 }
 

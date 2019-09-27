@@ -6,7 +6,7 @@ class SingleApp {
   }
 
   events() {
-    const { id, link, appVersion, name, icon, postId } = this.state;
+    const { id, link, appVersion, name, icon, postId, referrer } = this.state;
     console.log(this.state, "INSIDE EVENTS");
     const button = document.getElementById(id);
     const clickHandler = e => {
@@ -14,25 +14,50 @@ class SingleApp {
       if (appVersion >= 4698) {
         json = {
           type: "launch_mini_app",
+            // id === "4349eaf0-b308-4ba1-9b9b-c3d8c4a220ee"
+            //   ? "launch_wallpaper_app"
+            //   : "launch_mini_app",
           miniAppData: {
             miniAppId: id,
             miniAppName: name,
-            miniAppReferrer: `Webpost_${postId}`,
+            miniAppReferrer: referrer,
             miniAppIconUrl: icon,
             miniAppPwaUrl: link
           }
         };
-      } else
+      } else {
         json = {
           type: "web_post",
           webUrl: link,
           postId: "-12"
         };
+        this.sendOpenEvent();
+      }
       console.log(json);
       Android.onAction(JSON.stringify(json));
     };
 
     button.addEventListener("click", clickHandler);
+  }
+
+  sendOpenEvent() {
+    const { id, postId, name, Authorization, referrer } = this.state;
+    const requestObj = {
+      method: "POST",
+      url: "https://apis.sharechat.com/miniapp-service/v1.0.0/event",
+      headers: { Authorization },
+      body: {
+        eventName: "MiniAppOpened",
+        appName: name,
+        appId: id,
+        referrer: referrer ? referrer : `Webpost_${postId}`
+      }
+    };
+
+    return utils
+      .request(requestObj)
+      .then(v => console.log(v))
+      .catch(err => console.log(err));
   }
 
   render() {
