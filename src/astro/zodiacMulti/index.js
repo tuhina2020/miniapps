@@ -1,5 +1,6 @@
 import styles from "./index.css";
 import * as utils from "@/utils";
+import { zodiacData } from "@/astro/helpers";
 import SmallBorder from "@/astro/assets/zodiac/smallborder.svg";
 class ZodiacMulti {
   constructor(props) {
@@ -16,7 +17,8 @@ class ZodiacMulti {
     const {
       data: { index }
     } = this.state;
-    const clickHandler = e => (window.location.href = `?zodiac=${index}`);
+    const clickHandler = e => utils.addOrUpdateUrlParam("zodiac", index);
+
     node.addEventListener("click", clickHandler);
   }
 
@@ -25,7 +27,7 @@ class ZodiacMulti {
       data: { Sunsign, index },
       id
     } = this.state;
-    const ZODIAC_DATA = utils.zodiacData(index);
+    const ZODIAC_DATA = zodiacData(index);
     const node = utils.createNewDiv({
       type: "div",
       setAttribute: {

@@ -10,6 +10,7 @@ const app = process.argv.slice(2)[0];
 const FOLDER_LOOKUP = {
   miniapp: "miniapp",
   astro: "miniapp/astrology",
+  singleapp: "miniapp/singleapp",
   champion: "leaderboard/youtuber"
 };
 

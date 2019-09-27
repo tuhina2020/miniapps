@@ -1,38 +1,11 @@
-import Aries from "@/astro/assets/zodiac/Aries.svg";
-import Libra from "@/astro/assets/zodiac/Libra.svg";
-import Aquarius from "@/astro/assets/zodiac/Aquarius.svg";
-import Sagittarius from "@/astro/assets/zodiac/Sagittarius.svg";
-import Gemini from "@/astro/assets/zodiac/Gemini.svg";
-import Leo from "@/astro/assets/zodiac/Leo.svg";
-import Pisces from "@/astro/assets/zodiac/Pisces.svg";
-import Cancer from "@/astro/assets/zodiac/Cancer.svg";
-import Scorpio from "@/astro/assets/zodiac/Scorpio.svg";
-import Capricorn from "@/astro/assets/zodiac/Capricorn.svg";
-import Virgo from "@/astro/assets/zodiac/Virgo.svg";
-import Taurus from "@/astro/assets/zodiac/Taurus.svg";
-
-export const request = ({ url, headers, method = "GET", body }) =>
-  fetch(url, {
+export const request = ({ url, headers, method = "GET", body }) => {
+  headers = Object.assign(headers, { "content-type": "application/json" });
+  return fetch(url, {
     method,
     headers,
-    body
+    body: body ? JSON.stringify(body) : undefined
   }).then(response => response.json());
-
-export const zodiacData = index =>
-  [
-    { start: "21 Mar", end: "20 Apr", image: Aries },
-    { start: "21 Apr", end: "21 May", image: Taurus },
-    { start: "22 May", end: "21 Jun", image: Gemini },
-    { start: "22 Jun", end: "22 Jul", image: Cancer },
-    { start: "23 July", end: "21 Aug", image: Leo },
-    { start: "22 Aug", end: "23 Sep", image: Virgo },
-    { start: "24 Sep", end: "23 Oct", image: Libra },
-    { start: "24 Oct", end: "22 Nov", image: Scorpio },
-    { start: "23 Nov", end: "22 Dec", image: Sagittarius },
-    { start: "23 Dec", end: "20 Jan", image: Capricorn },
-    { start: "21 Jan", end: "19 Feb", image: Aquarius },
-    { start: "20 Feb", end: "20 Mar", image: Pisces }
-  ][index];
+};
 
 export const createNewDiv = ({ type, setAttribute }) => {
   let property;
@@ -41,4 +14,48 @@ export const createNewDiv = ({ type, setAttribute }) => {
     container.setAttribute(property, setAttribute[property]);
   }
   return container;
+};
+
+const DEFAULT_TOKEN =
+  "Sn899vpok1xqFqzneiD+Cx+kdDIWIkxq3ANl0tZm2QvMBeyQYCzPrOn7FyuCr3uDOMTrk2z9yxTz\ntao/VWPC/tm1/DTE5G7X+TzhqAqMEX/tpKLSuWryoDL5AGJujrRz5+MxFe3+03qq9cZ+y5zpNLkP\nbyVqkLSW01q2YFWri3uWCuGMBgomarQzfElZyS0vryhgMRLBbx+kD17mbAsk2UDx9kd1aDddF18G\nhGDktsUoy6fa3oulhF8iJweP08RNNcZnAATAwPiV++B6ozMRDSIeWP6NTGLZg6npE0iVHtKlFtGQ\no8ZeXlHxxutUvWr+aTMDVZT0WtnK9Uvwv4lIvA==\n";
+
+const handleToken = token => token.replace(new RegExp("\n", "g"), "\\n");
+
+export const getAuthorization = state => {
+  let Authorization;
+  console.log(state);
+  if (state.Authorization) {
+    Authorization = handleToken(state.Authorization);
+  } else {
+    try {
+      Authorization = handleToken(Android.get("userInfo"));
+    } catch (e) {
+      Authorization = handleToken(DEFAULT_TOKEN);
+    }
+  }
+
+  return Authorization;
+};
+
+export const getAppVersion = () => {
+  let appVersion;
+  try {
+    appVersion = Android.get("appVersion");
+  } catch (e) {
+    appVersion = 10;
+  }
+  return appVersion;
+};
+
+export const addOrUpdateUrlParam = (name, value) => {
+  var href = window.location.href;
+  var regex = new RegExp("[&\\?]" + name + "=");
+  if (regex.test(href)) {
+    regex = new RegExp("([&\\?])" + name + "=\\d+");
+    window.location.href = href.replace(regex, "$1" + name + "=" + value);
+  } else {
+    if (href.indexOf("?") > -1)
+      window.location.href = href + "&" + name + "=" + value;
+    else window.location.href = href + "?" + name + "=" + value;
+  }
 };

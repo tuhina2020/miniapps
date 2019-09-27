@@ -175,7 +175,11 @@ function renderHTML(response) {
 
   if (myRank > arr.length) {
     contentToInject +=
-      '<tr class="active open-profile">' + _rowTemplate(myData) + "</tr>";
+      '<tr class="active open-profile" id=' +
+      myData.userId +
+      ">" +
+      _rowTemplate(myData) +
+      "</tr>";
   }
 
   document.getElementById("root").innerHTML =

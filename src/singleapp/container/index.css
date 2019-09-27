@@ -1,0 +1,14 @@
+.container {
+  overflow: hidden;
+  width: inherit;
+  height: inherit;
+  position: relative;
+}
+#header {
+  font-size: 4vw;
+  padding: 2.4vw 3.33vw;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 3.33%;
+}
