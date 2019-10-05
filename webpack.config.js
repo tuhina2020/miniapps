@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = (env, argv) => {
+  console.log(argv);
   return {
     entry: {
       app: `./src/${argv.type}/main.js`
