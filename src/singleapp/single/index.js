@@ -32,7 +32,7 @@ class SingleApp {
             miniAppReferrer: referrer,
             miniAppIconUrl: icon,
             miniAppPwaUrl: link,
-            branchIOLink
+            miniAppBranchIOLink: branchIOLink
           }
         };
       } else {
