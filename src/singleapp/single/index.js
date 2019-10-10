@@ -6,7 +6,16 @@ class SingleApp {
   }
 
   events() {
-    const { id, link, appVersion, name, icon, postId, referrer } = this.state;
+    const {
+      id,
+      link,
+      appVersion,
+      name,
+      icon,
+      postId,
+      referrer,
+      branchIOLink
+    } = this.state;
     console.log(this.state, "INSIDE EVENTS");
     const button = document.getElementById(id);
     const clickHandler = e => {
@@ -14,15 +23,16 @@ class SingleApp {
       if (appVersion >= 4698) {
         json = {
           type: "launch_mini_app",
-            // id === "4349eaf0-b308-4ba1-9b9b-c3d8c4a220ee"
-            //   ? "launch_wallpaper_app"
-            //   : "launch_mini_app",
+          // id === "4349eaf0-b308-4ba1-9b9b-c3d8c4a220ee"
+          //   ? "launch_wallpaper_app"
+          //   : "launch_mini_app",
           miniAppData: {
             miniAppId: id,
             miniAppName: name,
             miniAppReferrer: referrer,
             miniAppIconUrl: icon,
-            miniAppPwaUrl: link
+            miniAppPwaUrl: link,
+            miniAppBranchIOLink: branchIOLink
           }
         };
       } else {
