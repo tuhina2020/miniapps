@@ -48,8 +48,8 @@
 }
 .input-wrapper {
     position: absolute;
-    bottom: 35%;
-    left: 15%;
+    top: 87vw;
+    left: 15vw;
 }
 
 #submit {

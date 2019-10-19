@@ -81,5 +81,23 @@ export default class InputContainer {
             console.log('THIS IS IT : ', self.state);
         };
         input.addEventListener('keyup', changeHandler);
+
+        const button = document.getElementById('submit');
+        const submit = (e) => self.getGifByName();
+        button.addEventListener('click', submit);
+    }
+
+    getGifByName() {
+        const { name, Authorization } = this.state;
+        const requestObj = {
+            url: 'http://127.0.0.1:3000/generateGif',
+            method: 'POST',
+            headers: { Authorization },
+            body: { name }
+        };
+        return utils
+            .request(requestObj)
+            .then(v => console.log(v))
+            .catch(err => console.log(err));
     }
 }
