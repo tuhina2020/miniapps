@@ -1,0 +1,60 @@
+#input-username {
+    height: 40px;
+    font-size: 13px;
+    border-radius: 25px;
+    padding: 20px;
+    border: none;
+    border-color: transparent;
+    text-align: center;
+}
+
+#input-username:focus {
+    border: none;
+    border-color: transparent;
+}
+
+.diwali-text-container {
+    position: absolute;
+    color: white;
+    top: -110px;
+    /* left: 0; */
+    z-index: 1;
+    width: 360px;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.overlay2 {
+    color: #FFF618;
+    font-family: Solway;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.overlay1 {
+    font-family: Stoke;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #FFF618;
+    text-shadow: 0px 2px 4px #FF0000;
+}
+.input-wrapper {
+    position: absolute;
+    bottom: 35%;
+    left: 15%;
+}
+
+#submit {
+    color: white;
+    border: 1px solid white;
+    background: transparent;
+    margin: 10px;
+}

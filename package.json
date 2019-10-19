@@ -7,6 +7,7 @@
     "upload": "node upload.js",
     "build": "webpack --mode production --type",
     "build:astro": "npm run build astro",
+    "build:diwali": "npm run build diwali",
     "build:singleapp": "npm run build singleapp",
     "build:miniapp": "npm run build miniapp",
     "build:champion": "rm -rf ./dist && mkdir dist && rsync -a ./src/champion/ ./dist/",
