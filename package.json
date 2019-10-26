@@ -15,6 +15,7 @@
     "upload:astro": "npm run upload  astro",
     "upload:singleapp": "npm run upload singleapp",
     "upload:champion": "npm run upload champion",
+    "upload:diwali": "npm run upload diwali",
     "dev": "webpack --mode development",
     "serve": "webpack-dev-server --mode=development --hot",
     "watch": "webpack --mode development -w && reload -b -d dist -p 8000"

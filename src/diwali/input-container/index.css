@@ -1,11 +1,13 @@
 #input-username {
-    height: 40px;
-    font-size: 13px;
-    border-radius: 25px;
-    padding: 20px;
+    height: 10vw;
+    width: 50vw;
+    font-size: 3vw;
+    border-radius: 9vw;
+    padding: 3vw;
     border: none;
     border-color: transparent;
     text-align: center;
+    outline: none;
 }
 
 #input-username:focus {
@@ -15,12 +17,13 @@
 
 .diwali-text-container {
     position: absolute;
-    color: white;
-    top: -110px;
+    width: 100%;
+    /* color: white; */
+    top: 5vw;
     /* left: 0; */
     z-index: 1;
-    width: 360px;
-    height: 360px;
+    /* width: 360px; */
+    /* height: 360px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,10 +32,10 @@
 
 .overlay2 {
     color: #FFF618;
-    font-family: Solway;
+    font-family: 'Noto Sans', sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
+    font-size: 7vw;
     line-height: 24px;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
@@ -41,20 +44,68 @@
     font-family: Stoke;
     font-style: normal;
     font-weight: normal;
-    font-size: 30px;
+    font-size: 10vw;
     margin-bottom: 10px;
     color: #FFF618;
     text-shadow: 0px 2px 4px #FF0000;
 }
 .input-wrapper {
-    position: absolute;
-    top: 87vw;
-    left: 15vw;
+  position: absolute;
+  top: 84vw;
+  left: 12vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #submit {
-    color: white;
+    color: black;
     border: 1px solid white;
-    background: transparent;
+    background: white;
+    width: 21vw;
+    border-radius: 9vw;
+    height: 10vw;
     margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 2.5vw;
+    line-height: 20px;
 }
+
+.whatsapp {
+    height: 10vw;
+}
+
+.lds-circle {
+    display: inline-block;
+    transform: translateZ(1px);
+  }
+  .lds-circle > div {
+    display: inline-block;
+    width: 20vw;
+    height: 20vw;
+    margin: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: 0.8;
+    animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  @keyframes lds-circle {
+    0%, 100% {
+      animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+    }
+    0% {
+      transform: rotateY(0deg);
+    }
+    50% {
+      transform: rotateY(1800deg);
+      animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+    }
+    100% {
+      transform: rotateY(3600deg);
+    }
+  }
