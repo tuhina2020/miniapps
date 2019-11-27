@@ -7,6 +7,7 @@
     "upload": "node upload.js",
     "build": "webpack --mode production --type",
     "build:astro": "npm run build astro",
+    "build:diwali": "npm run build diwali",
     "build:singleapp": "npm run build singleapp",
     "build:miniapp": "npm run build miniapp",
     "build:champion": "rm -rf ./dist && mkdir dist && rsync -a ./src/champion/ ./dist/",
@@ -14,6 +15,7 @@
     "upload:astro": "npm run upload  astro",
     "upload:singleapp": "npm run upload singleapp",
     "upload:champion": "npm run upload champion",
+    "upload:diwali": "npm run upload diwali",
     "dev": "webpack --mode development",
     "serve": "webpack-dev-server --mode=development --hot",
     "watch": "webpack --mode development -w && reload -b -d dist -p 8000"

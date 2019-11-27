@@ -11,7 +11,8 @@ const FOLDER_LOOKUP = {
   miniapp: "miniapp",
   astro: "miniapp/astrology",
   singleapp: "miniapp/singleapp",
-  champion: "leaderboard/youtuber"
+  champion: "leaderboard/youtuber",
+  "diwali": "miniapp/diwali"
 };
 
 const getContentType = filename => {
