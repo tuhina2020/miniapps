@@ -10,7 +10,6 @@ class DiwaliContainer {
       document.title = "ShareChat | Diwali 2019";
       this.state = {};
       this.setAuthorization();
-      this.state.Authorization = utils.getAuthorization(this.state);
       this.state.appVersion = utils.getAppVersion();
       this.getFonts();
       this.render();

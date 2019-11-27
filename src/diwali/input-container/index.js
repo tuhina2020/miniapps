@@ -47,6 +47,7 @@ export default class InputContainer {
                 placeholder: 'Enter your name'
             }
         });
+        input.val = localStorage.getItem('name');
         const wrapper = utils.createNewDiv({
             type: 'div',
             setAttribute: {
@@ -112,6 +113,11 @@ export default class InputContainer {
        if(node) node.remove();
     }
 
+    setLocalStorage(name) {
+        console.log('SETTING : ', name)
+        localStorage.setItem("name", name);
+    }
+
     events() {
         const input = document.getElementById('input-wrapper');
         const changeHandler = (e) => {
@@ -127,6 +133,7 @@ export default class InputContainer {
                 // .then(this.whatsappShare)
             }
             this.state.name = (val || value);
+            this.setLocalStorage(this.state.name);
             this.removeTextOverlay();
             this.addTextOverlay();
         }
@@ -155,7 +162,7 @@ export default class InputContainer {
             return Promise.resolve();
         } else {
             const requestObj = {
-                url: 'https://apis.sharechat.com/festive-webcard-service/generateVideo',
+                url: 'http://localhost:3000/festive-webcard-service/generateVideo',
                 method: 'POST',
                 headers: { Authorization },
                 body: {
