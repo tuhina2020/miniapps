@@ -1,0 +1,24 @@
+.Ff\(\$ffprimary\) {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.Fw\(\$fwbody\) {
+  font-weight: 400;
+}
+.Fz\(\$fzbody\) {
+  font-size: 16px;
+}
+.H\(a\) {
+  height: auto;
+}
+.Lh\(\$lhbody\) {
+  line-height: 20px;
+}
+.M\(0\) {
+  margin: 0;
+}
+.P\(0\) {
+  padding: 0;
+}
+.W\(100\%\) {
+  width: 100%;
+}
