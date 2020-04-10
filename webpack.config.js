@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackMd5Hash = require("webpack-md5-hash");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
   return {
@@ -41,7 +42,7 @@ module.exports = (env, argv) => {
         {
           test: /\.(png|svg|jpg|gif|mp4)$/,
           use: ["file-loader"]
-        }
+				}
       ]
     },
     plugins: [
@@ -59,7 +60,11 @@ module.exports = (env, argv) => {
       new WebpackMd5Hash(),
       new CompressionPlugin({
         algorithm: "gzip"
-      })
+			}),
+			new CopyPlugin([
+				{ from: './src/style/main.css', to: '.' },
+				{ from : './src/style/normalize.css', to: '.' }
+			]),
     ],
     devServer: {
       contentBase: "dist",

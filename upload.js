@@ -12,7 +12,8 @@ const FOLDER_LOOKUP = {
   astro: "miniapp/astrology",
   singleapp: "miniapp/singleapp",
   champion: "leaderboard/youtuber",
-  "diwali": "miniapp/diwali"
+	"diwali": "miniapp/diwali",
+	indiannewyear: "miniapp/indiannewyear"
 };
 
 const getContentType = filename => {

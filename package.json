@@ -6,10 +6,12 @@
   "scripts": {
     "upload": "node upload.js",
     "build": "webpack --mode production --type",
+    "grunt": "grunt atomizer:pwa",
     "build:astro": "npm run build astro",
     "build:diwali": "npm run build diwali",
     "build:singleapp": "npm run build singleapp",
     "build:miniapp": "npm run build miniapp",
+    "build:indiannewyear": "npm run build indiannewyear",
     "build:champion": "rm -rf ./dist && mkdir dist && rsync -a ./src/champion/ ./dist/",
     "upload:miniapp": "npm run upload miniapp",
     "upload:astro": "npm run upload  astro",
@@ -25,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "async": "^3.1.0",
+    "atomizer": "^3.7.0",
     "aws-sdk": "^2.503.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.6",
@@ -32,17 +35,27 @@
     "braces": ">=2.3.1",
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^5.0.4",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.1.0",
     "file-loader": "^4.2.0",
     "fs": "0.0.1-security",
+    "grunt": "^0.4.5",
+    "grunt-atomizer": "^3.0.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-connect": "^0.10.1",
+    "grunt-contrib-watch": "^0.6.1",
     "html-webpack-plugin": "^3.2.0",
+    "load-grunt-tasks": "^3.1.0",
     "mini-css-extract-plugin": "^0.8.0",
     "path": "^0.12.7",
     "style-loader": "^0.23.1",
     "url-loader": "^2.1.0",
     "webpack": "^4.39.1",
+    "webpack-atomizer-loader": "^1.0.2",
     "webpack-cli": "^3.3.6",
     "webpack-md5-hash": "0.0.6"
+  },
+  "dependencies": {
+    "dom-to-image": "^2.6.0"
   }
 }
