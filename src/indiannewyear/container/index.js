@@ -1,19 +1,32 @@
 import * as utils from "@/utils";
-import { LANGUAGE_WISE_INIT_BACKGROUNDS } from "@/indiannewyear/helper"
+import { LANGUAGE_WISE_INIT_BACKGROUNDS, INPUT_WRAPPER_CLASS, EXCEL_DATA } from "@/indiannewyear/helper"
 import InputContainer from "@/common/components/BaseInputContainer";
+import BaseTextContainer from "@/common/components/BaseTextContainer"
+import { setUserName, toggleSharedState } from '@/indiannewyear/actions';
+
 class IndianNewYear {
-	constructor() {
+	constructor({ store }) {
     document.title = "ShareChat | Indian New Year";
-    this.state = {};
+    this.state = {
+			store: store
+		};
+		console.log(store.getState())
     this.getParams();
     this.state.Authorization = utils.getAuthorization(this.state);
 		this.state.appVersion = utils.getAppVersion();
 		this.state.CleverTap = utils.registerCleverTap();
+		this.getData();
 		this.getFonts();
 		this.render();
     // this.getZodiacs();
     console.log(this.state);
-  }
+	}
+	
+	getData() {
+		utils.getDataExcel(EXCEL_DATA).then(data => {
+			this.state.textData = data.filter(d => d.language === this.state.language)[0];
+		});
+	}
 
   getFonts() {
     const link = utils.createNewDiv({
@@ -31,13 +44,17 @@ class IndianNewYear {
     this.state.language = url.searchParams.get("language") || 'Tamil';
 	}
 
-	getInputContainer() {
-		
+	textBox1() {
+		console.log('this.state.textData ', this.state.textData);
+		let textBox = new BaseTextContainer({ text: this.state.textData["text1"] });
+		textBox = textBox.render();
+		return textBox;
 	}
-	
+
 	render() {
 		const appContainer = document.getElementById("app");
-		const bg = LANGUAGE_WISE_INIT_BACKGROUNDS[this.state.language];
+		const { language, store } = this.state;
+		const bg = LANGUAGE_WISE_INIT_BACKGROUNDS[language];
 		const container = utils.createNewDiv({
 			type: "div",
 			setAttribute: { class: "indian-new-year-container" }
@@ -49,10 +66,9 @@ class IndianNewYear {
 				class: 'W(100%) H(a)'
 			}
 		});
-		let input = new InputContainer();
+		const styleClassesObj = INPUT_WRAPPER_CLASS[language] || INPUT_WRAPPER_CLASS['default'];
+		let input = new InputContainer({ store, setUserName, ...styleClassesObj });
 		input = input.render();
-
-
 		// const error = utils.createNewDiv({
 		//   type: 'div',
 		//   setAttribute: {
@@ -69,6 +85,7 @@ class IndianNewYear {
 		// const inputErr = this.getInputError();
 		container.appendChild(beforeBg);
 		container.appendChild(input);
+		// container.appendChild(textBox);
 		appContainer.appendChild(container);
 		// if(appVersion >= 4755) {
 		// 	appContainer.appendChild(inputErr);

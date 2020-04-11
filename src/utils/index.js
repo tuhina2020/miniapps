@@ -195,6 +195,25 @@ export const registerCleverTap = () => {
 	return CleverTap;
 }
 
+export const getDataExcel = ({ sheetId, page, columns }) => {
+	return fetch(`https://spreadsheets.google.com/feeds/cells/${sheetId}/${page}/public/full?alt=json`, {
+		method: 'GET'
+	}).then(data => data.json()).then(data => {
+		const columnNames = data.feed.entry.slice(0, columns).map(d => d.content["$t"]);
+		const final = [];
+		let entry = {};
+		data.feed.entry.slice(columns).forEach((d,i) => {
+			if ( i%columns === 0 && i !==0) {
+				final.push(entry)
+				entry = {};
+			}
+			entry[columnNames[i%columns]] = d.content["$t"];
+		});
+		final.push(entry)
+		return final;
+	})
+}
+
 export const APP_UPDATE_MESSAGES =   {
   "f": "update_popup_title",
   "English": "Update your ShareChat now!",

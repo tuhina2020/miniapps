@@ -1,3 +1,5 @@
 import Container from "./container";
 import "@/style/main.css"
-new Container();
+import configureStore from './store/configureStore'
+const store = configureStore();
+new Container({ store });

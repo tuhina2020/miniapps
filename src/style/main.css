@@ -1,11 +1,39 @@
+.Bd {
+  border-width: 1px;
+  border-style: solid;
+}
+.Bd\(n\)\:h:hover {
+  border: none;
+}
+.Bdc\(t\)\:h:hover {
+  border-color: transparent;
+}
+.Bdrs\(4px\) {
+  border-radius: 4px;
+}
+.Bgc\(\#343517\) {
+  background-color: #343517;
+}
+.Bxz\(bb\) {
+  box-sizing: border-box;
+}
 .Ff\(\$ffprimary\) {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.Ff\(\$ffroboto\) {
+  font-family: 'Roboto', sans-serif;
 }
 .Fw\(\$fwbody\) {
   font-weight: 400;
 }
 .Fz\(\$fzbody\) {
   font-size: 16px;
+}
+.Fz\(3vw\) {
+  font-size: 3vw;
+}
+.H\(8vw\) {
+  height: 8vw;
 }
 .H\(a\) {
   height: auto;
@@ -16,9 +44,25 @@
 .M\(0\) {
   margin: 0;
 }
+.Mx\(25\%\) {
+  margin-left: 25%;
+  margin-right: 25%;
+}
+.T\(28\%\) {
+  top: 28%;
+}
 .P\(0\) {
   padding: 0;
 }
+.P\(3vw\) {
+  padding: 3vw;
+}
+.Pos\(a\) {
+  position: absolute;
+}
 .W\(100\%\) {
   width: 100%;
+}
+.W\(50vw\) {
+  width: 50vw;
 }

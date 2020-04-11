@@ -1,28 +1,3 @@
 #input-username {
-	height: 10vw;
-	width: 50vw;
-	font-size: 3vw;
-	padding: 3vw;
-	text-align: center;
-	outline: none;
-	font-family: 'Noto Sans', sans-serif;
 	background: rgba(63, 39, 15, 0.1);
-	border: 1px solid #3F270F;
-	box-sizing: border-box;
-	border-radius: 4px;
-}
-
-#input-username:focus {
-	border: none;
-	border-color: transparent;
-}
-
-.input-wrapper {
-  position: absolute;
-  top: 84vw;
-  left: 12vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
