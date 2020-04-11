@@ -22,6 +22,7 @@ export default class InputContainer {
 			});
 			input.innerText = text;
 			focus && input.focus();
+			focus && input.select();
 			input.addEventListener('input', this.usernameHandler);
 			const wrapper = createNewDiv({
 				type: 'div',

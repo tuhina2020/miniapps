@@ -9,7 +9,7 @@ container.getData().then(()=> {
 	container.render();
 });
 
-store.subscribe(() => {
-	console.log('CHANGE ', store.getState());
-	container.render();
-})
+// store.subscribe(() => {
+// 	console.log('CHANGE ', store.getState());
+// 	container.render();
+// })

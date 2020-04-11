@@ -1,5 +1,12 @@
 import { createNewDiv, getAuthorization, getAppVersion, registerCleverTap, getDataExcel, addComponents } from "@/utils";
-import { LANGUAGE_WISE_INIT_BACKGROUNDS, INPUT_WRAPPER_CLASS, EXCEL_DATA, ENTER_BUTTON_CLASS } from "@/indiannewyear/helper"
+import {
+	LANGUAGE_WISE_INIT_BACKGROUNDS,
+	INPUT_WRAPPER_CLASS,
+	EXCEL_DATA,
+	ENTER_BUTTON_CLASS,
+	TEXT_BOX_CLASS,
+	NAME_BOX_CLASS
+} from "@/indiannewyear/helper"
 import InputContainer from "@/common/components/BaseInputContainer";
 import BaseTextContainer from "@/common/components/BaseTextContainer"
 import { setUserName, toggleSharedState, setLanguage, setText1, setText2 } from '@/indiannewyear/actions';
@@ -13,13 +20,13 @@ class IndianNewYear {
     this.getParams();
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
-		this.state.CleverTap = registerCleverTap();
+		// this.state.CleverTap = registerCleverTap();
 		this.getFonts();
 	}
 
 	registerComponents() {
 		console.log('got data, register');
-		const { text1, text2, username } = this.getReduxState();
+		const { user: { text1, text2, username } } = this.getReduxState();
 		const { language } = this.state;
 		this.$container = createNewDiv({
 			type: "div",
@@ -35,12 +42,9 @@ class IndianNewYear {
 		this.$input = this.userInput();
 		this.$enterButton = this.enterButton();
 		this.$textBox1 = this.textBox(text1);
-		// this.$textBox2 = this.textBox(text2);
+		this.$textBox2 = this.textBox(text2);
+		this.$nameBox = this.nameBox(username);
 	}
-
-	// updateStore(store) {
-	// 	this.state.store = store;
-	// }
 	
 	getData() {
 		return getDataExcel(EXCEL_DATA).then(data => {
@@ -85,11 +89,17 @@ class IndianNewYear {
 	textBox(text) {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
-			focus: true,
-			...ENTER_BUTTON_CLASS["default"],
-			clickHandler: () => {}
+			...TEXT_BOX_CLASS["default"]
 		}));
-		console.log('this.state.textData ', text);
+		textBox = textBox.render();
+		return textBox;
+	}
+
+	nameBox(text) {
+		let textBox = new BaseTextContainer(this.addStore({
+			text: text,
+			...NAME_BOX_CLASS["default"]
+		}));
 		textBox = textBox.render();
 		return textBox;
 	}
@@ -104,15 +114,16 @@ class IndianNewYear {
 
 	render() {
 		const appContainer = document.getElementById("app");
-		addComponents({ components : [this.$beforeBg, this.$textBox1, this.$input, this.$enterButton], container : this.$container });
+		const { user: { shared } } = this.getReduxState();
+		// this.update();
+		if (shared) {
+			addComponents({ components : [this.$beforeBg, this.$textBox2, this.$nameBox], container : this.$container });
+		} else {
+			addComponents({ components : [this.$beforeBg, this.$textBox1, this.$input, this.$enterButton], container : this.$container });
+		}
 		addComponents({ components : [this.$container], container :  appContainer});
 	}
 
-	update() {
-		input.update();
-		enterButton.update();
-		textBox1.update()
-	}
 };
 
 export default IndianNewYear;

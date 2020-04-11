@@ -13,7 +13,8 @@ const FOLDER_LOOKUP = {
   singleapp: "miniapp/singleapp",
   champion: "leaderboard/youtuber",
 	"diwali": "miniapp/diwali",
-	indiannewyear: "miniapp/indiannewyear"
+	indiannewyear: "miniapp/indiannewyear",
+	easter: "web-post-html-files/easter"
 };
 
 const getContentType = filename => {

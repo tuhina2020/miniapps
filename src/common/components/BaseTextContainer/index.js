@@ -29,7 +29,7 @@ class BaseTextContainer {
 
 	click(e) {
 		const { clickHandler, store } = this.state;
-		store.dispatch(clickHandler());
+		clickHandler();
 	}
 };
 

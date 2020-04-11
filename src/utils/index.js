@@ -1,14 +1,14 @@
-import domtoimage from 'dom-to-image';
+// import domtoimage from 'dom-to-image';
 import _each from 'lodash/each';
 import _compact from 'lodash/compact';
 
-export const request = ({ url, headers, method = "GET", body, mode }) => {
+export const request = ({ url, headers, method = "GET", body, mode, string = true }) => {
   console.log('HEADERS : ', headers)
   headers = Object.assign(headers, { "content-type": "application/json" });
   return fetch(url, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    body: body && string ? JSON.stringify(body) : (body ? body : undefined),
     mode
   }).then(response => response.json());
 };
@@ -29,7 +29,7 @@ export const addComponents = ({ components = [], container }) => {
 }
 
 const DEFAULT_TOKEN =
-  "kDnqCmi96brqk+qJBLSiOlvXULyLMMhrsaykALShCT+M0MO7Ezooq/98gjMWtqJvBR/PKRbOxlW/nZTNeNagDs3rbemCmgCHHFIee8H1cvFNRQ0UB6f4dON9xrbR1W0xbIsSDV4GXCsXATLFSEYRHH/VQZb0pesjdDv4Yw3Z0yDNYf71FxcyJQlqYoE6wBDYC7SxTvt5tWeXKyzKHx3M5gSC+DljRd4l/mb8DLPEkpl/WUS8x2d1sNqhPrNxqJB1x/x/F9RJfu5yap7lTmM3oNYWHgLUNSi2bF3NpmOdFVZDV4CRjtL7fXm1BG67IkRJfSvPPHixsj7GtFjmKWRHdw==";
+  "PnZsF1v6xZx91gFaCvqmB33dC1XSNYBRFz9JvEWRhFM88EhZKEvA5/YvsTywK0tQMrsaP402HqL3qQmfC235X2QxozFfmhWTbyQW1eincL2C9Bxry/yg1E/8j3E5st5Qt6N6QA8PU29v8AbxmUV+zaK28il0hZ8H6KZWtCoVVWY6dG2LtxH/C8uNOdyWueF112djOFh6Cgi46SxYTGExq5od+3qpUr8G3DXTW9DfRRB1vb3mAOTDpcbIyK1NycNXXehOaflxWWZEHzUSPQvTCuDcgAHipPAFxFIs9n8yhX38cet3wa8qwwrZzr6ifBzWoKyBjOD0NDzTx2pYo8+2/g==";
 
 const handleToken = token => token.replace(new RegExp("\n", "g"), "\\n");
 
@@ -72,75 +72,83 @@ export const addOrUpdateUrlParam = (name, value) => {
   }
 };
 
-export const uploadFile = ({ imgData = document.body, Authorization }) => {
-	// document.getElementById(buttonId).style.display = "none";
-	domtoimage.toBlob(imgData).then((blob) => {
-			const formData = new FormData();
-			formData.append("userfile", blob);
-			// document.getElementById(buttonId).style.display = "flex";
-			const requestObj = {
-				method: "POST",
-				url: "https://mediaupload.sharechat.com/uploadFile",
-				mode: "cors",
-				headers: { Authorization },
-				body: formData
-			};
-	
-			return request(requestObj)
-				.then(res => {
-					if (!res.ok) {
+export const uploadFile = ({ imgData = document.getElementById("app"), Authorization, hide }) => {
+	hide.style.display = "none";
+	console.log('MOMOMO 1', imgData);
+	// return createImagePost({ imageData: { fileUrl : "https://cdn.sharechat.com/254fb513_1586630436058.png"} , Authorization });
+	return domtoimage.toBlob(imgData).then((blob) => {
+		const formData = new FormData();
+		formData.append("userfile", blob);
+		return fetch("https://mediaupload.sharechat.com/uploadFile", {
+			method: "POST",
+			body: formData,
+			mode: "cors"
+		})
+		.then(res => {
+				if (!res.ok) {
 						throw new Error(res.statusText);
-					}
-					return res.json();
-				})
-				.catch(err => console.log(err));
-	});
+				}
+				return res.json();
+		})
+		.then(data => {
+			console.log(data, "dooon sdsd ")
+				// if ("fileUrl" in data) {
+				// 		createImagePost({ imageData: data, Authorization });
+				// 		// console.log(data, "dooon")
+				// }
+		})
+		.catch(err => {
+				console.log(err);
+		});
+	})
+	.catch(err => {
+		console.log(err, 'MIND BLOWN')
+	})
 }
 
-export const createImagePost = ({ imageData, language, tagId, tagName, webCardName, festivalName, Authorization }) => {
-	// let encryptedUserInfo = window.Android.get("userInfo");
+export const createImagePost = ({ imageData, Authorization }) => {
 	// let encryptedUserInfo =
 	//     "PnZsF1v6xZx91gFaCvqmB33dC1XSNYBRFz9JvEWRhFM88EhZKEvA5/YvsTywK0tQMrsaP402HqL3qQmfC235X2QxozFfmhWTbyQW1eincL2C9Bxry/yg1E/8j3E5st5Qt6N6QA8PU29v8AbxmUV+zaK28il0hZ8H6KZWtCoVVWY6dG2LtxH/C8uNOdyWueF112djOFh6Cgi46SxYTGExq5od+3qpUr8G3DXTW9DfRRB1vb3mAOTDpcbIyK1NycNXXehOaflxWWZEHzUSPQvTCuDcgAHipPAFxFIs9n8yhX38cet3wa8qwwrZzr6ifBzWoKyBjOD0NDzTx2pYo8+2/g=="
+	const LOOKUP = {
+		"1474307" : "✝ഈസ്റ്റർ ആശംസകൾ",
+		"1537980": "✝️ஈஸ்டர் திருநாள் நல்வாழ்த்துக்கள்"
+	}
+	const url = new URL(document.location.href);
+	const language = url.searchParams.get("language")
+	const tagId = url.searchParams.get("tagId")
+	const tagName = LOOKUP[tagId];
+;	const eventMetaData =  { webCardName : url.searchParams.get("webCardName")}
 
 	const payload = {
-		festivalName,
+		festivalName : url.searchParams.get("festival"),
 		imageUrl: imageData.fileUrl,
 		language,
 		tagId,
 		tagName,
-		eventMetaData: { webCardName }
+		eventMetaData
 	}
 
-	const requestObj = {
+	return fetch("https://apis.sharechat.com/festive-webcard-service/generateImagePost", {
 		method: "POST",
-		url: "https://apis.sharechat.com/festive-webcard-service/generateImagePost",
-		headers: { Authorization },
-		body: payload
-	};
-
-	return request(requestObj)
-		.then(res => {
-			if (!res.ok) {
+		body: JSON.stringify(payload),
+		headers: {
+				"Authorization": Authorization,
+				"Content-Type": "application/json"
+		}
+})
+.then(res => {
+		if (!res.ok) {
 				throw new Error(res.statusText);
-			}
-			return res.json();
-		})
-		.then(data => {
-			//covidc_shared event
-			// CleverTap.sendEvent(`webcard_shared_${webcardName}`, {
-			// 	language,
-			// 	token : Authorization,
-			// 	name
-			// })
-			const action = {
-				type: "shareWebCard",
-				postId: data.PostDetails.postId
-			};
-			window.Android.onAction(JSON.stringify(action));
-		})
-		.catch(err => {
-			console.log(err)
-		});
+		}
+		return res.json();
+})
+
+	// const requestObj = {
+	// 	method: "POST",
+	// 	url: "https://apis.sharechat.com/festive-webcard-service/generateImagePost",
+	// 	headers: { Authorization },
+	// 	body: payload
+	// };
 }
 
 export const registerCleverTap = () => {

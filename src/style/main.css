@@ -14,23 +14,38 @@
 .Bdrs\(5px\) {
   border-radius: 5px;
 }
-.Bgc\(\#343517\) {
-  background-color: #343517;
-}
 .Bgc\(red\) {
   background-color: red;
+}
+.Bgc\(\#343517\) {
+  background-color: #343517;
 }
 .Bxz\(bb\) {
   box-sizing: border-box;
 }
+.C\(\#956304\) {
+  color: #956304;
+}
 .C\(white\) {
   color: white;
 }
-.Ff\(\$ffroboto\) {
-  font-family: 'Roboto', sans-serif;
+.D\(f\) {
+  display: flex;
+}
+.Fld\(c\) {
+  flex-direction: column;
+}
+.Ai\(c\) {
+  align-items: center;
+}
+.Jc\(c\) {
+  justify-content: center;
 }
 .Ff\(\$ffprimary\) {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.Ff\(\$ffroboto\) {
+  font-family: 'Roboto', sans-serif;
 }
 .Fw\(\$fwbody\) {
   font-weight: 400;
@@ -38,17 +53,29 @@
 .Fw\(700\) {
   font-weight: 700;
 }
-.Fz\(\$fzbody\) {
+.Fw\(500\) {
+  font-weight: 500;
+}
+.Fz\(\$fzbody\), .Fz\(16px\) {
   font-size: 16px;
 }
-.Fz\(3vw\) {
-  font-size: 3vw;
+.Fz\(12px\) {
+  font-size: 12px;
+}
+.H\(a\) {
+  height: auto;
 }
 .H\(8vw\) {
   height: 8vw;
 }
-.H\(a\) {
-  height: auto;
+.Lh\(14px\) {
+  line-height: 14px;
+}
+.Lh\(17px\) {
+  line-height: 17px;
+}
+.Lh\(19px\) {
+  line-height: 19px;
 }
 .Lh\(\$lhbody\) {
   line-height: 20px;
@@ -56,25 +83,92 @@
 .M\(0\) {
   margin: 0;
 }
+.Mx\(10px\) {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.Mx\(18\%\) {
+  margin-left: 18%;
+  margin-right: 18%;
+}
+.Mx\(30vw\) {
+  margin-left: 30vw;
+  margin-right: 30vw;
+}
+.Mx\(35\%\) {
+  margin-left: 35%;
+  margin-right: 35%;
+}
 .Mx\(25\%\) {
   margin-left: 25%;
   margin-right: 25%;
 }
-.Mx\(40\%\) {
-  margin-left: 40%;
-  margin-right: 40%;
+.Mt\(28vw\) {
+  margin-top: 28vw;
 }
-.T\(28\%\) {
-  top: 28%;
+.Mt\(2vw\) {
+  margin-top: 2vw;
 }
-.T\(37\%\) {
-  top: 37%;
+.Mt\(40\%\) {
+  margin-top: 40%;
+}
+.Mt\(40vw\) {
+  margin-top: 40vw;
+}
+.Mt\(5vw\) {
+  margin-top: 5vw;
+}
+.T\(0\) {
+  top: 0;
+}
+.T\(30vh\) {
+  top: 30vh;
+}
+.T\(38vw\) {
+  top: 38vw;
+}
+.T\(40vh\) {
+  top: 40vh;
+}
+.T\(45vh\) {
+  top: 45vh;
+}
+.T\(55vw\) {
+  top: 55vw;
+}
+.T\(56vh\) {
+  top: 56vh;
+}
+.T\(68vw\) {
+  top: 68vw;
+}
+.T\(72vw\) {
+  top: 72vw;
+}
+.T\(77vw\) {
+  top: 77vw;
+}
+.T\(82vw\) {
+  top: 82vw;
+}
+.T\(90vw\) {
+  top: 90vw;
+}
+.T\(9vw\) {
+  top: 9vw;
+}
+.P\(10px\) {
+  padding: 10px;
 }
 .P\(0\) {
   padding: 0;
 }
 .P\(3vw\) {
   padding: 3vw;
+}
+.Px\(17\%\) {
+  padding-left: 17%;
+  padding-right: 17%;
 }
 .Px\(20px\) {
   padding-left: 20px;
@@ -96,6 +190,18 @@
 .W\(20\%\) {
   width: 20%;
 }
+.W\(20vw\) {
+  width: 20vw;
+}
+.W\(30\%\) {
+  width: 30%;
+}
+.W\(50\%\) {
+  width: 50%;
+}
 .W\(50vw\) {
   width: 50vw;
+}
+.W\(64\%\) {
+  width: 64%;
 }
