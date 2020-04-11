@@ -2,11 +2,12 @@ import { createNewDiv } from '@/utils';
 class BaseTextContainer {
 	constructor(props) {
 		this.state = props || {};
-		this.render()
+		this.click = this.click.bind(this);
+		this.render();
 	}
 
 	render() {
-		const { textBoxClass, wrapperClass } = this.state;
+		const { textBoxClass, wrapperClass, text } = this.state;
 		const wrapper = createNewDiv({
 			type: 'div',
 			setAttribute: {
@@ -21,8 +22,14 @@ class BaseTextContainer {
 			}
 		});
 		textBox.innerText = text;
+		textBox.addEventListener('click', this.click);
 		wrapper.appendChild(textBox);
 		return wrapper;
+	}
+
+	click(e) {
+		const { clickHandler, store } = this.state;
+		store.dispatch(clickHandler());
 	}
 };
 

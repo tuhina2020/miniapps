@@ -1,4 +1,6 @@
 import domtoimage from 'dom-to-image';
+import _each from 'lodash/each';
+import _compact from 'lodash/compact';
 
 export const request = ({ url, headers, method = "GET", body, mode }) => {
   console.log('HEADERS : ', headers)
@@ -19,6 +21,12 @@ export const createNewDiv = ({ type, setAttribute }) => {
   }
   return container;
 };
+
+export const addComponents = ({ components = [], container }) => {
+	_each(_compact(components), c=> {
+		container.appendChild(c);
+	})
+}
 
 const DEFAULT_TOKEN =
   "kDnqCmi96brqk+qJBLSiOlvXULyLMMhrsaykALShCT+M0MO7Ezooq/98gjMWtqJvBR/PKRbOxlW/nZTNeNagDs3rbemCmgCHHFIee8H1cvFNRQ0UB6f4dON9xrbR1W0xbIsSDV4GXCsXATLFSEYRHH/VQZb0pesjdDv4Yw3Z0yDNYf71FxcyJQlqYoE6wBDYC7SxTvt5tWeXKyzKHx3M5gSC+DljRd4l/mb8DLPEkpl/WUS8x2d1sNqhPrNxqJB1x/x/F9RJfu5yap7lTmM3oNYWHgLUNSi2bF3NpmOdFVZDV4CRjtL7fXm1BG67IkRJfSvPPHixsj7GtFjmKWRHdw==";
@@ -212,6 +220,10 @@ export const getDataExcel = ({ sheetId, page, columns }) => {
 		final.push(entry)
 		return final;
 	})
+}
+
+export const blankPage = () => {
+	document.getElementById('app').innerHTML = '';
 }
 
 export const APP_UPDATE_MESSAGES =   {

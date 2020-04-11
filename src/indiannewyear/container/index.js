@@ -1,8 +1,8 @@
-import * as utils from "@/utils";
-import { LANGUAGE_WISE_INIT_BACKGROUNDS, INPUT_WRAPPER_CLASS, EXCEL_DATA } from "@/indiannewyear/helper"
+import { createNewDiv, getAuthorization, getAppVersion, registerCleverTap, getDataExcel, addComponents } from "@/utils";
+import { LANGUAGE_WISE_INIT_BACKGROUNDS, INPUT_WRAPPER_CLASS, EXCEL_DATA, ENTER_BUTTON_CLASS } from "@/indiannewyear/helper"
 import InputContainer from "@/common/components/BaseInputContainer";
 import BaseTextContainer from "@/common/components/BaseTextContainer"
-import { setUserName, toggleSharedState } from '@/indiannewyear/actions';
+import { setUserName, toggleSharedState, setLanguage, setText1, setText2 } from '@/indiannewyear/actions';
 
 class IndianNewYear {
 	constructor({ store }) {
@@ -10,26 +10,49 @@ class IndianNewYear {
     this.state = {
 			store: store
 		};
-		console.log(store.getState())
     this.getParams();
-    this.state.Authorization = utils.getAuthorization(this.state);
-		this.state.appVersion = utils.getAppVersion();
-		this.state.CleverTap = utils.registerCleverTap();
-		this.getData();
+    this.state.Authorization = getAuthorization(this.state);
+		this.state.appVersion = getAppVersion();
+		this.state.CleverTap = registerCleverTap();
 		this.getFonts();
-		this.render();
-    // this.getZodiacs();
-    console.log(this.state);
 	}
+
+	registerComponents() {
+		console.log('got data, register');
+		const { text1, text2, username } = this.getReduxState();
+		const { language } = this.state;
+		this.$container = createNewDiv({
+			type: "div",
+			setAttribute: { class: "indian-new-year-container" }
+		});
+		this.$beforeBg = language && createNewDiv({
+			type: 'img',
+			setAttribute: {
+				src : LANGUAGE_WISE_INIT_BACKGROUNDS[language],
+				class: 'W(100%) H(a)'
+			}
+		});
+		this.$input = this.userInput();
+		this.$enterButton = this.enterButton();
+		this.$textBox1 = this.textBox(text1);
+		// this.$textBox2 = this.textBox(text2);
+	}
+
+	// updateStore(store) {
+	// 	this.state.store = store;
+	// }
 	
 	getData() {
-		utils.getDataExcel(EXCEL_DATA).then(data => {
-			this.state.textData = data.filter(d => d.language === this.state.language)[0];
+		return getDataExcel(EXCEL_DATA).then(data => {
+			const { text1, text2, language } = data.filter(d => d.language === this.state.language)[0];
+			this.state.store.dispatch(setText1(text1));
+			this.state.store.dispatch(setText2(text2));
+			console.log('got data');
 		});
 	}
 
   getFonts() {
-    const link = utils.createNewDiv({
+    const link = createNewDiv({
       type: "link",
       setAttribute: {
         href: "https://fonts.googleapis.com/css?family=Roboto&display=swap",
@@ -39,60 +62,56 @@ class IndianNewYear {
     document.head.appendChild(link);
 	}
 
-  getParams() {
-    const url = new URL(document.location.href);
-    this.state.language = url.searchParams.get("language") || 'Tamil';
+	getReduxState() {
+		return this.state.store.getState();
 	}
 
-	textBox1() {
-		console.log('this.state.textData ', this.state.textData);
-		let textBox = new BaseTextContainer({ text: this.state.textData["text1"] });
+  getParams() {
+    const url = new URL(document.location.href);
+		this.state.language = url.searchParams.get("language") || 'Tamil';
+	}
+
+	addStore(params) {
+		return { store: this.state.store, ...params };
+	}
+
+	enterButton() {
+		// console.log('this.state.textData ', this.state.textData);
+		let textBox = new BaseTextContainer(this.addStore({ text: "ENTER", ...ENTER_BUTTON_CLASS["default"], clickHandler: toggleSharedState }));
 		textBox = textBox.render();
 		return textBox;
 	}
 
+	textBox(text) {
+		let textBox = new BaseTextContainer(this.addStore({
+			text: text,
+			focus: true,
+			...ENTER_BUTTON_CLASS["default"],
+			clickHandler: () => {}
+		}));
+		console.log('this.state.textData ', text);
+		textBox = textBox.render();
+		return textBox;
+	}
+
+	userInput() {
+		const { language } = this.state;
+		const styleClassesObj = INPUT_WRAPPER_CLASS[language] || INPUT_WRAPPER_CLASS['default'];
+		let input = new InputContainer(this.addStore({ inputHandler: setUserName, ...styleClassesObj, text: this.getReduxState().username }));
+		input = input.render();
+		return input;
+	}
+
 	render() {
 		const appContainer = document.getElementById("app");
-		const { language, store } = this.state;
-		const bg = LANGUAGE_WISE_INIT_BACKGROUNDS[language];
-		const container = utils.createNewDiv({
-			type: "div",
-			setAttribute: { class: "indian-new-year-container" }
-		});
-		const beforeBg = utils.createNewDiv({
-			type: 'img',
-			setAttribute: {
-				src : bg,
-				class: 'W(100%) H(a)'
-			}
-		});
-		const styleClassesObj = INPUT_WRAPPER_CLASS[language] || INPUT_WRAPPER_CLASS['default'];
-		let input = new InputContainer({ store, setUserName, ...styleClassesObj });
-		input = input.render();
-		// const error = utils.createNewDiv({
-		//   type: 'div',
-		//   setAttribute: {
-		//     class: 'update-app',
-		//     id: 'update-app'
-		//   }
-		// });
-		// error.innerText = utils.APP_UPDATE_MESSAGES[language || 'Default']  + language + appVersion;
+		addComponents({ components : [this.$beforeBg, this.$textBox1, this.$input, this.$enterButton], container : this.$container });
+		addComponents({ components : [this.$container], container :  appContainer});
+	}
 
-		// const loader =  this.handleError();
-		// const { appVersion, language } = this.state;
-
-		// const { ele, component } = this.getInputContainer();
-		// const inputErr = this.getInputError();
-		container.appendChild(beforeBg);
-		container.appendChild(input);
-		// container.appendChild(textBox);
-		appContainer.appendChild(container);
-		// if(appVersion >= 4755) {
-		// 	appContainer.appendChild(inputErr);
-		// 	appContainer.appendChild(component);
-		// 	ele.events();
-		// 	appContainer.appendChild(loader);
-		// }
+	update() {
+		input.update();
+		enterButton.update();
+		textBox1.update()
 	}
 };
 

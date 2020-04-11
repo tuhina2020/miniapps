@@ -11,20 +11,32 @@
 .Bdrs\(4px\) {
   border-radius: 4px;
 }
+.Bdrs\(5px\) {
+  border-radius: 5px;
+}
 .Bgc\(\#343517\) {
   background-color: #343517;
+}
+.Bgc\(red\) {
+  background-color: red;
 }
 .Bxz\(bb\) {
   box-sizing: border-box;
 }
-.Ff\(\$ffprimary\) {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+.C\(white\) {
+  color: white;
 }
 .Ff\(\$ffroboto\) {
   font-family: 'Roboto', sans-serif;
 }
+.Ff\(\$ffprimary\) {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
 .Fw\(\$fwbody\) {
   font-weight: 400;
+}
+.Fw\(700\) {
+  font-weight: 700;
 }
 .Fz\(\$fzbody\) {
   font-size: 16px;
@@ -48,8 +60,15 @@
   margin-left: 25%;
   margin-right: 25%;
 }
+.Mx\(40\%\) {
+  margin-left: 40%;
+  margin-right: 40%;
+}
 .T\(28\%\) {
   top: 28%;
+}
+.T\(37\%\) {
+  top: 37%;
 }
 .P\(0\) {
   padding: 0;
@@ -57,11 +76,25 @@
 .P\(3vw\) {
   padding: 3vw;
 }
+.Px\(20px\) {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.Py\(10px\) {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .Pos\(a\) {
   position: absolute;
 }
+.Ta\(c\) {
+  text-align: center;
+}
 .W\(100\%\) {
   width: 100%;
+}
+.W\(20\%\) {
+  width: 20%;
 }
 .W\(50vw\) {
   width: 50vw;

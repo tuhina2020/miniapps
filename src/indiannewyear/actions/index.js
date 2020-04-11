@@ -1,5 +1,4 @@
 export const setUserName = (payload) => {
-	console.log('SET USER NAME ', payload);
 	return {
 		type: 'SET_USER_NAME',
 		payload
@@ -11,3 +10,24 @@ export const toggleSharedState = () => {
 		type: "TOGGLE_SHARED_STATUS"
 	}
 };
+
+export const setText1 = (payload) => {
+	return {
+		type: 'SET_TEXT_1',
+		payload
+	}
+}
+
+export const setText2 = (payload) => {
+	return {
+		type: 'SET_TEXT_2',
+		payload
+	}
+}
+
+export const setLanguage = (payload) => {
+	return {
+		type: 'SET_LANGUAGE',
+		payload
+	}
+}

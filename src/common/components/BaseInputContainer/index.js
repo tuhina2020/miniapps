@@ -1,5 +1,5 @@
 import styles from './index.css';
-import * as utils from '@/utils';
+import { createNewDiv }from '@/utils';
 import _get from 'lodash/get';
 
 export default class InputContainer {
@@ -8,8 +8,9 @@ export default class InputContainer {
 			this.usernameHandler = this.usernameHandler.bind(this)
     }
     render() {
-			const {  wrapperClass, inputBoxClass, text, store } = this.state;
-			const input = utils.createNewDiv({
+			const {  wrapperClass, inputBoxClass, text, store, focus } = this.state;
+			console.log('THIS IS TEXT ', text);
+			const input = createNewDiv({
 				type: 'input',
 				setAttribute: {
 					id: 'input-username',
@@ -19,8 +20,10 @@ export default class InputContainer {
 					placeholder: 'Please Enter Your Name'
 				}
 			});
+			input.innerText = text;
+			focus && input.focus();
 			input.addEventListener('input', this.usernameHandler);
-			const wrapper = utils.createNewDiv({
+			const wrapper = createNewDiv({
 				type: 'div',
 				setAttribute: {
 					class: wrapperClass,
@@ -31,7 +34,7 @@ export default class InputContainer {
 		}
 
 		usernameHandler(e) {
-			const { setUserName, store } = this.state;
-			store.dispatch(setUserName(e.target.value));
+			const { inputHandler, store } = this.state;
+			store.dispatch(inputHandler(e.target.value));
 		}
 }

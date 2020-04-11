@@ -21,3 +21,10 @@ export const INPUT_WRAPPER_CLASS = {
 	}
 }
 
+export const ENTER_BUTTON_CLASS = {
+	default: {
+		wrapperClass: "Pos(a) T(37%) Mx(40%) Ta(c) W(20%)",
+		textBoxClass: "C(white) Bgc(red) Fw(700) Ff($ffroboto) Py(10px) Px(20px) Bdrs(5px)"
+	}
+}
+
