@@ -25,6 +25,12 @@ export const setText2 = (payload) => {
 	}
 }
 
+export const setText3 = (payload) => {
+	return {
+		type: 'SET_TEXT_3',
+		payload
+	}
+}
 export const setLanguage = (payload) => {
 	return {
 		type: 'SET_LANGUAGE',

@@ -108,17 +108,24 @@ export const uploadFile = ({ imgData = document.getElementById("app"), Authoriza
 	})
 }
 
+const TAGID_LOOKUP = {
+	//easter
+	"1474307" : "✝ഈസ്റ്റർ ആശംസകൾ",
+	"1537980": "✝️ஈஸ்டர் திருநாள் நல்வாழ்த்துக்கள்",
+	// indian new year
+	"4781152": "✨தமிழ் புத்தாண்டு வாழ்த்துக்கள்",
+	"1450482": "🎆 വിഷു ആശംസകൾ",
+	"4610628": "অসমীয়া নৱবৰ্ষৰ শুভেচ্ছা",
+	"4766685": "🙏শুভ নববর্ষ ১৪২৭😀"
+}
+
 export const createImagePost = ({ imageData, Authorization }) => {
 	// let encryptedUserInfo =
 	//     "PnZsF1v6xZx91gFaCvqmB33dC1XSNYBRFz9JvEWRhFM88EhZKEvA5/YvsTywK0tQMrsaP402HqL3qQmfC235X2QxozFfmhWTbyQW1eincL2C9Bxry/yg1E/8j3E5st5Qt6N6QA8PU29v8AbxmUV+zaK28il0hZ8H6KZWtCoVVWY6dG2LtxH/C8uNOdyWueF112djOFh6Cgi46SxYTGExq5od+3qpUr8G3DXTW9DfRRB1vb3mAOTDpcbIyK1NycNXXehOaflxWWZEHzUSPQvTCuDcgAHipPAFxFIs9n8yhX38cet3wa8qwwrZzr6ifBzWoKyBjOD0NDzTx2pYo8+2/g=="
-	const LOOKUP = {
-		"1474307" : "✝ഈസ്റ്റർ ആശംസകൾ",
-		"1537980": "✝️ஈஸ்டர் திருநாள் நல்வாழ்த்துக்கள்"
-	}
 	const url = new URL(document.location.href);
 	const language = url.searchParams.get("language")
 	const tagId = url.searchParams.get("tagId")
-	const tagName = LOOKUP[tagId];
+	const tagName = TAGID_LOOKUP[tagId];
 ;	const eventMetaData =  { webCardName : url.searchParams.get("webCardName")}
 
 	const payload = {

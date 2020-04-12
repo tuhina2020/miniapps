@@ -1,8 +1,9 @@
 const initialState = {
-  shared: true,
-	username: "lolmax",
+  shared: false,
+	username: "",
 	text1: "",
 	text2: "",
+	text3: "",
 	language: ""
 }
 
@@ -20,13 +21,17 @@ export default function username(state = initialState, action) {
 			return Object.assign({}, state, {
 				text2: action.payload
 			})
+			case 'SET_TEXT_3':
+				return Object.assign({}, state, {
+					text3: action.payload
+				})
 		case 'SET_LANGUAGE':
 			return Object.assign({}, state, {
 				language: action.payload
 			})
 		case 'TOGGLE_SHARED_STATUS' : 
 			return Object.assign({}, state, {
-				shared: !state.share
+				shared: !state.shared
 			})
     default:
       return state

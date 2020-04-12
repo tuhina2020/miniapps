@@ -18,11 +18,10 @@ import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTex
 
 class Easter {
 	constructor({ store }) {
-    document.title = "ShareChat | Indian New Year";
+    document.title = "ShareChat | Easter";
     this.state = {
 			store: store
 		};
-		console.log('EASTER');
     this.getParams();
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();

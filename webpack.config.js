@@ -41,7 +41,11 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(png|svg|jpg|gif|mp4)$/,
-          use: ["file-loader"]
+					// use: ["file-loader"],
+					loader: 'file-loader',
+					options: {
+						name: '[name][contenthash].[ext]'
+					}  
 				}
       ]
     },

@@ -13,19 +13,19 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		htmlmin: {
-			pwa: {
-				options: {
-					removeComments: true,
-					collapseWhitespace: true,
-					minifyCSS: true,
-					minifyJS: true
-				},
-				files: {
-					"build/index.html": "build/index.html"
-				}
-			}
-		}
+		// htmlmin: {
+		// 	pwa: {
+		// 		options: {
+		// 			removeComments: true,
+		// 			collapseWhitespace: true,
+		// 			minifyCSS: true,
+		// 			minifyJS: true
+		// 		},
+		// 		files: {
+		// 			"dist/index.html": "dist/index.html"
+		// 		}
+		// 	}
+		// }
 	});
 
 	grunt.loadNpmTasks("grunt-atomizer");

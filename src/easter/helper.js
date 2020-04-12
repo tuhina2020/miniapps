@@ -33,7 +33,7 @@ export const ENTER_BUTTON_CLASS = {
 export const TEXT_BOX_CLASS = {
 	default: {
 		// wrapperClass: "Pos(a) T(38vw) W(50%) Mx(25%)",
-		wrapperClass: "P(10px)",
+		wrapperClass: "Mt(10px)",
 		textBoxClass: "Ff($ffroboto) Fw(500) Fz(12px) Lh(14px) C(#3F270F) Ta(c) C(#956304)"
 	}
 }
