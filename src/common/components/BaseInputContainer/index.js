@@ -35,7 +35,7 @@ export default class InputContainer {
 		}
 
 		usernameHandler(e) {
-			const { inputHandler, store } = this.state;
-			store.dispatch(inputHandler(e.target.value));
+			const { inputHandler } = this.state;
+			inputHandler(e.target.value);
 		}
 }

@@ -31,7 +31,7 @@ export default function username(state = initialState, action) {
 			})
 		case 'TOGGLE_SHARED_STATUS' : 
 			return Object.assign({}, state, {
-				shared: !state.share
+				shared: !state.shared
 			})
     default:
       return state

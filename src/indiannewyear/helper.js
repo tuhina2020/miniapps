@@ -13,14 +13,14 @@ export const EXCEL_DATA = {
 export const INPUT_WRAPPER_CLASS = {
 	default: {
 		wrapperClass: "Pos(a) T(45vh) Mx(25%)",
-		inputBoxClass: "Bdrs(4px) Bgc(#343517) H(8vw) W(50vw) Fz(12px) P(3vw) Ff($ffroboto) Bd C(#3F270F) Bxz(bb) Bd(n):h Bdc(t):h"
+		inputBoxClass: "Bdrs(4px)  H(8vw) W(50vw) Fz(12px) P(3vw) Ff($ffroboto) Bd C(#3F270F) Bxz(bb) Bd(n):h Bdc(t):h",
 	}
 }
 
 export const ENTER_BUTTON_CLASS = {
 	default: {
 		wrapperClass: "Pos(a) T(56vh) Mx(35%) Ta(c) W(30%)",
-		textBoxClass: "C(white) Bgc(red) Fw(700) Ff($ffroboto) Py(10px) Px(20px) Bdrs(5px) Fz(12px)"
+		textBoxClass: "C(white) Bgc(#343517) Fw(700) Ff($ffroboto) Py(10px) Px(20px) Bdrs(5px) Fz(12px)",
 	}
 }
 

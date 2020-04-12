@@ -26,7 +26,7 @@ export const ENTER_BUTTON_CLASS = {
 	default: {
 		// wrapperClass: "Pos(a) T(68vw) Mx(35%) Ta(c) W(30%)",
 		wrapperClass: "P(10px)",
-		textBoxClass: "C(white) Bgc(red) Fw(700) Ff($ffroboto) Py(10px) Px(20px) Bdrs(5px) Fz(12px)"
+		textBoxClass: "C(white) Bgc(#3F270F) Fw(700) Ff($ffroboto) Py(10px) Px(20px) Bdrs(5px) Fz(12px)"
 	}
 }
 

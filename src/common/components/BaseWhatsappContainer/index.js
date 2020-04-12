@@ -6,15 +6,15 @@ export default function({ wrapperClass, svgClass, Authorization, refreshHandler,
 		type: 'img',
 		setAttribute: {
 			src : whatsapp,
-			class: 'W(100%) H(a)'
+			class: 'W(100%) H(a)',
+			style: "width: 28vw;"
 		}
 	});
 	const reficon = createNewDiv({
 		type: 'img',
 		setAttribute: {
 			src : refresh,
-			style:'width: 16vw;',
-			class:'W(100%) H(a) Mx(10px)'
+			class:'W(8vw) H(8vw) Mx(10px) Bdrs(4vw) Bd Bgc(lightgrey) P(0.5vw)'
 		}
 	});
 	const wrapper = createNewDiv({

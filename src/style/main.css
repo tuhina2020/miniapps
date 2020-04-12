@@ -8,14 +8,17 @@
 .Bdc\(t\)\:h:hover {
   border-color: transparent;
 }
-.Bdrs\(4px\) {
-  border-radius: 4px;
-}
 .Bdrs\(5px\) {
   border-radius: 5px;
 }
-.Bgc\(red\) {
-  background-color: red;
+.Bdrs\(4px\) {
+  border-radius: 4px;
+}
+.Bdrs\(4vw\) {
+  border-radius: 4vw;
+}
+.Bgc\(lightgrey\) {
+  background-color: lightgrey;
 }
 .Bgc\(\#343517\) {
   background-color: #343517;
@@ -23,11 +26,11 @@
 .Bxz\(bb\) {
   box-sizing: border-box;
 }
-.C\(\#956304\) {
-  color: #956304;
-}
 .C\(white\) {
   color: white;
+}
+.C\(\#956304\) {
+  color: #956304;
 }
 .D\(f\) {
   display: flex;
@@ -38,6 +41,9 @@
 .Ai\(c\) {
   align-items: center;
 }
+.Jc\(sb\) {
+  justify-content: space-between;
+}
 .Jc\(c\) {
   justify-content: center;
 }
@@ -47,26 +53,26 @@
 .Ff\(\$ffroboto\) {
   font-family: 'Roboto', sans-serif;
 }
+.Fw\(500\) {
+  font-weight: 500;
+}
 .Fw\(\$fwbody\) {
   font-weight: 400;
 }
 .Fw\(700\) {
   font-weight: 700;
 }
-.Fw\(500\) {
-  font-weight: 500;
+.Fz\(12px\) {
+  font-size: 12px;
 }
 .Fz\(\$fzbody\), .Fz\(16px\) {
   font-size: 16px;
 }
-.Fz\(12px\) {
-  font-size: 12px;
+.H\(8vw\) {
+  height: 8vw;
 }
 .H\(a\) {
   height: auto;
-}
-.H\(8vw\) {
-  height: 8vw;
 }
 .Lh\(14px\) {
   line-height: 14px;
@@ -103,17 +109,17 @@
   margin-left: 25%;
   margin-right: 25%;
 }
-.Mt\(28vw\) {
-  margin-top: 28vw;
-}
 .Mt\(2vw\) {
   margin-top: 2vw;
+}
+.Mt\(33vw\) {
+  margin-top: 33vw;
 }
 .Mt\(40\%\) {
   margin-top: 40%;
 }
-.Mt\(40vw\) {
-  margin-top: 40vw;
+.Mt\(44vw\) {
+  margin-top: 44vw;
 }
 .Mt\(5vw\) {
   margin-top: 5vw;
@@ -151,11 +157,14 @@
 .T\(82vw\) {
   top: 82vw;
 }
-.T\(90vw\) {
-  top: 90vw;
-}
 .T\(9vw\) {
   top: 9vw;
+}
+.B\(8px\) {
+  bottom: 8px;
+}
+.P\(0\.5vw\) {
+  padding: 0.5vw;
 }
 .P\(10px\) {
   padding: 10px;
@@ -166,9 +175,9 @@
 .P\(3vw\) {
   padding: 3vw;
 }
-.Px\(17\%\) {
-  padding-left: 17%;
-  padding-right: 17%;
+.Px\(15\%\) {
+  padding-left: 15%;
+  padding-right: 15%;
 }
 .Px\(20px\) {
   padding-left: 20px;
@@ -181,27 +190,39 @@
 .Pos\(a\) {
   position: absolute;
 }
+.Pos\(f\) {
+  position: fixed;
+}
 .Ta\(c\) {
   text-align: center;
 }
-.W\(100\%\) {
-  width: 100%;
-}
-.W\(20\%\) {
-  width: 20%;
+.W\(8vw\) {
+  width: 8vw;
 }
 .W\(20vw\) {
   width: 20vw;
 }
+.W\(25\%\) {
+  width: 25%;
+}
 .W\(30\%\) {
   width: 30%;
 }
-.W\(50\%\) {
-  width: 50%;
+.W\(100\%\) {
+  width: 100%;
 }
 .W\(50vw\) {
   width: 50vw;
 }
 .W\(64\%\) {
   width: 64%;
+}
+.W\(80\%\) {
+  width: 80%;
+}
+.W\(83\%\) {
+  width: 83%;
+}
+.W\(50\%\) {
+  width: 50%;
 }

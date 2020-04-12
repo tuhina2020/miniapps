@@ -7,7 +7,7 @@ class BaseTextContainer {
 	}
 
 	render() {
-		const { textBoxClass, wrapperClass, text } = this.state;
+		const { textBoxClass, wrapperClass, text, inline } = this.state;
 		const wrapper = createNewDiv({
 			type: 'div',
 			setAttribute: {
@@ -18,7 +18,8 @@ class BaseTextContainer {
 		const textBox = createNewDiv({
 			type: 'div',
 			setAttribute: {
-				class: textBoxClass
+				class: textBoxClass,
+				style: inline
 			}
 		});
 		textBox.innerText = text;

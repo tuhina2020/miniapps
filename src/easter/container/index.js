@@ -26,11 +26,12 @@ class Easter {
     this.getParams();
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
-		// this.state.CleverTap = registerCleverTap();
+		this.state.CleverTap = registerCleverTap();
 		this.getFonts();
 		this.clickHandler = this.clickHandler.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.eventHandler = this.eventHandler.bind(this);
+		this.inputHandler = this.inputHandler.bind(this);
 	}
 
 	registerComponents() {
@@ -57,12 +58,12 @@ class Easter {
 		});
 		this.$content = createNewDiv({
 			type: "div",
-			setAttribute: { class: "Pos(a) D(f) Fld(c) Ai(c) Jc(c) T(0) Px(17%)" }
+			setAttribute: { class: "Pos(a) D(f) Fld(c) Ai(c) Jc(c) T(0) Px(15%)" }
 		});
 
 		this.$content2 = createNewDiv({
 			type: "div",
-			setAttribute: { class: "Mt(40%) Pos(a) D(f) Fld(c) Ai(c) Jc(c) T(0) Px(17%)" }
+			setAttribute: { class: "Mt(40%) Pos(a) D(f) Fld(c) Ai(c) Jc(c) T(0) Px(15%)" }
 		});
 		this.$input = this.userInput();
 		this.$enterButton = this.enterButton();
@@ -70,11 +71,11 @@ class Easter {
 		this.$textBox2 = this.textBox2(text2);
 		this.$textBox3 = this.textBox3(text3);
 		this.$sharechatIcon = BaseSharechatIcon({
-			wrapperClass: "Pos(a) T(90vw) W(20%)"
+			wrapperClass: "W(25%) Pos(f) B(8px)"
 			// wrapperClass: 'Mt(5vw)'
 		});
 		this.$share = BaseWhatsappContainer({
-			wrapperClass: "D(f) Pos(a) T(77vw)",
+			wrapperClass: "D(f) Mt(2vw) Jc(sb) Ai(c) W(80%)",
 			// wrapperClass: "Pos(a) T(82vw) W(20vw) Mx(30vw) D(f)",
 			Authorization: this.state.Authorization,
 			refreshHandler: this.refresh,
@@ -83,18 +84,17 @@ class Easter {
 	}
 
 	eventHandler(data) {
-			//covidc_shared event
-			// const { CleverTap, language, Authorization, webcardName } = this.state
-			// this.state.CleverTap.sendEvent("ceaster_shared_" + webcardName, {
-			// 		language,
-			// 		token : Authorization,
-			// 		name
-			// })
-			// let payload = {
-			// 		type: "shareWebCard",
-			// 		postId: data.PostDetails.postId
-			// };
-			// window.Android.onAction(JSON.stringify(payload));
+			const { CleverTap, language, Authorization, webcardName } = this.state
+			this.state.CleverTap.sendEvent("easter_shared_" + webcardName, {
+					language,
+					token : Authorization,
+					name
+			})
+			let payload = {
+					type: "shareWebCard",
+					postId: data.PostDetails.postId
+			};
+			window.Android.onAction(JSON.stringify(payload));
 	}
 	
 	getData() {
@@ -134,9 +134,11 @@ class Easter {
 
 	enterButton() {
 		// console.log('this.state.textData ', this.state.textData);
+		const { user: { username } } = this.getReduxState();
 		let textBox = new BaseTextContainer(this.addStore({
 			text: "ENTER",
 			...ENTER_BUTTON_CLASS["default"],
+			inline: 'background-color:#343517;',
 			clickHandler: this.clickHandler
 		}))
 		textBox = textBox.render();
@@ -144,14 +146,28 @@ class Easter {
 	}
 
 	refresh() {
+		console.log('YOYOO');
 		this.state.store.dispatch(toggleSharedState());
+		this.state.store.dispatch(setUserName(''));
+		this.$container.remove();
+		this.registerComponents();
+		this.render();
 	}
 
 	clickHandler() {
 		const { user: { username } } = this.getReduxState();
+		if (!this.validateUsername(username)) return;
+		console.log('CLICKED');
 		this.$nameBox = this.nameBox(username);
 		this.state.store.dispatch(toggleSharedState());
 		this.render();
+	}
+
+	validateUsername(username) {
+		const { validateUsername } = this.state;
+		const valid = !!username  && username.length <= 30 && username.length > 0;
+		this.state.validateUsername = valid;
+		return valid;
 	}
 
 	textBox(text) {
@@ -176,7 +192,7 @@ class Easter {
 		const { language } = this.state;
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
-			wrapperClass: language==='Malayalam' ?  "Mt(28vw)" : "Mt(40vw)",
+			wrapperClass: language==='Malayalam' ?  "Mt(33vw) W(83%)" : "Mt(44vw) W(80%)",
 			textBoxClass: "Ff($ffroboto) Fw(500) Fz(12px) Lh(14px) C(#3F270F) Ta(c) C(#956304)"
 		}));
 		textBox = textBox.render();
@@ -186,9 +202,9 @@ class Easter {
 	nameBox(text) {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
-			wrapperClass: "Mt(2vw)",
+			wrapperClass: "Mt(2vw) W(80%)",
 			// wrapperClass: "Pos(a) T(72vw) W(50%) Mx(25%)",
-			textBoxClass: "Ff($ffroboto) Fw(700) Fz(16px) Lh(19px) C(#3F270F) Ta(c)"
+			textBoxClass: "Ff($ffroboto) Fw(700) Fz(16px) Lh(19px) C(#956304) Ta(c)"
 		}));
 		textBox = textBox.render();
 		return textBox;
@@ -197,9 +213,20 @@ class Easter {
 	userInput() {
 		const { language } = this.state;
 		const styleClassesObj = INPUT_WRAPPER_CLASS[language] || INPUT_WRAPPER_CLASS['default'];
-		let input = new InputContainer(this.addStore({ inputHandler: setUserName, ...styleClassesObj, text: this.getReduxState().username }));
+		let input = new InputContainer(this.addStore({ inputHandler: this.inputHandler, ...styleClassesObj, text: this.getReduxState().username }));
 		input = input.render();
 		return input;
+	}
+
+	inputHandler(name) {
+		const valid = this.validateUsername(name)
+		this.state.store.dispatch(setUserName(name))
+		// console.log('VALID DISPATCH ', name, valid);
+		// if(valid) {
+		// 	this.$enterButton.remove();
+		// 	this.$enterButton = this.enterButton();
+		// 	this.render();
+		// }
 	}
 
 	render() {
@@ -208,13 +235,12 @@ class Easter {
 		console.log('SHARED ', shared, this.$container);
 		// this.update();
 		if( !this.$container) return;
+		this.$container.innerHTML = ''
 		if (shared) {
-			this.$container.innerHTML = ''
 			addComponents({ components: [this.$textBox2, this.$textBox3, this.$nameBox, this.$share, this.$sharechatIcon], container: this.$content })
 			addComponents({ components : [this.$afterBg, this.$content], container : this.$container });
 		} else {
-			this.$container.innerHTML = ''
-			addComponents({ components: [this.$textBox1, this.$input, this.$enterButton, this.$sharechatIcon], container: this.$content2 })
+			addComponents({ components: [this.$textBox1, this.$input, this.$enterButton], container: this.$content2 })
 			addComponents({ components : [this.$beforeBg, this.$content2], container : this.$container });
 		}
 		addComponents({ components : [this.$container], container :  appContainer});

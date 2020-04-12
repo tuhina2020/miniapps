@@ -20,7 +20,7 @@ class IndianNewYear {
     this.getParams();
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
-		// this.state.CleverTap = registerCleverTap();
+		this.state.CleverTap = registerCleverTap();
 		this.getFonts();
 	}
 

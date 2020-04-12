@@ -79,12 +79,13 @@ export const uploadFile = ({ imgData = document.getElementById("app"), Authoriza
 	return domtoimage.toBlob(imgData).then((blob) => {
 		const formData = new FormData();
 		formData.append("userfile", blob);
-		return fetch("https://mediaupload.sharechat.com/uploadFile", {
+		return fetch("https://apis.sharechat.com/media-upload-service/v1.0.0/fileUpload", {
 			method: "POST",
 			body: formData,
 			mode: "cors"
 		})
 		.then(res => {
+				hide.style.display = 'flex'
 				if (!res.ok) {
 						throw new Error(res.statusText);
 				}
@@ -92,13 +93,14 @@ export const uploadFile = ({ imgData = document.getElementById("app"), Authoriza
 		})
 		.then(data => {
 			console.log(data, "dooon sdsd ")
-				// if ("fileUrl" in data) {
-				// 		createImagePost({ imageData: data, Authorization });
-				// 		// console.log(data, "dooon")
-				// }
+				if ("fileUrl" in data) {
+					return createImagePost({ imageData: data, Authorization });
+						// console.log(data, "dooon")
+				}
 		})
 		.catch(err => {
 				console.log(err);
+				hide.style.display = 'flex'
 		});
 	})
 	.catch(err => {
