@@ -8,7 +8,7 @@ export default class InputContainer {
 			this.usernameHandler = this.usernameHandler.bind(this)
     }
     render() {
-			const {  wrapperClass, inputBoxClass, text, store, focus } = this.state;
+			const {  wrapperClass, inputBoxClass, text, store, focus, placeholder = 'Please Enter Your Name' } = this.state;
 			console.log('THIS IS TEXT ', text);
 			const input = createNewDiv({
 				type: 'input',
@@ -17,7 +17,7 @@ export default class InputContainer {
 					class: inputBoxClass,
 					type: 'text',
 					maxLength: 15,
-					placeholder: 'Please Enter Your Name'
+					placeholder
 				}
 			});
 			input.innerText = text;

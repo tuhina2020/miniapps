@@ -14,13 +14,14 @@ import {
 	TEXT_BOX_CLASS,
 	NAME_BOX_CLASS,
 	TEXT_BOX2_CLASS,
+	WHATSAPP_CLASS,
 	LANGUAGE_WISE_FINAL_BACKGROUNDS,
 } from "@/indiannewyear/helper2"
 import InputContainer from "@/common/components/BaseInputContainer";
 import BaseTextContainer from "@/common/components/BaseTextContainer";
 import BaseSharechatIcon from "@/common/components/BaseSharechatIcon";
 import BaseWhatsappContainer from "@/common/components/BaseWhatsappContainer";
-import { setUserName, toggleSharedState, setLanguage, setText1, setText2 } from '@/common/actions/TemplateUserForm';
+import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTagId, setTagName, setNamePos } from '@/common/actions/TemplateUserForm';
 
 class IndianNewYear {
 	constructor({ store }) {
@@ -41,7 +42,7 @@ class IndianNewYear {
 
 	registerComponents() {
 		console.log('got data, register');
-		const { user: { text1, text2, username } } = this.getReduxState();
+		const { user: { text1, text2, username, tagId, tagName } } = this.getReduxState();
 		const { language } = this.state;
 		this.$container = createNewDiv({
 			type: "div",
@@ -85,9 +86,15 @@ class IndianNewYear {
 			// wrapperClass: 'Mt(5vw)'
 		});
 		this.$share = BaseWhatsappContainer({
-			wrapperClass: "D(f) Mt(2vw) Jc(sb) Ai(c) W(40%) Pos(f) B(14vw)",
+			// wrapperClass: "D(f) Mt(2vw) Jc(sb) Ai(c) W(40%) Pos(f) B(14vw)",
+			...(WHATSAPP_CLASS[language] || WHATSAPP_CLASS["default"]),
 			// wrapperClass: "Pos(a) T(82vw) W(20vw) Mx(30vw) D(f)",
-			Authorization: this.state.Authorization,
+			params: {
+				Authorization: this.state.Authorization,
+				tagId, tagName,
+				webCardName: `indianNewYear_${language}`,
+				festivalName: `indianNewYear_${language}`
+			},
 			refreshHandler: this.refresh,
 			eventHandler: this.eventHandler
 		});
@@ -110,21 +117,28 @@ class IndianNewYear {
 	getData() {
 		return getDataExcel(EXCEL_DATA).then(data => {
 			console.log('got data', data, this.state.language);
-			const { text1, text2 } = data.filter(d => d.language === this.state.language)[0];
+			const { text1, text2, tagId, tagName, namePosition } = data.filter(d => d.language === this.state.language)[0];
 			this.state.store.dispatch(setText1(text1));
 			this.state.store.dispatch(setText2(text2));
+			this.state.store.dispatch(setTagId(tagId));
+			this.state.store.dispatch(setTagName(tagName));
+			this.state.store.dispatch(setNamePos(namePosition));
 		});
 	}
 
   getFonts() {
-    const link = createNewDiv({
-      type: "link",
-      setAttribute: {
-        href: "https://fonts.googleapis.com/css?family=Roboto&display=swap",
-        rel: "stylesheet"
-      }
-    });
-    document.head.appendChild(link);
+		const LINKS = [{
+			href: "https://fonts.googleapis.com/css?family=Roboto&display=swap",
+			rel: "stylesheet"
+		}];
+
+		LINKS.forEach(linkObj => {
+			const link = createNewDiv({
+				type: "link",
+				setAttribute: linkObj
+			});
+			document.head.appendChild(link);
+		});
 	}
 
 	getReduxState() {
@@ -146,8 +160,7 @@ class IndianNewYear {
 		const { user: { username } } = this.getReduxState();
 		let textBox = new BaseTextContainer(this.addStore({
 			text: "ENTER",
-			...ENTER_BUTTON_CLASS["default"],
-			inline: 'background-color:#343517;',
+			...(ENTER_BUTTON_CLASS[this.state.language] || ENTER_BUTTON_CLASS["default"]),
 			clickHandler: this.clickHandler
 		}))
 		textBox = textBox.render();
@@ -164,10 +177,16 @@ class IndianNewYear {
 	}
 
 	clickHandler() {
-		const { user: { username } } = this.getReduxState();
+		const { user: { username, namePosition, text2 } } = this.getReduxState();
 		if (!this.validateUsername(username)) return;
 		console.log('CLICKED');
-		this.$nameBox = this.nameBox(username);
+		if (namePosition === 'separate')
+			this.$nameBox = this.nameBox(username);
+		else {
+			this.$nameBox = undefined;
+			this.$textBox2 = this.textBox2(text2.replace("${username}", username))
+		}
+
 		this.state.store.dispatch(toggleSharedState());
 		this.render();
 	}
@@ -182,7 +201,7 @@ class IndianNewYear {
 	textBox(text) {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
-			...TEXT_BOX_CLASS["default"]
+			...(TEXT_BOX_CLASS[this.state.language] || TEXT_BOX_CLASS["default"])
 		}));
 		textBox = textBox.render();
 		return textBox;
@@ -191,7 +210,7 @@ class IndianNewYear {
 	textBox2(text) {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
-			...TEXT_BOX2_CLASS["default"]
+			...(TEXT_BOX2_CLASS[this.state.language] || TEXT_BOX2_CLASS["default"])
 		}));
 		textBox = textBox.render();
 		return textBox;
@@ -202,7 +221,7 @@ class IndianNewYear {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
 			wrapperClass: language==='Malayalam' ?  "Mt(33vw) W(83%)" : "Mt(44vw) W(80%)",
-			textBoxClass: "Ff($ffroboto) Fw(500) Fz(3vw) Lh(3.8vw) C(#3F270F) Ta(c) C(#956304)"
+			textBoxClass: "Ff($ffroboto) Fw(500) Fz(3vw) Lh(3.8vw) C(#3f270f) Ta(c) C(#956304)"
 		}));
 		textBox = textBox.render();
 		return textBox;
@@ -211,9 +230,7 @@ class IndianNewYear {
 	nameBox(text) {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
-			wrapperClass: "W(80%)",
-			// wrapperClass: "Pos(a) T(72vw) W(50%) Mx(25%)",
-			textBoxClass: "Ff($ffroboto) Fw(700) Fz(3.3vw) Lh(5.2vw) C(#956304) Ta(c)"
+			...(NAME_BOX_CLASS[this.state.language] || NAME_BOX_CLASS["default"])
 		}));
 		textBox = textBox.render();
 		return textBox;
@@ -222,7 +239,12 @@ class IndianNewYear {
 	userInput() {
 		const { language } = this.state;
 		const styleClassesObj = INPUT_WRAPPER_CLASS[language] || INPUT_WRAPPER_CLASS['default'];
-		let input = new InputContainer(this.addStore({ inputHandler: this.inputHandler, ...styleClassesObj, text: this.getReduxState().username }));
+		let input = new InputContainer(this.addStore({
+			inputHandler: this.inputHandler,
+			...styleClassesObj,
+			text: this.getReduxState().username,
+			placeholder : language === 'Bengali' ? "Please Enter Your Friend's name" : undefined
+		}));
 		input = input.render();
 		return input;
 	}

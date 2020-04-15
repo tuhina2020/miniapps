@@ -72,7 +72,7 @@ export const addOrUpdateUrlParam = (name, value) => {
   }
 };
 
-export const uploadFile = ({ imgData = document.getElementById("app"), Authorization, hide }) => {
+export const uploadFile = ({ imgData = document.getElementById("app"), params, hide }) => {
 	hide.style.display = "none";
 	console.log('MOMOMO 1', imgData);
 	// return createImagePost({ imageData: { fileUrl : "https://cdn.sharechat.com/254fb513_1586630436058.png"} , Authorization });
@@ -94,7 +94,7 @@ export const uploadFile = ({ imgData = document.getElementById("app"), Authoriza
 		.then(data => {
 			console.log(data, "dooon sdsd ")
 				if ("fileUrl" in data) {
-					return createImagePost({ imageData: data, Authorization });
+					return createImagePost({ imageData: data, params });
 						// console.log(data, "dooon")
 				}
 		})
@@ -119,14 +119,15 @@ const TAGID_LOOKUP = {
 	"4766685": "🙏শুভ নববর্ষ ১৪২৭😀"
 }
 
-export const createImagePost = ({ imageData, Authorization }) => {
+export const createImagePost = ({ imageData, params }) => {
 	// let encryptedUserInfo =
 	//     "PnZsF1v6xZx91gFaCvqmB33dC1XSNYBRFz9JvEWRhFM88EhZKEvA5/YvsTywK0tQMrsaP402HqL3qQmfC235X2QxozFfmhWTbyQW1eincL2C9Bxry/yg1E/8j3E5st5Qt6N6QA8PU29v8AbxmUV+zaK28il0hZ8H6KZWtCoVVWY6dG2LtxH/C8uNOdyWueF112djOFh6Cgi46SxYTGExq5od+3qpUr8G3DXTW9DfRRB1vb3mAOTDpcbIyK1NycNXXehOaflxWWZEHzUSPQvTCuDcgAHipPAFxFIs9n8yhX38cet3wa8qwwrZzr6ifBzWoKyBjOD0NDzTx2pYo8+2/g=="
 	const url = new URL(document.location.href);
-	const language = url.searchParams.get("language")
-	const tagId = url.searchParams.get("tagId")
-	const tagName = TAGID_LOOKUP[tagId];
-;	const eventMetaData =  { webCardName : url.searchParams.get("webCardName")}
+	let { Authorization, tagId, tagName, festivalName, webCardName, language } = params;
+	language = !language ? url.searchParams.get("language") : language;
+	tagId = !tagId ? url.searchParams.get("tagId") : tagId;
+	tagName = !tagName ? TAGID_LOOKUP[tagId] : tagName;
+	let eventMetaData =  { webCardName : !webCardName ? url.searchParams.get("webCardName") : webCardName }
 
 	const payload = {
 		festivalName : url.searchParams.get("festival"),

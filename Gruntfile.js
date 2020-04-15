@@ -1,4 +1,10 @@
 module.exports = function(grunt) {
+	const basePath = grunt.option('basePath');
+	grunt.log.writeln(basePath);
+	if (!basePath) {
+		grunt.log.error("Please specify A Base Directory");
+		return
+	}
 	grunt.initConfig({
 		atomizer: {
 			pwa: {
@@ -7,8 +13,8 @@ module.exports = function(grunt) {
 				},
 				files: [
 					{
-						src: ["src/**/*.js"],
-						dest: "src/style/main.css"
+						src: [`src/${basePath}/*.js`],
+						dest: "src/styles/main.css"
 					}
 				]
 			}

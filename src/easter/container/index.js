@@ -192,7 +192,7 @@ class Easter {
 		let textBox = new BaseTextContainer(this.addStore({
 			text: text,
 			wrapperClass: language==='Malayalam' ?  "Mt(33vw) W(83%)" : "Mt(44vw) W(80%)",
-			textBoxClass: "Ff($ffroboto) Fw(500) Fz(12px) Lh(14px) C(#3F270F) Ta(c) C(#956304)"
+			textBoxClass: "Ff($ffroboto) Fw(500) Fz(12px) Lh(14px) C(#3f270f) Ta(c) C(#956304)"
 		}));
 		textBox = textBox.render();
 		return textBox;

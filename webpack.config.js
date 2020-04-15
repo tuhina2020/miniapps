@@ -1,10 +1,13 @@
 const path = require("path");
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackMd5Hash = require("webpack-md5-hash");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 
 module.exports = (env, argv) => {
   return {
@@ -18,8 +21,7 @@ module.exports = (env, argv) => {
         argv.mode === "production"
           ? "chunks/[name].[chunkhash].js"
           : "chunks/[name].js",
-      filename:
-        argv.mode === "production" ? "[name].[chunkhash].js" : "[name].js"
+      filename: "./js/[name].[chunkhash].js"
     },
     resolve: {
       alias: {
@@ -30,48 +32,53 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader"
-          }
+					exclude: /node_modules/,
+					use: {
+						loader: "babel-loader",
+						options: {
+							presets: ['@babel/preset-env'],
+						}
+					},
         },
         {
           test: /\.css$/i,
-          use: ["style-loader", "css-loader"]
+          use: [
+						"style-loader",
+						"css-loader"
+					]
         },
         {
           test: /\.(png|svg|jpg|gif|mp4)$/,
 					// use: ["file-loader"],
 					loader: 'file-loader',
 					options: {
-						name: '[name][contenthash].[ext]'
+						name: './assets/[name][contenthash].[ext]'
 					}  
 				}
       ]
-    },
+		},
+		optimization: {
+			minimizer: [new UglifyJsPlugin()],
+		},
     plugins: [
-      new CleanWebpackPlugin(),
-      new MiniCssExtractPlugin({
-        filename:
-          argv.mode === "production" ? "[name].[contenthash].css" : "[name].css"
-      }),
+			new CleanWebpackPlugin(),
+			new webpack.DefinePlugin({
+				'process.env.NODE_ENV' : argv.build === "production" ? JSON.stringify('PRODUCTION') : JSON.stringify('DEVELOPMENT')
+			}),
       new HtmlWebpackPlugin({
         inject: false,
-        hash: true,
-        template: "./src/base/index.html",
-        filename: "index.html"
+				hash: true,
+				baseFolder: argv.mode === "production" ? "/" + argv.type : "",
+        template: argv.build === "production" ? "./src/base/index.html" : "./src/base/local.html",
+        filename: argv.build === "production" ? "index-[hash].html" : "index.html"
       }),
       new WebpackMd5Hash(),
       new CompressionPlugin({
         algorithm: "gzip"
 			}),
-			new CopyPlugin([
-				{ from: './src/style/main.css', to: '.' },
-				{ from : './src/style/normalize.css', to: '.' }
-			]),
     ],
     devServer: {
-      contentBase: "dist",
+      contentBase: argv.type,
       watchContentBase: true,
       port: 1000
     }

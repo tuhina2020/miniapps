@@ -13,14 +13,15 @@ const FOLDER_LOOKUP = {
   singleapp: "miniapp/singleapp",
   champion: "leaderboard/youtuber",
 	"diwali": "miniapp/diwali",
-	indiannewyear: "miniapp/indiannewyear",
+	indiannewyear: "web-post-html-files/indiannewyear",
 	easter: "web-post-html-files/easter"
 };
 
 const getContentType = filename => {
   const TYPE = {
     "application/gzip": new RegExp(/\.gz/),
-    "text/html": new RegExp(/\.html/),
+		"text/html": new RegExp(/\.html/),
+		"text/css": new RegExp(/\.css/),
     "application/javascript": new RegExp(/\.js/),
     "image/svg+xml": new RegExp(/\.svg/)
   };
@@ -46,7 +47,7 @@ function s3Upload(uploadParams, callback) {
   });
 }
 
-function uploadRSSFolder() {
+function uploadDistFolder() {
   const distFolderPath = path.join(__dirname, "./dist");
   fs.readdir(distFolderPath, (err, files) => {
     if (!files || files.length === 0) {
@@ -88,4 +89,4 @@ function uploadRSSFolder() {
   });
 }
 
-uploadRSSFolder();
+uploadDistFolder();

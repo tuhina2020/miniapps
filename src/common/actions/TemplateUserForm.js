@@ -31,9 +31,23 @@ export const setText3 = (payload) => {
 		payload
 	}
 }
-export const setLanguage = (payload) => {
+export const setTagId = (payload) => {
 	return {
-		type: 'SET_LANGUAGE',
+		type: 'SET_TAG_ID',
+		payload
+	}
+}
+
+export const setTagName = (payload) => {
+	return {
+		type: 'SET_TAG_NAME',
+		payload
+	}
+}
+
+export const setNamePos = (payload) => {
+	return {
+		type: 'SET_NAME_POS',
 		payload
 	}
 }
