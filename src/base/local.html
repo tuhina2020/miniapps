@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  </head>
+  <body>
+    <div id="token"></div>
+		<main id="app" class="container"></main>
+    <script
+      async
+      src="/js/app.<%= htmlWebpackPlugin.files.chunks.app.hash %>.js"
+    ></script>
+  </body>
+</html>
