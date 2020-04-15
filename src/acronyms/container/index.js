@@ -6,6 +6,11 @@ import {
 	addComponents
 } from "@/utils";
 import { ACRONYMS_EXCEL_BY_LANGUAGE } from '@/acronyms/helper'
+import { setUserName, toggleSharedState, setLanguage } from '@/common/actions/TemplateUserForm';
+import { setAcronymsList } from '@/common/actions/TemplateAcronymForm';
+import _compact from 'lodash/compact';
+import _trim from 'lodash/trim';
+
 class AcronymsWebCard {
 	constructor({ store }) {
     document.title = "ShareChat | Indian New Year";
@@ -23,15 +28,20 @@ class AcronymsWebCard {
 	}
 
 	getData() {
-		return getDataExcel(ACRONYMS_EXCEL_BY_LANGUAGE[this.state.language]).then(data => {
-			console.log('got data', data, this.state.language);
-			// const obj = data.filter(d => d.language === this.state.language)[0];
-			// this.state.store.dispatch(setText1(text1));
-			// this.state.store.dispatch(setText2(text2));
-			// this.state.store.dispatch(setTagId(tagId));
-			// this.state.store.dispatch(setTagName(tagName));
-			// this.state.store.dispatch(setNamePos(namePosition));
+		console.log();
+		return getDataExcel(ACRONYMS_EXCEL_BY_LANGUAGE[this.state.language] || ACRONYMS_EXCEL_BY_LANGUAGE["default"]).then(data => {
+			const parsedData = this.parseData(data);
+			console.log('got data', parsedData);
+			this.state.store.dispatch(setAcronymsList(parsedData));
 		});
+	}
+
+	parseData(data) {
+		const obj = {};
+		data.forEach(entry => {
+			obj[entry.letter] = _compact([ _trim(entry.acro1), _trim(entry.acro2) ]);
+		});
+		return obj;
 	}
 
 	getFonts() {
@@ -56,7 +66,6 @@ class AcronymsWebCard {
   getParams() {
     const url = new URL(document.location.href);
 		this.state.language = url.searchParams.get("language") || 'Tamil';
-		this.state.webcardName = url.searchParams.get("webcardName");
 	}
 
 	addStore(params) {

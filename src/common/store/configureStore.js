@@ -4,6 +4,7 @@ import logger from 'redux-logger';
 
 export default function configureStore () {
 	const middlewares = [];
+	console.log('ENVIRONMENT ', process.env.NODE_ENV);
 	if (process.env.NODE_ENV === `DEVELOPMENT`) {
 		const { logger } = require(`redux-logger`);
 	
