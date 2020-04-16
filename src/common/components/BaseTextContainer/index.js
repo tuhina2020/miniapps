@@ -7,7 +7,7 @@ class BaseTextContainer {
 	}
 
 	render() {
-		const { textBoxClass, wrapperClass, text, inline } = this.state;
+		const { textBoxClass, wrapperClass, text, inline, clickHandler } = this.state;
 		const wrapper = createNewDiv({
 			type: 'div',
 			setAttribute: {
@@ -23,13 +23,13 @@ class BaseTextContainer {
 			}
 		});
 		textBox.innerText = text;
-		textBox.addEventListener('click', this.click);
+		if (clickHandler) textBox.addEventListener('click', this.click);
 		wrapper.appendChild(textBox);
 		return wrapper;
 	}
 
 	click(e) {
-		const { clickHandler, store } = this.state;
+		const { clickHandler } = this.state;
 		clickHandler();
 	}
 };

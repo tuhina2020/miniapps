@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=PRODUCTION webpack --mode production --build production --type",
-    "local": "NODE_ENV=LOCAL webpack --mode production --build local --type",
+    "local": "NODE_ENV=DEVELOPMENT webpack --mode production --build local --type",
     "grunt": "grunt atomizer:pwa",
     "build:astro": "npm run build astro",
     "build:diwali": "npm run build diwali",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
+    "@google-cloud/storage": "^4.7.0",
     "async": "^3.1.0",
     "atomizer": "^3.7.0",
     "aws-sdk": "^2.503.0",

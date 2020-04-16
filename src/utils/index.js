@@ -74,7 +74,7 @@ export const addOrUpdateUrlParam = (name, value) => {
 
 export const uploadFile = ({ imgData = document.getElementById("app"), params, hide }) => {
 	hide.style.display = "none";
-	console.log('MOMOMO 1', imgData);
+	console.log('MOMOMO 1', params);
 	// return createImagePost({ imageData: { fileUrl : "https://cdn.sharechat.com/254fb513_1586630436058.png"} , Authorization });
 	return domtoimage.toBlob(imgData).then((blob) => {
 		const formData = new FormData();
@@ -130,7 +130,7 @@ export const createImagePost = ({ imageData, params }) => {
 	let eventMetaData =  { webCardName : !webCardName ? url.searchParams.get("webCardName") : webCardName }
 
 	const payload = {
-		festivalName : url.searchParams.get("festival"),
+		festivalName : !festivalName ? url.searchParams.get("festival") : festivalName,
 		imageUrl: imageData.fileUrl,
 		language,
 		tagId,

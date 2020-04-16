@@ -1,7 +1,7 @@
 import whatsapp from "@/common/assets/whatsapp-text.svg";
 import refresh from "@/common/assets/refresh.svg"
 import { createNewDiv, uploadFile } from "@/utils";
-export default function({ wrapperClass, svgClass, Authorization, refreshHandler, eventHandler, params}) {
+export default function({ wrapperClass, svgClass, Authorization, refreshHandler, eventHandler, params, refreshClass = 'W(8vw) H(8vw) Mx(10px) Bdrs(4vw) Bd Bgc(lightgrey) P(0.5vw)' }) {
 	const icon = createNewDiv({
 		type: 'img',
 		setAttribute: {
@@ -14,7 +14,7 @@ export default function({ wrapperClass, svgClass, Authorization, refreshHandler,
 		type: 'img',
 		setAttribute: {
 			src : refresh,
-			class:'W(8vw) H(8vw) Mx(10px) Bdrs(4vw) Bd Bgc(lightgrey) P(0.5vw)'
+			class: refreshClass
 		}
 	});
 	const wrapper = createNewDiv({

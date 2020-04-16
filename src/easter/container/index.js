@@ -134,12 +134,12 @@ class Easter {
 	enterButton() {
 		// console.log('this.state.textData ', this.state.textData);
 		const { user: { username } } = this.getReduxState();
-		let textBox = new BaseTextContainer(this.addStore({
+		let textBox = new BaseTextContainer({
 			text: "ENTER",
 			...ENTER_BUTTON_CLASS["default"],
 			inline: 'background-color:#343517;',
 			clickHandler: this.clickHandler
-		}))
+		});
 		textBox = textBox.render();
 		return textBox;
 	}
@@ -170,19 +170,19 @@ class Easter {
 	}
 
 	textBox(text) {
-		let textBox = new BaseTextContainer(this.addStore({
+		let textBox = new BaseTextContainer({
 			text: text,
 			...TEXT_BOX_CLASS["default"]
-		}));
+		});
 		textBox = textBox.render();
 		return textBox;
 	}
 
 	textBox2(text) {
-		let textBox = new BaseTextContainer(this.addStore({
+		let textBox = new BaseTextContainer({
 			text: text,
 			...TEXT_BOX2_CLASS["default"]
-		}));
+		});
 		textBox = textBox.render();
 		return textBox;
 	}

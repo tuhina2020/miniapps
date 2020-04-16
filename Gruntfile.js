@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 				},
 				files: [
 					{
-						src: [`src/${basePath}/*.js`],
+						src: [`src/${basePath}/**/*.js`, 'src/common/**/*.js', 'src/common/**/**/*.js'],
 						dest: "src/styles/main.css"
 					}
 				]

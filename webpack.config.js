@@ -21,7 +21,7 @@ module.exports = (env, argv) => {
         argv.mode === "production"
           ? "chunks/[name].[chunkhash].js"
           : "chunks/[name].js",
-      filename: "./js/[name].[chunkhash].js"
+      filename: "./js/[name].[contentHash].js"
     },
     resolve: {
       alias: {
@@ -54,23 +54,34 @@ module.exports = (env, argv) => {
 					options: {
 						name: './assets/[name][contenthash].[ext]'
 					}  
+				},
+				{
+					test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+					use: [
+						{
+							loader: 'file-loader',
+							options: {
+								name: '[name].[ext]',
+								outputPath: 'fonts/'
+							}
+						}
+					]
 				}
       ]
 		},
-		optimization: {
-			minimizer: [new UglifyJsPlugin()],
-		},
+		// optimization: argv.build === "production" ? {
+		// 	minimizer: [new UglifyJsPlugin()],
+		// } : undefined,
     plugins: [
 			new CleanWebpackPlugin(),
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV' : argv.build === "production" ? JSON.stringify('PRODUCTION') : JSON.stringify('DEVELOPMENT')
 			}),
       new HtmlWebpackPlugin({
-        inject: false,
+        inject: true,
 				hash: true,
-				baseFolder: argv.mode === "production" ? "/" + argv.type : "",
-        template: argv.build === "production" ? "./src/base/index.html" : "./src/base/local.html",
-        filename: argv.build === "production" ? "index-[hash].html" : "index.html"
+        template: "./src/base/index.html",
+        filename:  "index.html"
       }),
       new WebpackMd5Hash(),
       new CompressionPlugin({
