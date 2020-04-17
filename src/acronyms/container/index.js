@@ -3,7 +3,8 @@ import {
 	getAuthorization,
 	getAppVersion,
 	getDataExcel,
-	addComponents
+	addComponents,
+	bigQueryEvent
 } from "@/utils";
 import { ACRONYMS_EXCEL_BY_LANGUAGE, BACKGROUND, DISPLAY_TEXT_EXCEL } from '@/acronyms/helper'
 import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTagId, setTagName } from '@/common/actions/TemplateUserForm';
@@ -25,7 +26,6 @@ class AcronymsWebCard {
     this.getParams();
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
-		this.getFonts();
 		this.clickHandler = this.clickHandler.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.shareEventHandler = this.shareEventHandler.bind(this);
@@ -41,7 +41,7 @@ class AcronymsWebCard {
 	}
 
 	getAcronymData() {
-		return getDataExcel(ACRONYMS_EXCEL_BY_LANGUAGE["default"]).then(data => {
+		return getDataExcel(ACRONYMS_EXCEL_BY_LANGUAGE[this.state.language] || ACRONYMS_EXCEL_BY_LANGUAGE["default"]).then(data => {
 			const parsedData = {};
 			data.forEach(entry => {
 				parsedData[entry.letter] = _compact([ _trim(entry.acro1), _trim(entry.acro2) ]);
@@ -67,8 +67,9 @@ class AcronymsWebCard {
 		const { language } = this.state;
 		this.$container = createNewDiv({
 			type: "div",
-			setAttribute: { class: "indian-new-year-container" }
+			setAttribute: { class: "acronym-container" }
 		});
+
 		this.$content = createNewDiv({
 			type: "div",
 			setAttribute: {
@@ -152,19 +153,36 @@ class AcronymsWebCard {
 		this.$acronymContainer = acronymContainer.render();
 
 		this.state.store.dispatch(toggleSharedState());
+		const { Authorization, language } = this.state;
+		bigQueryEvent({
+			Authorization,
+			payload: {
+				id: "CORONA_ACRONYM",
+				actionType: "submit",
+				data: `language-${language}`,
+				postId: 0,
+				webcardName : "Corona_Acronym"
+			}
+		});
 		this.render();
 	}
 
 	shareEventHandler(data) {
-		const { CleverTap, language, Authorization, webcardName } = this.state
-		this.state.CleverTap.sendEvent("easter_shared_" + webcardName, {
-				language,
-				token : Authorization,
-				name
-		})
-		let payload = {
-				type: "shareWebCard",
-				postId: data.PostDetails.postId
+		const { language, Authorization } = this.state;
+		const { user: { username } } = this.getReduxState();
+		bigQueryEvent({
+			Authorization,
+			payload: {
+				id: "CORONA_ACRONYM",
+				actionType: "share",
+				data: `language-${language}`,
+				postId: 0,
+				webcardName : "Corona_Acronym"
+			}
+		});
+		const payload = {
+			type: "shareWebCard",
+			postId: data.PostDetails.postId
 		};
 		window.Android.onAction(JSON.stringify(payload));
 	}

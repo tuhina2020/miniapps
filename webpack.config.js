@@ -72,6 +72,9 @@ module.exports = (env, argv) => {
 		// optimization: argv.build === "production" ? {
 		// 	minimizer: [new UglifyJsPlugin()],
 		// } : undefined,
+		optimization: {
+			minimize: false
+		},
     plugins: [
 			new CleanWebpackPlugin(),
 			new webpack.DefinePlugin({

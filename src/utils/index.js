@@ -4,7 +4,7 @@ import _compact from 'lodash/compact';
 
 export const request = ({ url, headers, method = "GET", body, mode, string = true }) => {
   console.log('HEADERS : ', headers)
-  headers = Object.assign(headers, { "content-type": "application/json" });
+  headers = Object.assign(headers, { "Content-Type": "application/json" });
   return fetch(url, {
     method,
     headers,
@@ -152,13 +152,6 @@ export const createImagePost = ({ imageData, params }) => {
 		}
 		return res.json();
 })
-
-	// const requestObj = {
-	// 	method: "POST",
-	// 	url: "https://apis.sharechat.com/festive-webcard-service/generateImagePost",
-	// 	headers: { Authorization },
-	// 	body: payload
-	// };
 }
 
 export const registerCleverTap = () => {
@@ -219,6 +212,34 @@ export const registerCleverTap = () => {
 	CleverTap.initialize("WR9-KZ9-875Z");
 
 	return CleverTap;
+}
+
+export const bigQueryEvent = ({ Authorization, payload }) => {
+	// const requestObj = {
+	// 	method: "POST",
+	// 	url: "https://apis.sharechat.com/webcard-service/v1.0.0/webcardAds/event",
+	// 	headers: {
+	// 		Accept: "application/json",
+	// 		"Content-Type": "application/json",
+	// 		Authorization
+	// 	},
+	// 	body: payload
+	// };
+
+	// console.log('WE ARE HERE : ', requestObj);
+
+	// return request(requestObj);
+	return fetch(
+		"https://apis.sharechat.com/webcard-service/v1.0.0/webcardAds/event",
+		{
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization
+			},
+			body: JSON.stringify(payload)
+		});
 }
 
 export const getDataExcel = ({ sheetId, page, columns }) => {
