@@ -7,11 +7,21 @@ const initialState = {
 	language: "",
 	tagId: "",
 	tagName: "",
-	namePosition: ""
+	namePosition: "",
+	placeholder: "Please Enter Your Name",
+	buttonText: "FIND OUT"
 }
 
 export default function username(state = initialState, action) {
   switch (action.type) {
+		case 'SET_PLACEHOLDER':
+			return Object.assign({}, state, {
+        placeholder: action.payload
+			});
+		case 'SET_BUTTON_TEXT':
+			return Object.assign({}, state, {
+        buttonText: action.payload
+			});
     case 'SET_USER_NAME':
       return Object.assign({}, state, {
         username: action.payload

@@ -1,3 +1,7 @@
 #input-username {
 	background: rgba(63, 39, 15, 0.1);
 }
+
+#input-username::placeholder {
+	text-align:center
+}

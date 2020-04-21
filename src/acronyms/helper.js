@@ -76,11 +76,16 @@ export const ACRONYMS_EXCEL_BY_LANGUAGE = {
 		sheetId: "1NbtRJcOscD02MTvVs8GsRc3TmwdW2EGQiStqhOdZ9TU",
 		page: 15,
 		columns: 3
-	}
+	},
+	Tamil: {
+		sheetId: "1NbtRJcOscD02MTvVs8GsRc3TmwdW2EGQiStqhOdZ9TU",
+		page: 16,
+		columns: 3
+	},
 }
 
 export const DISPLAY_TEXT_EXCEL = {
 	sheetId: "1vsKD2gFaUtKT_kVu3XVFwlrPzyDboRtI6lmpxXEsjJ8",
-	page: 4,
-	columns: 5
+	page: 5,
+	columns:7
 }

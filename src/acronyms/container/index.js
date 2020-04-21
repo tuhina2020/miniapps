@@ -7,7 +7,7 @@ import {
 	bigQueryEvent
 } from "@/utils";
 import { ACRONYMS_EXCEL_BY_LANGUAGE, BACKGROUND, DISPLAY_TEXT_EXCEL } from '@/acronyms/helper'
-import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTagId, setTagName } from '@/common/actions/TemplateUserForm';
+import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTagId, setTagName, setPlaceHolder, setButtonText } from '@/common/actions/TemplateUserForm';
 import { setAcronymsList } from '@/common/actions/TemplateAcronymForm';
 import _compact from 'lodash/compact';
 import _trim from 'lodash/trim';
@@ -35,8 +35,8 @@ class AcronymsWebCard {
 
 	getData() {
 		return Promise.all([
-			this.getAcronymData(),
-			this.getDisplayText()
+			this.getDisplayText(),
+			this.getAcronymData()
 		]);
 	}
 
@@ -53,11 +53,13 @@ class AcronymsWebCard {
 	getDisplayText() {
 		return getDataExcel(DISPLAY_TEXT_EXCEL).then(data => {
 			console.log('data for dispkay', data);
-			const { text1, text2, tagId, tagName } = data.filter(d => d.language === this.state.language)[0];
+			const { text1, text2, tagId, tagName, placeholder, buttonText } = data.filter(d => d.language === this.state.language)[0];
 			this.state.store.dispatch(setText1(text1));
 			this.state.store.dispatch(setText2(text2));
 			this.state.store.dispatch(setTagId(tagId));
 			this.state.store.dispatch(setTagName(tagName));
+			this.state.store.dispatch(setPlaceHolder(placeholder));
+			this.state.store.dispatch(setButtonText(buttonText));
 		});
 	}
 
@@ -98,14 +100,14 @@ class AcronymsWebCard {
 			// wrapperClass: 'Mt(5vw)'
 		});
 		this.$share = BaseWhatsappContainer({
-			wrapperClass : "D(f) Mt(2vw) Jc(sb) Ai(c) W(30%) Pos(f) B(5vw)",
+			wrapperClass : "D(f) Mt(2vw) Jc(sb) Ai(c) Pos(f) B(5vw)",
 			params: {
 				Authorization: this.state.Authorization,
 				tagId, tagName,
 				webCardName: `Corona_Acronym_${language}`,
 				festivalName: `Corona_Acronym_${language}`
 			},
-			refreshClass: 'W(6vw) H(6vw) Mx(10px) Bdrs(3vw) Bd Bgc(lightgrey) P(0.5vw)',
+			refreshClass: 'W(8vw) H(8vw) Mx(5vw) Bdrs(4vw) Bd Bgc(lightgrey) P(0.5vw)',
 			refreshHandler: this.refresh,
 			eventHandler: this.shareEventHandler
 		});
@@ -133,13 +135,13 @@ class AcronymsWebCard {
 		const textBox2 = this.textBox({
 			text: username.toUpperCase(), //text2.replace("${username}", username.toUpperCase()),
 			inline: 'font-family:athelas;',
-			textBoxClass: "C(#3e1c76) Fw(700)",
+			textBoxClass: "C(#3e1c76) Fw(700) Fz(5.5vw)",
 			wrapperClass: "Ta(c)"
 		});
 		const textBox3 = this.textBox({
 			text: text2.replace("${username}", ""),
 			inline: 'font-family:athelas;',
-			textBoxClass: "C(#3e1c76) Fw(700)",
+			textBoxClass: "C(#3e1c76) Fw(700) Fz(5.5vw)",
 			wrapperClass: "Ta(c)"
 		});
 		this.$textContainer = createNewDiv({
@@ -217,12 +219,14 @@ class AcronymsWebCard {
 
 	userInput() {
 		const { language } = this.state;
+		const { user: { username, placeholder } } = this.getReduxState();
 		let input = new InputContainer(this.addStore({
 			inputHandler: this.inputHandler,
 			wrapperClass: "M(2.7vw)",
 			maxLength : 14,
-			inputBoxClass: "Bdrs(4px) Bgc(#343517) H(8vw) W(50vw) Fz(3vw) P(3vw) Ff($ffroboto) Bd C(#4f2a8b) Bxz(bb) Bd(n):h Bdc(t):h",
-			text: this.getReduxState().username
+			inputBoxClass: "Bdrs(4px) Bgc(#343517) H(8vw) W(55vw) Fz(3vw) P(3vw) Ff($ffroboto) Bd C(#4f2a8b) Bxz(bb) Bd(n):h Bdc(t):h",
+			text: username,
+			placeholder
 		}));
 		input = input.render();
 		return input;
@@ -230,9 +234,9 @@ class AcronymsWebCard {
 
 	enterButton() {
 		// console.log('this.state.textData ', this.state.textData);
-		const { user: { username } } = this.getReduxState();
+		const { user: { username, buttonText } } = this.getReduxState();
 		let textBox = new BaseTextContainer({
-			text: "FIND OUT",
+			text: buttonText,
 			wrapperClass: "M(2.7vw)",
 			textBoxClass: "C(white) Bgc(#4f2a8b) Fw(700) Ff($ffroboto) Py(10px) Px(20px) Bdrs(5px) Fz(3vw)",
 			clickHandler: this.clickHandler
@@ -241,8 +245,12 @@ class AcronymsWebCard {
 		return textBox;
 	}
 
-	inputHandler(name) {
-		this.state.store.dispatch(setUserName(name))
+	inputHandler(e) {
+		const alphaExp = /^[a-zA-Z]| +$/;
+		const name = e.target.value;
+    if (name.match(alphaExp)) {
+			this.state.store.dispatch(setUserName(name))
+		}
 	}
 
 	validateUsername(username) {

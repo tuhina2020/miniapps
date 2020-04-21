@@ -1,3 +1,17 @@
+export const setPlaceHolder = payload => {
+	return {
+		type: "SET_PLACEHOLDER",
+		payload
+	}
+};
+
+export const setButtonText = payload => {
+	return {
+		type: "SET_BUTTON_TEXT",
+		payload
+	}
+};
+
 export const setUserName = (payload) => {
 	return {
 		type: 'SET_USER_NAME',

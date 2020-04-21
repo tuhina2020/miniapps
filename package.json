@@ -14,7 +14,9 @@
     "build:indiannewyear": "grunt atomizer:pwa --basePath=indiannewyear  && npm run build indiannewyear",
     "local:indiannewyear": "grunt atomizer:pwa --basePath=indiannewyear  && npm run local indiannewyear",
     "build:acronyms": "grunt atomizer:pwa --basePath=acronyms  && npm run build acronyms",
-    "local:acronyms": "grunt atomizer:pwa --basePath=acronyms  && npm run local acronyms",
+		"local:acronyms": "grunt atomizer:pwa --basePath=acronyms  && npm run local acronyms",
+		"build:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run build paytmtv",
+    "local:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run local paytmtv",
     "build:easter": "grunt atomizer:pwa && npm run build easter",
     "build:champion": "rm -rf ./dist && mkdir dist && rsync -a ./src/champion/ ./dist/"
   },

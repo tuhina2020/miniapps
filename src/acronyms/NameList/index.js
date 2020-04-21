@@ -4,8 +4,8 @@ import {
 } from "@/utils";
 import BaseTextContainer from "@/common/components/BaseTextContainer";
 import _empty from 'lodash/isEmpty';
-import _startCase from 'lodash/startCase';
-import _toLower from 'lodash/toLower';
+import _upperFirst from 'lodash/upperFirst';
+import _lower from 'lodash/lowerCase';
 
 class NameList {
 	constructor(props) {
@@ -35,17 +35,17 @@ class NameList {
 	renderLine(letter) {
 		if (!_empty(letter) || letter.length != 0 || letter != ' ') {
 			const { acronymObj } = this.props;
+			const upLetter = letter.toUpperCase();
 			const pos = this.getAcronymPos({ letter });
-			console.log('EACH ACRONYM ', letter, pos, acronymObj[letter.toUpperCase()]);
-			const tb1 = this.textBox({ text: letter.toUpperCase(), textBoxClass: "C(#236a57) Ff(roboto) Fw(700) Fz(3.8vw)", wrapperClass: "W(7vw) Ta(l)" });
+			console.log('EACH ACRONYM ', letter, pos, acronymObj[upLetter]);
+			const tb1 = this.textBox({ text: upLetter, textBoxClass: "C(#236a57) Ff(roboto) Fw(700) Fz(3vw)", wrapperClass: "W(7vw) Ta(l)" });
 			const tb2 = this.textBox({
-				text : _startCase(_toLower(
-					acronymObj[letter.toUpperCase()][pos]
-				)),
-				textBoxClass: "C(#4f2a8b) Ff(roboto) Fw(700) Fz(3.8vw)",
-				wrapperClass: "My(0.5vw)"
+				text : _upperFirst(
+					_lower(acronymObj[upLetter][pos])
+				),
+				textBoxClass: "C(#4f2a8b) Ff(roboto) Fw(700) Fz(3vw) Whs(nw)",
 			});
-			const container = createNewDiv({ type : 'div', setAttribute: { class : 'D(f)'} });
+			const container = createNewDiv({ type : 'div', setAttribute: { class : 'D(f) My(1vw) W(a)'} });
 			addComponents({ components: [ tb1, tb2 ], container  });
 			return container;
 		}
@@ -67,7 +67,7 @@ class NameList {
 			console.log(ele, 'ELE');
 			if (ele) components.push(ele);
 		}
-		const container = createNewDiv({ type : 'div', setAttribute: { class: "Mx(10vw)" } });
+		const container = createNewDiv({ type : 'div' });
 		console.log(this.state.acronymPos);
 		addComponents({ components, container  });
 		return container;

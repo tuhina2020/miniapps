@@ -72,7 +72,7 @@ export const addOrUpdateUrlParam = (name, value) => {
   }
 };
 
-export const uploadFile = ({ imgData = document.getElementById("app"), params, hide }) => {
+export const uploadFile = ({ imgData = document.body, params, hide }) => {
 	hide.style.display = "none";
 	console.log('MOMOMO 1', params);
 	// return createImagePost({ imageData: { fileUrl : "https://cdn.sharechat.com/254fb513_1586630436058.png"} , Authorization });
@@ -254,7 +254,9 @@ export const getDataExcel = ({ sheetId, page, columns }) => {
 				final.push(entry)
 				entry = {};
 			}
-			entry[columnNames[i%columns]] = d.content["$t"];
+			if (d.content["$t"] !== "NULL") {
+				entry[columnNames[i%columns]] = d.content["$t"];
+			}			
 		});
 		final.push(entry)
 		return final;
