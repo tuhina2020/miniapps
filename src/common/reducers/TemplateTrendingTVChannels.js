@@ -3,7 +3,7 @@ const initialState = {
 	metadata: {}
 }
 
-export default function acronymData(state = initialState, action) {
+export default function tvChannelData(state = initialState, action) {
   switch (action.type) {
     case 'SET_TV_CHANNELS':
       return Object.assign({}, state, {

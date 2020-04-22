@@ -1,6 +1,7 @@
 // import domtoimage from 'dom-to-image';
 import _each from 'lodash/each';
 import _compact from 'lodash/compact';
+import _get from 'lodash/get';
 
 export const request = ({ url, headers, method = "GET", body, mode, string = true }) => {
   console.log('HEADERS : ', headers)
@@ -305,3 +306,31 @@ export const APP_UPDATE_MESSAGES =   {
   "Urdu": "اپنا شیئر چیٹ اپ ڈیٹ کریں",
   "Urdu_US": "Apna ShareChat update karein"
 };
+
+/**
+ * 
+ * @param url to parse
+ * @param paramsList array
+ * [{
+ * 		"type": "String" or "Number", // default is "String"
+ * 		"key": "sheetId", //key to be set in state
+ * 		"urlKey": "sheet", //url param key, if empty then equals key
+ * 		"defaultValue": "abcd" // default value for the key
+ * }]
+ */
+export const getParams = ({ href = document.location.href, paramsList }) => {
+	const url = new URL(href);
+	const obj = {};
+	_each(paramsList, paramObj => {
+		const { type, key, urlKey, defaultValue } = paramObj;
+		obj[key] = url.searchParams.get(urlKey || key);
+		switch(type) {
+			case "Number" :
+				obj[key] = obj[key] ? parseInt(obj[key]) : parseInt(defaultValue);
+				break;
+			default:
+				obj[key] = obj[key] ? obj[key] : defaultValue;
+		}
+	});
+	return obj;
+}
