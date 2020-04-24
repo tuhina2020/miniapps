@@ -130,7 +130,8 @@ module.exports = lang => ({
 		newsCard:
 			"0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.14)",
 		feedCard: "0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 2px 0 rgba(0, 0, 0, 0.12)",
-		white: "0px 0px 0px 1px rgba(255, 255, 255, 0.7)"
+		white: "0px 0px 0px 1px rgba(255, 255, 255, 0.7)",
+		imageOnboarding: "0px 1px 3px rgba(0, 0, 0, 0.1), 0px 2px 2px rgba(0, 0, 0, 0.06), 0px 0px 2px rgba(0, 0, 0, 0.07)"
 	},
 	transition: {
 		prefix: "trs",
@@ -149,7 +150,7 @@ module.exports = lang => ({
 	},
 	border: {
 		prefix: "bd",
-		white: "1px solid white",
+		blue: "1px solid #1990bf",
 		greyWhite: "1px solid #f3f3f3",
 		darkDivider: "2px solid rgba(3, 3, 3, 0.12)",
 		input: "1px solid rgba(0,0,0,0.12)",

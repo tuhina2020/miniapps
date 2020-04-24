@@ -1,5 +1,7 @@
 const initialState = {
-  displayObj: []
+	displayObj: [],
+	selectedTags: [],
+	submitted: false 
 }
 
 export default function acronymData(state = initialState, action) {
@@ -12,6 +14,14 @@ export default function acronymData(state = initialState, action) {
 			return Object.assign({}, state, {
 				metadata: action.payload
 			})
+		case 'SET_GENRE_TAGS' :
+			return Object.assign({}, state, {
+				selectedTags: action.payload
+			});
+		case 'SET_TRANSITION' :
+			return Object.assign({}, state, {
+				submitted: action.payload
+			});
 		default :
 			return state;
 	}

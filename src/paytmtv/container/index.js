@@ -5,7 +5,9 @@ import {
 	getDataExcel,
 	addComponents,
 	bigQueryEvent,
-	request
+	request,
+	getDataSharechatExcel,
+	getParams
 } from "@/utils";
 import { setTVChannels, setMetaData } from "@/common/actions/TemplateTrendingTVChannels";
 import ImageContainer from "@/common/components/BaseImageContainer";
@@ -20,8 +22,8 @@ class TrendingTV {
     this.state = {
 			store: store
 		};
+		this.state.Authorization = getAuthorization(this.state);
 		this.getParams();
-    this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
 		this.bannerClickHandler = this.bannerClickHandler.bind(this);
 		// this.refresh = this.refresh.bind(this);
@@ -55,18 +57,26 @@ class TrendingTV {
 		this.state.page = parseInt(url.searchParams.get("page") || 1);
 		this.state.columns = parseInt(url.searchParams.get("columns") || 6);
 		this.state.meta = parseInt(url.searchParams.get("meta") || 6);
+		const devObj = getParams({
+			paramsList: [{
+				key: 'dev',
+				defaultValue: false,
+				type: 'Boolean'
+			}]
+		});
+		this.state.dev = devObj.dev;
 		console.log(this.state);
 	}
 
 	getDisplayText() {
-		const { sheetId, page, columns } = this.state;
+		const { sheetId, page, columns, Authorization } = this.state;
 		return getDataExcel({ sheetId, page, columns }).then(data => {
 			this.state.store.dispatch(setTVChannels(data));
 		});
 	}
 
 	getMetaData() {
-		const { sheetId, meta } = this.state;
+		const { sheetId, meta, Authorization } = this.state;
 		return getDataExcel({ sheetId, page: meta, columns: 2 }).then(data => {
 			const obj = {};
 			_each(data, d => {
@@ -76,30 +86,61 @@ class TrendingTV {
 		});
 	}
 
-	bannerClickHandler({ url }) {
+	bannerClickHandler({ url, redirect, actionType, eventId }) {
+		console.log(url, redirect, actionType, eventId);
+		const { Authorization, sheetId } = this.state;
 		if (url) {
 			return fetch(url)
 			.then(v => console.log(v))
 			.catch(err => console.log(err));
 		}
+		if (actionType && eventId) {
+			bigQueryEvent({
+				Authorization,
+				payload: {
+					id: eventId,
+					actionType,
+					data: `sheetId-${sheetId}--action-${actionType}`,
+					postId: 0,
+					webcardName : `TRENDING_TV_${eventId}`
+				}
+			});
+		}
+		if (redirect) {
+			const payload = {
+				"type":"launch_custom_chrome_tabs",
+				"webUrl":redirect
+			};
+			console.log(payload);
+			Android.onAction(JSON.stringify(payload));
+		}
 	}
 
-	renderChannels(tvChannels) {
+	renderChannels({ tvChannels, eventId }) {
+		const { Authorization, sheetId } = this.state;
 		const channels = new ChannelContainer({
-			channels : tvChannels
+			channels : tvChannels,
+			Authorization,
+			sheetId,
+			eventId
 		});
 		return channels.render();
 	}
 
 	registerComponents() {
-		const { trendingTV: { metadata: { top, bottom, heading, topClickEvent, bottomClickEvent, viewEvent }, tvChannels }} = this.getReduxState();
+		const { trendingTV: { metadata: { top, bottom, heading, topClickEvent, topRedirectUrl, bottomRedirectUrl, bottomClickEvent, viewEvent, eventId }, tvChannels }} = this.getReduxState();
 		this.bannerClickHandler({
-			url: viewEvent
+			url: viewEvent,
+			actionType : 'view',
+			eventId
 		});
 		let img = new ImageContainer({
 			src: top,
 			clickHandler: () => this.bannerClickHandler({
-				url: topClickEvent
+				url: topClickEvent,
+				redirect : topRedirectUrl,
+				actionType: 'topBannerClick',
+				eventId
 			}),
 			imgClass: "W(100%)"
 		});
@@ -107,12 +148,15 @@ class TrendingTV {
 		img = new ImageContainer({
 			src: bottom,
 			clickHandler: () => this.bannerClickHandler({
-				url: bottomClickEvent
+				url: bottomClickEvent,
+				redirect: bottomRedirectUrl,
+				actionType: 'bottomBannerClick',
+				eventId
 			}),
 			imgClass: "W(100%)"
 		});
 		this.$bottom = img.render();
-		const main = this.renderChannels(tvChannels);
+		const main = this.renderChannels({ tvChannels, eventId});
 		let header = new TextContainer({ text: heading, textBoxClass: "Fw(600) Fz(4.1vw) Lh(5.3vw) C(#4a4a59) Ff(Inter)", wrapperClass: "Mb(4vw)" });
 		header = header.render();
 		this.$main = createNewDiv({

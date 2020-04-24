@@ -4,7 +4,8 @@ import {
 	getAppVersion,
 	registerCleverTap,
 	getDataExcel,
-	addComponents
+	addComponents,
+	bigQueryEvent
 } from "@/utils";
 import {
 	LANGUAGE_WISE_INIT_BACKGROUNDS,
@@ -16,6 +17,7 @@ import {
 	TEXT_BOX2_CLASS,
 	WHATSAPP_CLASS,
 	LANGUAGE_WISE_FINAL_BACKGROUNDS,
+	PLACEHOLDER
 } from "@/indiannewyear/helper2"
 import InputContainer from "@/common/components/BaseInputContainer";
 import BaseTextContainer from "@/common/components/BaseTextContainer";
@@ -29,10 +31,9 @@ class IndianNewYear {
     this.state = {
 			store: store
 		};
-    this.getParams();
+		this.getParams();
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
-		this.state.CleverTap = registerCleverTap();
 		this.getFonts();
 		this.clickHandler = this.clickHandler.bind(this);
 		this.refresh = this.refresh.bind(this);
@@ -101,16 +102,23 @@ class IndianNewYear {
 	}
 
 	eventHandler(data) {
-			const { CleverTap, language, Authorization, webcardName } = this.state
-			this.state.CleverTap.sendEvent("easter_shared_" + webcardName, {
-					language,
-					token : Authorization,
-					name
-			})
-			let payload = {
-					type: "shareWebCard",
-					postId: data.PostDetails.postId
+			const { CleverTap, language, Authorization } = this.state
+			const { user: { username } } = this.getReduxState();
+			const payload = {
+				type: "shareWebCard",
+				postId: data.PostDetails.postId
 			};
+			bigQueryEvent({
+				Authorization,
+				payload: {
+					id: `indianNewYear_${language}`,
+					actionType: "share",
+					data: `language-${language}`,
+					postId: data.PostDetails.postId,
+					webcardName : `indianNewYear_${language}`,
+					nameSubmitted1: username
+				}
+			});
 			window.Android.onAction(JSON.stringify(payload));
 	}
 	
@@ -168,7 +176,6 @@ class IndianNewYear {
 	}
 
 	refresh() {
-		console.log('YOYOO');
 		this.state.store.dispatch(toggleSharedState());
 		this.state.store.dispatch(setUserName(''));
 		this.$container.remove();
@@ -177,8 +184,10 @@ class IndianNewYear {
 	}
 
 	clickHandler() {
+		console.log('YOYOO');
 		const { user: { username, namePosition, text2 } } = this.getReduxState();
-		if (!this.validateUsername(username)) return;
+		const { Authorization, language } = this.state;
+		if (!username || username && username.length == 0) return;
 		console.log('CLICKED');
 		if (namePosition === 'separate')
 			this.$nameBox = this.nameBox(username);
@@ -186,6 +195,18 @@ class IndianNewYear {
 			this.$nameBox = undefined;
 			this.$textBox2 = this.textBox2(text2.replace("${username}", username))
 		}
+
+		bigQueryEvent({
+			Authorization,
+			payload: {
+				id: `indianNewYear_${language}`,
+				actionType: "submit",
+				data: `language-${language}`,
+				postId: 0,
+				webcardName : `indianNewYear_${language}`,
+				nameSubmitted1: username
+			}
+		});
 
 		this.state.store.dispatch(toggleSharedState());
 		this.render();
@@ -195,6 +216,7 @@ class IndianNewYear {
 		const { validateUsername } = this.state;
 		const valid = !!username  && username.length <= 30 && username.length > 0;
 		this.state.validateUsername = valid;
+		console.log('VALID USERNAME ', valid, username);
 		return valid;
 	}
 
@@ -242,22 +264,19 @@ class IndianNewYear {
 		let input = new InputContainer(this.addStore({
 			inputHandler: this.inputHandler,
 			...styleClassesObj,
-			text: this.getReduxState().username,
-			placeholder : language === 'Bengali' ? "Please Enter Your Friend's name" : undefined
+			text: this.getReduxState().user.username,
+			placeholder : PLACEHOLDER[language] || PLACEHOLDER['default']
 		}));
 		input = input.render();
 		return input;
 	}
 
-	inputHandler(name) {
-		const valid = this.validateUsername(name)
-		this.state.store.dispatch(setUserName(name))
-		// console.log('VALID DISPATCH ', name, valid);
-		// if(valid) {
-		// 	this.$enterButton.remove();
-		// 	this.$enterButton = this.enterButton();
-		// 	this.render();
-		// }
+	inputHandler(e) {
+		const alphaExp = /^[a-zA-Z]| +$/;
+		const name = e.target.value;
+    if (name.match(alphaExp)) {
+			this.state.store.dispatch(setUserName(name))
+		}
 	}
 
 	render() {

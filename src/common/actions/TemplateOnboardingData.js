@@ -11,3 +11,17 @@ export const setOnboardingMetaData = payload => {
 		payload
 	}
 }
+
+export const setSelectedGenres = payload => {
+	return {
+		type: 'SET_GENRE_TAGS',
+		payload
+	}
+}
+
+export const setTransition = payload => {
+	return {
+		type: 'SET_TRANSITION',
+		payload
+	}
+}

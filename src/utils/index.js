@@ -2,6 +2,7 @@
 import _each from 'lodash/each';
 import _compact from 'lodash/compact';
 import _get from 'lodash/get';
+import config from './config';
 
 export const request = ({ url, headers, method = "GET", body, mode, string = true }) => {
   console.log('HEADERS : ', headers)
@@ -30,23 +31,20 @@ export const addComponents = ({ components = [], container }) => {
 }
 
 const DEFAULT_TOKEN =
-  "PnZsF1v6xZx91gFaCvqmB33dC1XSNYBRFz9JvEWRhFM88EhZKEvA5/YvsTywK0tQMrsaP402HqL3qQmfC235X2QxozFfmhWTbyQW1eincL2C9Bxry/yg1E/8j3E5st5Qt6N6QA8PU29v8AbxmUV+zaK28il0hZ8H6KZWtCoVVWY6dG2LtxH/C8uNOdyWueF112djOFh6Cgi46SxYTGExq5od+3qpUr8G3DXTW9DfRRB1vb3mAOTDpcbIyK1NycNXXehOaflxWWZEHzUSPQvTCuDcgAHipPAFxFIs9n8yhX38cet3wa8qwwrZzr6ifBzWoKyBjOD0NDzTx2pYo8+2/g==";
+	"PnZsF1v6xZx91gFaCvqmB33dC1XSNYBRFz9JvEWRhFM88EhZKEvA5/YvsTywK0tQMrsaP402HqL3qQmfC235X2QxozFfmhWTbyQW1eincL2C9Bxry/yg1E/8j3E5st5Qt6N6QA8PU29v8AbxmUV+zaK28il0hZ8H6KZWtCoVVWY6dG2LtxH/C8uNOdyWueF112djOFh6Cgi46SxYTGExq5od+3qpUr8G3DXTW9DfRRB1vb3mAOTDpcbIyK1NycNXXehOaflxWWZEHzUSPQvTCuDcgAHipPAFxFIs9n8yhX38cet3wa8qwwrZzr6ifBzWoKyBjOD0NDzTx2pYo8+2/g==";
+	
+const DEFAULT_STAGING_TOKEN = 'kDnqCmi96brqk+qJBLSiOlvXULyLMMhrsaykALShCT+M0MO7Ezooq/98gjMWtqJvBR/PKRbOxlW/nZTNeNagDs3rbemCmgCHHFIee8H1cvFNRQ0UB6f4dON9xrbR1W0xbIsSDV4GXCsXATLFSEYRHH/VQZb0pesjdDv4Yw3Z0yDNYf71FxcyJQlqYoE6wBDYC7SxTvt5tWeXKyzKHx3M5gSC+DljRd4l/mb8DLPEkpl/WUS8x2d1sNqhPrNxqJB1x/x/F9RJfu5yap7lTmM3oNYWHgLUNSi2bF3NpmOdFVZDV4CRjtL7fXm1BG67IkRJfSvPPHixsj7GtFjmKWRHdw==';
 
 const handleToken = token => token.replace(new RegExp("\n", "g"), "\\n");
 
 export const getAuthorization = state => {
+	console.log('INSIDE AUTH : ', state.dev);
   let Authorization;
-  console.log(state);
-  if (state.Authorization) {
-    Authorization = handleToken(state.Authorization);
-  } else {
-    try {
-      Authorization = handleToken(Android.get("userInfo"));
-    } catch (e) {
-      Authorization = handleToken(DEFAULT_TOKEN);
-    }
-  }
-
+  try {
+		Authorization = handleToken(Android.get("userInfo"));
+	} catch (e) {
+		Authorization = state.dev ? handleToken(DEFAULT_STAGING_TOKEN) : handleToken(DEFAULT_TOKEN);
+	}
   return Authorization;
 };
 
@@ -264,6 +262,39 @@ export const getDataExcel = ({ sheetId, page, columns }) => {
 	})
 }
 
+export const getDataSharechatExcel = ({ sheetId, page, columns, Authorization }) => {
+	const payload = {
+		sheetId,
+		sheetNumber: page
+	}
+	return fetch(
+		"https://apis.staging.sharechat.com/webcard-service/v1.0.0/getOnboardingWebcardsDetails",
+		{
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization
+			},
+			body: JSON.stringify(payload)
+		}).then(data => data.json()).then(data => {
+			const columnNames = data.slice(0, columns).map(d => d.content["$t"]);
+			const final = [];
+			let entry = {};
+			data.slice(columns).forEach((d,i) => {
+				if ( i%columns === 0 && i !==0) {
+					final.push(entry)
+					entry = {};
+				}
+				if (d.content["$t"] !== "NULL") {
+					entry[columnNames[i%columns]] = d.content["$t"];
+				}			
+			});
+			final.push(entry)
+			return final;
+		})
+}
+
 export const blankPage = () => {
 	document.getElementById('app').innerHTML = '';
 }
@@ -328,9 +359,30 @@ export const getParams = ({ href = document.location.href, paramsList }) => {
 			case "Number" :
 				obj[key] = obj[key] ? parseInt(obj[key]) : parseInt(defaultValue);
 				break;
+			case 'Boolean' :
+				obj[key] = obj[key] ? !!obj[key] : defaultValue || false;
 			default:
 				obj[key] = obj[key] ? obj[key] : defaultValue;
 		}
 	});
 	return obj;
+}
+
+export const setOnboardingTags = ({ payload, Authorization, dev }) => {
+	const BASE_URL = getConfig({ dev, property : 'BASE_URL' });
+	return fetch(
+		 `${BASE_URL}/webcard-service/v1.0.0/sendOnboardingUiEvents`,
+		{
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				Authorization
+			},
+			body: JSON.stringify(payload)
+	});
+}
+
+const getConfig = ({ dev, property }) => {
+	return dev ? config.STAGING[property] : config.PRODUCTION[property];
 }
