@@ -262,13 +262,15 @@ export const getDataExcel = ({ sheetId, page, columns }) => {
 	})
 }
 
-export const getDataSharechatExcel = ({ sheetId, page, columns, Authorization }) => {
+export const getDataSharechatExcel = ({ sheetId, page, columns, Authorization, dev = false }) => {
 	const payload = {
 		sheetId,
 		sheetNumber: page
 	}
+	const BASE_URL = getConfig({ dev, property : 'BASE_URL' });
+	console.log('DEV IS ', BASE_URL, dev);
 	return fetch(
-		"https://apis.staging.sharechat.com/webcard-service/v1.0.0/getOnboardingWebcardsDetails",
+		`${BASE_URL}/webcard-service/v1.0.0/getOnboardingWebcardsDetails`,
 		{
 			method: "POST",
 			headers: {
@@ -368,7 +370,7 @@ export const getParams = ({ href = document.location.href, paramsList }) => {
 	return obj;
 }
 
-export const setOnboardingTags = ({ payload, Authorization, dev }) => {
+export const setOnboardingTags = ({ payload, Authorization, dev = false }) => {
 	const BASE_URL = getConfig({ dev, property : 'BASE_URL' });
 	return fetch(
 		 `${BASE_URL}/webcard-service/v1.0.0/sendOnboardingUiEvents`,

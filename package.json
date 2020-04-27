@@ -14,10 +14,10 @@
     "build:indiannewyear": "grunt atomizer:pwa --basePath=indiannewyear  && npm run build indiannewyear",
     "local:indiannewyear": "grunt atomizer:pwa --basePath=indiannewyear  && npm run local indiannewyear",
     "build:acronyms": "grunt atomizer:pwa --basePath=acronyms  && npm run build acronyms",
-		"local:acronyms": "grunt atomizer:pwa --basePath=acronyms  && npm run local acronyms",
-		"build:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run build paytmtv",
-		"local:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run local paytmtv",
-		"build:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run build onboarding",
+    "local:acronyms": "grunt atomizer:pwa --basePath=acronyms  && npm run local acronyms",
+    "build:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run build paytmtv",
+    "local:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run local paytmtv",
+    "build:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run build onboarding",
     "local:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run local onboarding",
     "build:easter": "grunt atomizer:pwa && npm run build easter",
     "build:champion": "rm -rf ./dist && mkdir dist && rsync -a ./src/champion/ ./dist/"
@@ -26,14 +26,18 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@google-cloud/storage": "^4.7.0",
     "async": "^3.1.0",
     "atomizer": "^3.7.0",
     "aws-sdk": "^2.503.0",
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "braces": ">=2.3.1",
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^3.0.0",
@@ -63,8 +67,8 @@
     "webpack-md5-hash": "0.0.6"
   },
   "dependencies": {
+    "@babel/runtime": "^7.9.2",
     "dom-to-image": "^2.6.0",
-    "express": "^4.17.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6"
   }

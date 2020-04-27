@@ -36,7 +36,10 @@ module.exports = (env, argv) => {
 					use: {
 						loader: "babel-loader",
 						options: {
-							presets: ['@babel/preset-env'],
+							"presets": ["@babel/preset-env"],
+							"plugins": [
+									["@babel/transform-runtime"]
+							]
 						}
 					},
         },
@@ -49,7 +52,6 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(png|svg|jpg|gif|mp4)$/,
-					// use: ["file-loader"],
 					loader: 'file-loader',
 					options: {
 						name: './assets/[name][contenthash].[ext]'
@@ -90,6 +92,10 @@ module.exports = (env, argv) => {
       new CompressionPlugin({
         algorithm: "gzip"
 			}),
+			new CopyPlugin([
+				// relative path is from src
+				{ from: './static/favicon.ico' }, // <- your path to favicon
+			])
     ],
     devServer: {
       contentBase: argv.type,

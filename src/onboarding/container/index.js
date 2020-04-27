@@ -30,6 +30,7 @@ class OnBoarding {
 		this.state.appVersion = getAppVersion();
 		this.cardClickHandler = this.cardClickHandler.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.renderPage2 = this.renderPage2.bind(this);
 	}
 
 	getData() {
@@ -94,21 +95,24 @@ class OnBoarding {
 	getDisplayText() {
 		const { displayExcelObj, Authorization } = this.state;
 		return getDataSharechatExcel({ ...displayExcelObj, Authorization }).then(data => {
+			console.log('DATA FROM EXCEL', data);
 			const parsedData = _map(data, d => {
 				const tags = d.tags.split('|');
 				return { ...d, tags };
-			})
+			});
+			console.log('DATA FROM DISPLAY ', parsedData);
 			this.state.store.dispatch(setOnboardingDisplayData(parsedData));
 		});
 	}
 
 	getMetaData() {
-		const { displayExcelObj : { sheetId, meta }, Authorization } = this.state;
-		return getDataSharechatExcel({ sheetId, page: meta, columns: 2, Authorization }).then(data => {
+		const { displayExcelObj : { sheetId, meta }, Authorization, dev } = this.state;
+		return getDataSharechatExcel({ sheetId, page: meta, columns: 2, Authorization, dev }).then(data => {
 			const obj = {};
 			_each(data, d => {
 				obj[d.key] = d.value;
-			})
+			});
+			console.log('DATA FROM META ', obj);
 			this.state.store.dispatch(setOnboardingMetaData(obj));
 		});
 	}
@@ -132,17 +136,26 @@ class OnBoarding {
 
 	onSubmit() {
 		const { onboarding: { selectedTags } } = this.getReduxState();
+		if ( selectedTags.length === 0) return;
 		const payload = {
 			tagIds: selectedTags
 		}
+		const { Authorization, dev } = this.state;
 		for (let index = 0; index < 2; index++) {
-			setOnboardingTags({ payload, Authorization: this.state.Authorization });
+			setOnboardingTags({ payload, Authorization, dev });
 		}
 		this.state.store.dispatch(setTransition(true));
+		setTimeout(this.renderPage2, 1200);
+	}
+
+	renderPage2() {
+		const ele = document.getElementsByClassName('all-pages-container')[0];
+		ele.classList.add('moveLeft');
+		ele.classList.remove('Ov(h)')
 	}
 
 	registerComponents() {
-		const { onboarding: { metadata: { heading, submitCTAText }, displayObj } } = this.getReduxState();
+		const { onboarding: { metadata: { heading, submitCTAText, backgroundPage2 }, displayObj } } = this.getReduxState();
 		this.$header = new TextContainer({
 			text: heading,
 			textBoxClass: "Ff(Inter) Fw(600) Fz(5.5vw) Lh(6.6vw) C(#4a4a59)",
@@ -154,8 +167,8 @@ class OnBoarding {
 
 		let submitTextContainer = new TextContainer({
 			text: submitCTAText,
-			wrapperClass: 'Ta(c) Bdrs(10vw) Bd($bdblue) W(26.67vw) Op(0.5) submit-text',
-			textBoxClass: "Fz(3.8vw) Ff(Inter) Fw(600) C(#1990bf) P(2.7vw) Lh(5vw) Py(2.2vw) ripple Bdrs(10vw)"
+			wrapperClass: 'Ta(c) Bdrs(10vw) Bd($bdblue) W(26.67vw) Op(0.5) ripple submit-text',
+			textBoxClass: "Fz(3.8vw) Ff(Inter) Fw(600) C(#1990bf) P(2.7vw) Lh(5vw) Py(2.2vw) Bdrs(10vw)"
 		});
 
 		submitTextContainer = submitTextContainer.render();
@@ -165,19 +178,45 @@ class OnBoarding {
 				class: 'D(f) Jc(c) My(2.2vw)'
 			}
 		});
+		let img = new ImageContainer({
+			src: backgroundPage2,
+			// clickHandler: () => this.bannerClickHandler({
+			// 	url: topClickEvent
+			// }),
+			imgClass: ` W(100vw) H(a)`,
+			wrapperClass: 'Pos(a) Start(100vw)'
+		});
+
+		this.$page2 = img.render();
+
+		// this.$page2 = createNewDiv({
+		// 	type: 'div',
+		// 	setAttribute: {
+		// 		class: `H(133.33vw) W(100vw) Pos(a) Start(100vw)`,
+		// 		style: `background-image:url("${backgroundPage2}")`
+		// 	}
+		// });
 
 		this.$submitButtonContainer.addEventListener('click', this.onSubmit);
 
 		addComponents({ components: [submitTextContainer], container: this.$submitButtonContainer });
 
-		this.$container = createNewDiv({
+		const container1 = createNewDiv({
 			type: 'div',
 			setAttribute: {
 				class: 'all-cards-container'
 			}
 		});
 
-		addComponents({ components : [this.$header, this.$cardContainer, this.$submitButtonContainer], container : this.$container });
+		this.$container = createNewDiv({
+			type: 'div',
+			setAttribute: {
+				class: 'all-pages-container Pos(a) T(0) Ov(h)'
+			}
+		});
+
+		addComponents({ components : [this.$header, this.$cardContainer, this.$submitButtonContainer], container : container1 });
+		addComponents({ components : [this.$page2, container1], container : this.$container });
 	}
 
 	render() {

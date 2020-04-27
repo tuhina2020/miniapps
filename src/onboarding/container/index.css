@@ -26,3 +26,17 @@
   opacity: .3;
   transition: 0s;
 }
+
+.moveLeft {
+	-webkit-animation: moveToLeft .6s ease both;
+	animation: moveToLeft .6s ease both;
+}
+
+@-webkit-keyframes moveToLeft {
+	from { }
+	to { -webkit-transform: translateX(-100vw); }
+}
+@keyframes moveToLeft {
+	from { }
+	to { -webkit-transform: translateX(-100vw); transform: translateX(-100vw); }
+}

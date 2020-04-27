@@ -14,6 +14,7 @@ import _keys from 'lodash/keys';
 
 import ImageContainer from "@/common/components/BaseImageContainer";
 import TextContainer from "@/common/components/BaseTextContainer";
+import IconContainer from "@/common/components/BaseIconContainer";
 
 class Cards {
 	constructor(props) {
@@ -56,30 +57,37 @@ class Cards {
 		let text = new TextContainer({
 			text: genreText,
 			textBoxClass: "Ff(Mukta) Fw(600) Fz(4.4vw) Lh(5.5vw) C(#4a4a59)",
-			wrapperClass: `Ta(c) Bgc(#eaf5fe) Pos(r) B(5.3vw) Op(0.9) Bdrsbend(1.1vw) Bdrsbstart(1.1vw) text-container-${id}`
+			wrapperClass: `Ta(c) Bgc(#eaf5fe) Pos(r) B(5.3vw) Op(0.9) Bdrsbend(1.1vw) Bdrsbstart(1.1vw) W(42.22vw) text-container-${id}`
 		});
 		let text1 = new TextContainer({
 			text: genreText,
 			textBoxClass: "Ff(Mukta) Fw(600) Fz(4.4vw) Lh(5.5vw) C(white)",
-			wrapperClass: `Ta(c) Pos(r) B(13vw) hidden-text-container-1 hidden-text-container-${id} D(n)`
+			wrapperClass: `Ta(c) Pos(r) B(13vw) W(42.22vw) hidden-text-container-${id} Op(0)`
+		});
+		const cornerIcon = new IconContainer({
+			iconFilePath: 'check-black',
+			wrapperClass: `Op(0) icon-container-${id} Pos(r) B(21vw) Start(1vw) W(5vw) H(5vw) Bgc(white) Bdrs(1vw) ` ,
+			svgClass: 'H(5vw) Fill(#1990bf) C(white) Bg(n) W(5vw)'
 		});
 		text1 = text1.render();
 		text = text.render();
 		addComponents({
-			components : [img, text, text1],
+			components : [img, cornerIcon, text, text1],
 			container: cardContainer
-	 });
-	 cardContainer.addEventListener('click', e => this.clickHandler(id));
-	 return cardContainer;
+		});
+		cardContainer.addEventListener('click', e => this.clickHandler(id));
+		return cardContainer;
 	}
 
 	clickHandler(id) {
 		const flag = this.updateSelection(id);
 		if ( !flag ) return;
-		document.getElementsByClassName(`single-card-container-${id}`)[0].classList.toggle('Bgc(#1990bf)');
+		document.getElementsByClassName(`image-container-${id}`)[0].parentNode.classList.toggle('Bdrs(1.1vw)');
+		document.getElementsByClassName(`image-container-${id}`)[0].parentNode.classList.toggle('Bgc(#1990bf)');
 		document.getElementsByClassName(`image-container-${id}`)[0].classList.toggle('Op(0.4)');
-		document.getElementsByClassName(`text-container-${id}`)[0].classList.toggle('D(n)');
-		document.getElementsByClassName(`hidden-text-container-${id}`)[0].classList.toggle('D(n)');
+		document.getElementsByClassName(`text-container-${id}`)[0].classList.toggle('Op(0)');
+		document.getElementsByClassName(`hidden-text-container-${id}`)[0].classList.toggle('Op(0)');
+		document.getElementsByClassName(`icon-container-${id}`)[0].classList.toggle('Op(0)');
 		const { cardClickHandler } = this.props;
 		const { selection } = this.state;
 		cardClickHandler(_keys(_omitBy(selection, k => !k)));

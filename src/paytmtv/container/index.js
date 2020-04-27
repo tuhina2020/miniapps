@@ -156,7 +156,7 @@ class TrendingTV {
 			imgClass: "W(100%)"
 		});
 		this.$bottom = img.render();
-		const main = this.renderChannels({ tvChannels, eventId});
+		const main = this.renderChannels({ tvChannels, eventId });
 		let header = new TextContainer({ text: heading, textBoxClass: "Fw(600) Fz(4.1vw) Lh(5.3vw) C(#4a4a59) Ff(Inter)", wrapperClass: "Mb(4vw)" });
 		header = header.render();
 		this.$main = createNewDiv({
