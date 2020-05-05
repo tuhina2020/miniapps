@@ -7,7 +7,8 @@ import {
 	getDataExcel,
 	addComponents,
 	genericBigQueryEvent,
-	getParams
+	getParams,
+	getDateFormat
 } from "@/utils";
 import InputContainer from "@/common/components/BaseInputContainer";
 import BaseTextContainer from "@/common/components/BaseTextContainer";
@@ -62,7 +63,7 @@ class CovidZone {
 
 	getAllData() {
 		const { displayExcelObj : { sheetId }, Authorization } = this.state;
-		return getDataSharechatExcel({ sheetId, columns: 3, page : 1, Authorization }).then(data => {
+		return getDataExcel({ sheetId, columns: 3, page : 1, Authorization }).then(data => {
 			const parsedData = _filter(data, d => d.district !== "*District*" && d.state !== "NULL" && d.district !== "NULL" );
 			this.state.store.dispatch(setGenericData(parsedData));
 		});
@@ -70,14 +71,14 @@ class CovidZone {
 
 	getMetaData() {
 		const { displayExcelObj : { sheetId }, Authorization } = this.state;
-		return getDataSharechatExcel({ sheetId, columns: 6, page : 2, Authorization }).then(data => {
+		return getDataExcel({ sheetId, columns: 7, page : 4, Authorization }).then(data => {
 			this.state.store.dispatch(setGenericMetaData(data));
 		});
 	}
 
 	getLangDisplayData() {
 		const { displayExcelObj : { sheetId }, Authorization } = this.state;
-		return getDataSharechatExcel({ sheetId, columns: 2, page : 3, Authorization }).then(data => {
+		return getDataExcel({ sheetId, columns: 2, page : 3, Authorization }).then(data => {
 			this.state.store.dispatch(setGenericStatesMetaData(data));
 		});
 	}
@@ -127,7 +128,7 @@ class CovidZone {
 	registerComponents() {
 		this.getCurrentLangData();
 		this.getFilteredList();
-		const { current : { tagId, tagString }, language, Authorization } = this.state;
+		const { current : { tagId, tagString, helper }, language, Authorization } = this.state;
 		const { covidzone: { states, data, filteredData } } = this.getReduxState();
 		this.$container = createNewDiv({
 			type: "div",
@@ -174,6 +175,7 @@ class CovidZone {
 			topCities : filteredData,
 			statusList: data,
 			visible: false,
+			helper,
 			onClick: this.clickHandler
 		});
 		this.$city = this.$city.render();
@@ -227,6 +229,11 @@ class CovidZone {
 		});
 		this.$bottomImg.classList.toggle("D(f)");
 		this.$bottomImg.style.display = 'none';
+		const payload = {
+			type: "shareWebCard",
+			postId: data.PostDetails.postId
+		};
+		window.Android.onAction(JSON.stringify(payload));
 	}
 
 	clickHandler(city) {
@@ -248,8 +255,6 @@ class CovidZone {
 		this.$content3.classList.toggle('B(180vw)');
 		this.$bottomImg.classList.toggle("D(f)");
 		this.$bottomImg.style.display = 'none';
-		// this.$bottomImg.classList.toggle('T(80vw)');
-		// this.$bottomImg.classList.toggle('T(102vw)');
 		this.$city.classList.toggle('D(n)');
 		this.$earth.classList.toggle('T(100vw)')
 		this.$earth.classList.toggle('T(30vw)')
@@ -258,7 +263,7 @@ class CovidZone {
 		this.$textBox1.firstChild.classList.toggle('C(#9e9f9f)');
 		this.$textBox1.firstChild.classList.toggle('C(#24565a)');
 		this.$share.classList.toggle('T(101vw)');
-		this.$share.classList.toggle('T(80vw)');
+		this.$share.classList.toggle('T(87vw)');
 		this.$bottomImg.classList.toggle("D(f)");
 		this.$bottomImg.style.display = 'none';
 		const colorMap = {
@@ -268,15 +273,14 @@ class CovidZone {
 		}
 		let ele1 = new BaseTextContainer({
 			text: `${city.district}`,
-			wrapperClass: "C(#24565a)",
-			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(4.5vw)",
+			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(4.5vw) Whs(nw) C(#24565a)",
 		});
 		
 		ele1 = ele1.render();
 
 		let ele2 = new BaseTextContainer({
 			text: `${city.zone}`,
-			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(4.5vw)",
+			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(4.5vw) Whs(nw)",
 			wrapperClass: 'My(2vw)',
 			inline: `color:${colorMap[city.zone]};`
 		});
@@ -285,10 +289,18 @@ class CovidZone {
 		let ele = createNewDiv({
 			type: "div",
 			setAttribute: {
-				class: "Pos(r) T(15vw) Trsp(a) Trsdu(0.5s) Trstf(e)"
+				class: "Pos(r) T(25vw) Trsp(a) Trsdu(0.5s) Trstf(e)"
 			}
 		});
-		addComponents({ components: [ele1, ele2 ], container: ele });
+
+		let ele3 = new BaseTextContainer({
+			text: 	getDateFormat(),
+			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(3vw) C(#24565a)",
+			wrapperClass: "My(1vw)"
+		});
+		
+		ele3 = ele3.render();
+		addComponents({ components: [ele1, ele2, ele3 ], container: ele });
 		this.$content2.appendChild(ele);
 	}
 
@@ -304,11 +316,13 @@ class CovidZone {
 
 	renderCity() {
 		console.log('RENDER CITY');
-		const { covidzone: { states, data, filteredData } } = this.getReduxState();
+		const { covidzone: { states, data, filteredData, username } } = this.getReduxState();
+		const { current : { helper } } = this.state;
 		let city = new CityList({
 			topCities : filteredData,
 			statusList: data,
 			visible : true,
+			helper : username.length === 0 ? helper : false,
 			onClick: this.clickHandler
 		});
 		city = city.render();
@@ -323,7 +337,7 @@ class CovidZone {
 		const { current : { text1 } } = this.state;
 		let textBox = new BaseTextContainer({
 			text: text1,
-			wrapperClass: "Pos(a) T(8vw) Trsp(a) Trsdu(0.5s) Trstf(e) Whs(nw)",
+			wrapperClass: "Pos(a) T(8vw) Trsp(a) Trsdu(0.5s) Trstf(e) W(80vw)",
 			textBoxClass: "Ta(c) Ff($ffroboto) C(#9e9f9f) Fw(700) Fz(4.5vw)",
 		});
 		
@@ -335,7 +349,7 @@ class CovidZone {
 		const { covidzone : { username } } = this.getReduxState();
 		const { current : { placeholder } } = this.state;
 		let input = new InputContainer({
-			inputBoxClass: "Bgc(#5ee0d9) Bxsh($bxshcovidZone) Bdrs(5vw) Bd(n) W(70vw) H(10vw) Pstart(12vw) Ta(l):ph Op(0.4) Fz(4vw):ph O(n):f",
+			inputBoxClass: "Bgc(#5ee0d9) Bxsh($bxshcovidZone) Bdrs(5vw) Bd(n) W(70vw) H(10vw) Pstart(10vw) Ta(l):ph Op(0.4) Fz(4vw):ph O(n):f",
 			inputHandler: this.inputHandler,
 			text: username,
 			placeholder : placeholder,
@@ -391,7 +405,7 @@ class CovidZone {
 		let filteredList = states.filter(obj => obj.language === language);
 		if (username.length >= 1) {
 			filteredList = data.filter(obj => {
-				const alphaExp = new RegExp(`^${username.toLowerCase()}`);
+				const alphaExp = new RegExp(`${username.toLowerCase()}`);
 				if (stateList === "ALL") return obj.district.toLowerCase().match(alphaExp);
 				else {
 					return obj.district.toLowerCase().match(alphaExp) && stateList.split("|").includes(obj.state);

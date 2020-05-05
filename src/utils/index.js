@@ -241,6 +241,13 @@ export const genericBigQueryEvent = ({ Authorization, payload }) => {
 		});
 }
 
+export const getDateFormat = () => {
+	const d = new Date('2010-08-05')
+	const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'long', day: '2-digit' }) 
+	const [{ value: mm },,{ value: dd },,{ value: yy }] = dtf.formatToParts(d) 
+	return `${dd} ${mm} ${yy}`
+}
+
 export const getDataExcel = ({ sheetId, page, columns }) => {
 	return fetch(`https://spreadsheets.google.com/feeds/cells/${sheetId}/${page}/public/full?alt=json`, {
 		method: 'GET'

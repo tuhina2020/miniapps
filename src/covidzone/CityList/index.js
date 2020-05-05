@@ -27,14 +27,14 @@ class CityList {
 		let textBox = new BaseTextContainer({
 			text: city.district,
 			wrapperClass: "",
-			textBoxClass: "Ta(l) Ff($ffroboto) C(grey) Fw(700) Fz(4vw)",
+			textBoxClass: "Ta(l) Ff($ffroboto) C(grey) Fz(3vw)",
 		});
 		textBox = textBox.render();
 
 		const cardContainer = createNewDiv({
 			type: 'div',
 			setAttribute: {
-				class: `single-text-${index} D(f) Ai(c) Jc(sb) P(2vw) ${index === last ? '' : 'Bdb($bdGrey) Pos(r) Ov(h) Trf($trsrippleTranslate)'}`
+				class: `single-text-${index} D(f) Ai(c) Jc(sb) Py(2.5vw) Mx(2.5vw) ${index === last ? '' : 'Pos(r) Bdb($bdGrey) Ov(h) Trf($trsrippleTranslate)'}`
 			}
 		});
 		
@@ -62,14 +62,14 @@ class CityList {
 		let textBox = new BaseTextContainer({
 			text: "No Districts Found. Try Again",
 			wrapperClass: "H(14vw) D(f) Jc(c) Ai(c)",
-			textBoxClass: "Ta(c) Ff($ffroboto) C(grey) Fw(500) Fz(3.5vw)",
+			textBoxClass: "Ta(c) Ff($ffroboto) C(grey) Fw(500) Fz(3vw)",
 		});
 		textBox = textBox.render();
 		return textBox;
 	}
 
 	render() {
-		const { topCities, visible = true } = this.props;
+		const { topCities, visible = true, helper } = this.props;
 		const cardContainer = createNewDiv({
 			type: 'div',
 			setAttribute: {
@@ -80,6 +80,14 @@ class CityList {
 			const c = this.emptyView();
 			cardContainer.appendChild(c);
 		} else {
+			let ele = new BaseTextContainer({
+				text: helper,
+				textBoxClass: "Ta(c) Ff($ffroboto) Fw(300) Fz(2.5vw) Whs(nw) C(grey)",
+				wrapperClass: 'M(1vw)',
+			});
+			
+			ele = ele.render();
+			if (helper) cardContainer.appendChild(ele);
 			topCities.slice(0,6).forEach((city, index) => {
 				const component = this.renderLine({ city, index, last : topCities.slice(0,6).length - 1 });
 				cardContainer.appendChild(component);
