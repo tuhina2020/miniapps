@@ -1,7 +1,7 @@
 import {
 	createNewDiv,
 	addComponents,
-	bigQueryEvent
+	genericBigQueryEvent
 } from "@/utils";
 import _maxBy from 'lodash/maxBy';
 import ImageContainer from "@/common/components/BaseImageContainer";
@@ -25,7 +25,8 @@ class Channels {
 		const total = channels.length;
 		let img = new ImageContainer({
 			src: picture,
-			imgClass: "W(12.69vw) H(a) Bdrs(50%) Bdw(t) Bdc(lightgrey) Bds(s)"
+			imgClass: "W(12.69vw) H(a) Bdrs(50%) Bdw(t) Bdc(lightgrey) Bds(s)",
+			wrapperClass: 'W(12.69vw) H(12.69vw) Bdrs(6.345vw)'
 		});
 
 		img = img.render();
@@ -65,7 +66,7 @@ class Channels {
 	}
 
 	clickHandler({ tagId, Authorization, sheetId, eventId }) {
-		bigQueryEvent({
+		genericBigQueryEvent({
 			Authorization,
 			payload: {
 				id: eventId,
@@ -86,7 +87,7 @@ class Channels {
 	}
 
 	imgClickHandler({ profile, Authorization, sheetId, eventId }) {
-		bigQueryEvent({
+		genericBigQueryEvent({
 			Authorization,
 			payload: {
 				id: eventId,
@@ -101,7 +102,7 @@ class Channels {
 			"type":"profile",
 			"self":false,
 			"referrer":"webPost",
-			"userId": profileId
+			"userId": profile
 		};
 		console.log(payload);
 		Android.onAction(JSON.stringify(payload));

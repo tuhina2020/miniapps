@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  </head>
+  <body>
+    <div id="box"></div>
+		<main id="app" class="container"></main>
+		<style>
+			#box {
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				transition: all 1s;
+			}
+			#box.clicked {
+				width: 300px;
+				height: 300px;
+				background-color: green;
+				transition: width 1s, height 1s, background-color 3s;
+			}
+		</style>
+		<script>
+			document.addEventListener('DOMContentLoaded', function(e) {
+				document.getElementById('box').addEventListener('click', function (event) {
+					event.target.classList.toggle('clicked');
+				})
+			})
+		</script>
+	</body>
+</html>

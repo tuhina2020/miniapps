@@ -213,7 +213,7 @@ export const registerCleverTap = () => {
 	return CleverTap;
 }
 
-export const bigQueryEvent = ({ Authorization, payload }) => {
+export const genericBigQueryEvent = ({ Authorization, payload }) => {
 	// const requestObj = {
 	// 	method: "POST",
 	// 	url: "https://apis.sharechat.com/webcard-service/v1.0.0/webcardAds/event",
@@ -362,7 +362,7 @@ export const getParams = ({ href = document.location.href, paramsList }) => {
 				obj[key] = obj[key] ? parseInt(obj[key]) : parseInt(defaultValue);
 				break;
 			case 'Boolean' :
-				obj[key] = obj[key] ? !!obj[key] : defaultValue || false;
+				obj[key] = obj[key] === 'false' ? false : (obj[key] === 'true' ? true : defaultValue);
 			default:
 				obj[key] = obj[key] ? obj[key] : defaultValue;
 		}
@@ -388,3 +388,5 @@ export const setOnboardingTags = ({ payload, Authorization, dev = false }) => {
 const getConfig = ({ dev, property }) => {
 	return dev ? config.STAGING[property] : config.PRODUCTION[property];
 }
+
+export const toggleCSSclasses = (el, cls) => cls.map(cl => el.classList.toggle(cl));

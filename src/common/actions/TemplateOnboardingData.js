@@ -12,9 +12,16 @@ export const setOnboardingMetaData = payload => {
 	}
 }
 
-export const setSelectedGenres = payload => {
+export const setSelectedTags = payload => {
 	return {
 		type: 'SET_GENRE_TAGS',
+		payload
+	}
+}
+
+export const setSelectedGenres = payload => {
+	return {
+		type: 'SET_GENRES',
 		payload
 	}
 }

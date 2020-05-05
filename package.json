@@ -18,7 +18,11 @@
     "build:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run build paytmtv",
     "local:paytmtv": "grunt atomizer:pwa --basePath=paytmtv  && npm run local paytmtv",
     "build:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run build onboarding",
-    "local:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run local onboarding",
+		"local:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run local onboarding",
+		"build:covidzone": "grunt atomizer:pwa --basePath=covidzone  && npm run build covidzone",
+		"local:covidzone": "grunt atomizer:pwa --basePath=covidzone  && npm run local covidzone",
+		"build:generic": "grunt atomizer:pwa --basePath=genericpages  && npm run build genericpages",
+    "local:generic": "grunt atomizer:pwa --basePath=genericpages  && npm run local genericpages",
     "build:easter": "grunt atomizer:pwa && npm run build easter",
     "build:champion": "rm -rf ./dist && mkdir dist && rsync -a ./src/champion/ ./dist/"
   },

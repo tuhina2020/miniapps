@@ -4,7 +4,7 @@ import {
 	getAppVersion,
 	getDataExcel,
 	addComponents,
-	bigQueryEvent,
+	genericBigQueryEvent,
 	request,
 	getDataSharechatExcel,
 	getParams
@@ -95,7 +95,7 @@ class TrendingTV {
 			.catch(err => console.log(err));
 		}
 		if (actionType && eventId) {
-			bigQueryEvent({
+			genericBigQueryEvent({
 				Authorization,
 				payload: {
 					id: eventId,

@@ -3,12 +3,13 @@ import {
 	getAuthorization,
 	getAppVersion,
 	registerCleverTap,
+	getDataSharechatExcel,
 	getDataExcel,
 	addComponents,
-	genericBigQueryEvent
+	genericBigQueryEvent,
+	getParams
 } from "@/utils";
 import {
-	LANGUAGE_WISE_INIT_BACKGROUNDS,
 	INPUT_WRAPPER_CLASS,
 	EXCEL_DATA,
 	ENTER_BUTTON_CLASS,
@@ -16,16 +17,17 @@ import {
 	NAME_BOX_CLASS,
 	TEXT_BOX2_CLASS,
 	WHATSAPP_CLASS,
-	LANGUAGE_WISE_FINAL_BACKGROUNDS,
 	PLACEHOLDER
-} from "@/indiannewyear/helper2"
+} from "@/genericpages/helper2"
 import InputContainer from "@/common/components/BaseInputContainer";
 import BaseTextContainer from "@/common/components/BaseTextContainer";
 import BaseSharechatIcon from "@/common/components/BaseSharechatIcon";
 import BaseWhatsappContainer from "@/common/components/BaseWhatsappContainer";
-import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTagId, setTagName, setNamePos } from '@/common/actions/TemplateUserForm';
+import { setLanguage, setText1, setText2, setTagId, setTagName, setNamePos } from '@/common/actions/TemplateUserForm';
+import { setGenericData, setUsername, toggleSharedState } from '@/common/actions/TemplateGenericData';
+import _each from 'lodash/each'
 
-class IndianNewYear {
+class GenericPage {
 	constructor({ store }) {
     document.title = "ShareChat | Indian New Year";
     this.state = {
@@ -43,58 +45,40 @@ class IndianNewYear {
 
 	registerComponents() {
 		console.log('got data, register');
-		const { user: { text1, text2, username, tagId, tagName } } = this.getReduxState();
-		const { language } = this.state;
+		const { generic: { data: { textPage1, textPage2, username, tagId, tagName, language, backgroundPage1, backgroundPage2, webCardName } } } = this.getReduxState();
 		this.$container = createNewDiv({
 			type: "div",
 			setAttribute: { class: "indian-new-year-container" }
 		});
-		this.$beforeBg = language && createNewDiv({
-			type: 'img',
-			setAttribute: {
-				src : LANGUAGE_WISE_INIT_BACKGROUNDS[language],
-				class: 'W(100%) H(a)'
-			}
-		});
-		this.$afterBg = createNewDiv({
-			type: 'img',
-			setAttribute: {
-				src : LANGUAGE_WISE_FINAL_BACKGROUNDS[language],
-				class: 'W(100%) H(a)'
-			}
-		});
 		this.$content = createNewDiv({
 			type: "div",
 			setAttribute: {
-				class: `D(f) Fld(c) Ai(c) Jc(c) Bgi(url("${LANGUAGE_WISE_FINAL_BACKGROUNDS[language]}")) Bgr(nr) Bgz(ct) H(100vw)`,
-				style: `background-image:url(${LANGUAGE_WISE_FINAL_BACKGROUNDS[language]})`
+				class: `D(f) Fld(c) Ai(c) Jc(c) Bgi(url("${backgroundPage2}")) Bgr(nr) Bgz(ct) H(100vw)`,
+				style: `background-image:url(${backgroundPage2})`
 			}
 		});
 
 		this.$content2 = createNewDiv({
 			type: "div",
 			setAttribute: {
-				class: `D(f) Fld(c) Ai(c) Jc(c) Bgi(url("${LANGUAGE_WISE_INIT_BACKGROUNDS[language]}")) Bgr(nr) Bgz(ct) H(100vw)`,
-				style: `background-image:url(${LANGUAGE_WISE_INIT_BACKGROUNDS[language]})`
+				class: `D(f) Fld(c) Ai(c) Jc(c) Bgi(url("${backgroundPage1}")) Bgr(nr) Bgz(ct) H(100vw)`,
+				style: `background-image:url(${backgroundPage1})`
 		 }
 		});
 		this.$input = this.userInput();
 		this.$enterButton = this.enterButton();
-		this.$textBox1 = this.textBox(text1);
-		this.$textBox2 = this.textBox2(text2);
+		this.$textBox1 = this.textBox();
 		this.$sharechatIcon = BaseSharechatIcon({
-			wrapperClass: "W(25%) Pos(f) B(2.2vw)"
-			// wrapperClass: 'Mt(5vw)'
+			wrapperClass: "W(23%) Pos(r) T(32vw)"
 		});
 		this.$share = BaseWhatsappContainer({
-			// wrapperClass: "D(f) Mt(2vw) Jc(sb) Ai(c) W(40%) Pos(f) B(14vw)",
-			...(WHATSAPP_CLASS[language] || WHATSAPP_CLASS["default"]),
+			 ...WHATSAPP_CLASS["default"],
 			// wrapperClass: "Pos(a) T(82vw) W(20vw) Mx(30vw) D(f)",
 			params: {
 				Authorization: this.state.Authorization,
 				tagId, tagName,
-				webCardName: `indianNewYear_${language}`,
-				festivalName: `indianNewYear_${language}`
+				webCardName: `${webCardName}_${language}`,
+				festivalName: `${webCardName}_${language}`
 			},
 			refreshHandler: this.refresh,
 			eventHandler: this.eventHandler
@@ -102,8 +86,8 @@ class IndianNewYear {
 	}
 
 	eventHandler(data) {
-			const { CleverTap, language, Authorization } = this.state
-			const { user: { username } } = this.getReduxState();
+			const { Authorization } = this.state
+			const { generic: { username, data: { webCardName, language } } } = this.getReduxState();
 			const payload = {
 				type: "shareWebCard",
 				postId: data.PostDetails.postId
@@ -111,11 +95,11 @@ class IndianNewYear {
 			genericBigQueryEvent({
 				Authorization,
 				payload: {
-					id: `indianNewYear_${language}`,
+					id: `${webCardName}_${language}`,
 					actionType: "share",
 					data: `language-${language}`,
 					postId: data.PostDetails.postId,
-					webcardName : `indianNewYear_${language}`,
+					webcardName : `${webCardName}_${language}`,
 					nameSubmitted1: username
 				}
 			});
@@ -123,14 +107,13 @@ class IndianNewYear {
 	}
 	
 	getData() {
-		return getDataExcel(EXCEL_DATA).then(data => {
-			console.log('got data', data, this.state.language);
-			const { text1, text2, tagId, tagName, namePosition } = data.filter(d => d.language === this.state.language)[0];
-			this.state.store.dispatch(setText1(text1));
-			this.state.store.dispatch(setText2(text2));
-			this.state.store.dispatch(setTagId(tagId));
-			this.state.store.dispatch(setTagName(tagName));
-			this.state.store.dispatch(setNamePos(namePosition));
+		const { displayExcelObj : { sheetId, columns, page }, Authorization } = this.state;
+		return getDataSharechatExcel({ sheetId, columns, page, Authorization }).then(data => {
+			const obj = {};
+			_each(data, d => {
+				obj[d.key] = d.value;
+			});
+			this.state.store.dispatch(setGenericData(obj));
 		});
 	}
 
@@ -153,10 +136,32 @@ class IndianNewYear {
 		return this.state.store.getState();
 	}
 
-  getParams() {
+	getParams() {
     const url = new URL(document.location.href);
-		this.state.language = url.searchParams.get("language") || 'Tamil';
-		this.state.webcardName = url.searchParams.get("webcardName");
+		// this.state.sheetId = url.searchParams.get("sheetId");
+		// this.state.page = parseInt(url.searchParams.get("page") || 1);
+		// this.state.columns = parseInt(url.searchParams.get("columns"));
+		// this.state.meta = parseInt(url.searchParams.get("meta"));
+		const obj = getParams({
+			paramsList: [{
+				key: 'sheetId',
+				defaultValue: '1qZC1kwqhNnAM8c2-rQUg1Jolk4HoULcyeKoCqHelMN0'
+			}, {
+				key: 'columns',
+				defaultValue: 6,
+				type: 'Number'
+			}, {
+				key: 'page',
+				defaultValue: 1,
+				type: 'Number'
+			}, {
+				key: 'dev',
+				defaultValue: false,
+				type: 'Boolean'
+			}]
+		});
+		this.state.displayExcelObj = obj;
+		console.log(this.state);
 	}
 
 	addStore(params) {
@@ -165,10 +170,11 @@ class IndianNewYear {
 
 	enterButton() {
 		// console.log('this.state.textData ', this.state.textData);
-		const { user: { username } } = this.getReduxState();
+		const { generic: { data: { buttonText, buttonColor, buttonFontColor } } } = this.getReduxState();
 		let textBox = new BaseTextContainer(this.addStore({
-			text: "ENTER",
-			...(ENTER_BUTTON_CLASS[this.state.language] || ENTER_BUTTON_CLASS["default"]),
+			text: buttonText,
+			...ENTER_BUTTON_CLASS["default"],
+			inline: `background-color:${buttonColor};color:${buttonFontColor}`,
 			clickHandler: this.clickHandler
 		}))
 		textBox = textBox.render();
@@ -177,33 +183,28 @@ class IndianNewYear {
 
 	refresh() {
 		this.state.store.dispatch(toggleSharedState());
-		this.state.store.dispatch(setUserName(''));
+		this.state.store.dispatch(setUsername(''));
 		this.$container.remove();
 		this.registerComponents();
 		this.render();
 	}
 
 	clickHandler() {
-		console.log('YOYOO');
-		const { user: { username, namePosition, text2 } } = this.getReduxState();
-		const { Authorization, language } = this.state;
+		const { generic: { data: { namePosition, textPage2, language, webCardName }, username } } = this.getReduxState();
+		console.log('YOYOO', username);
+		const { Authorization } = this.state;
 		if (!username || username && username.length == 0) return;
 		console.log('CLICKED');
-		if (namePosition === 'separate')
-			this.$nameBox = this.nameBox(username);
-		else {
-			this.$nameBox = undefined;
-			this.$textBox2 = this.textBox2(text2.replace("${username}", username))
-		}
+		this.$textBox2 = this.textBox2()
 
 		genericBigQueryEvent({
 			Authorization,
 			payload: {
-				id: `indianNewYear_${language}`,
+				id: `${webCardName}_${language}`,
 				actionType: "submit",
 				data: `language-${language}`,
 				postId: 0,
-				webcardName : `indianNewYear_${language}`,
+				webcardName : `${webCardName}_${language}`,
 				nameSubmitted1: username
 			}
 		});
@@ -220,19 +221,26 @@ class IndianNewYear {
 		return valid;
 	}
 
-	textBox(text) {
+	textBox() {
+		const { generic: { data: { textPage1, fontStylePage1 }  }} = this.getReduxState();
 		let textBox = new BaseTextContainer(this.addStore({
-			text: text,
-			...(TEXT_BOX_CLASS[this.state.language] || TEXT_BOX_CLASS["default"])
+			text: textPage1,
+			wrapperClass: "My(3vw) Mx(16.6vw)",
+			textBoxClass: "Ta(c)",
+			inline: fontStylePage1
 		}));
+		
 		textBox = textBox.render();
 		return textBox;
 	}
 
-	textBox2(text) {
+	textBox2() {
+		const { generic: { data: { textPage2, fontStylePage2 }, username  }} = this.getReduxState();
+		const text = textPage2.replace("${username}", username)
 		let textBox = new BaseTextContainer(this.addStore({
-			text: text,
-			...(TEXT_BOX2_CLASS[this.state.language] || TEXT_BOX2_CLASS["default"])
+			text,
+			...TEXT_BOX2_CLASS["default"],
+			inline: fontStylePage2
 		}));
 		textBox = textBox.render();
 		return textBox;
@@ -259,13 +267,14 @@ class IndianNewYear {
 	}
 
 	userInput() {
-		const { language } = this.state;
-		const styleClassesObj = INPUT_WRAPPER_CLASS[language] || INPUT_WRAPPER_CLASS['default'];
+		const { generic: { data : { language, themeColor, placeholder }, username } } = this.getReduxState();
+		const styleClassesObj = INPUT_WRAPPER_CLASS['default'];
 		let input = new InputContainer(this.addStore({
 			inputHandler: this.inputHandler,
 			...styleClassesObj,
-			text: this.getReduxState().user.username,
-			placeholder : PLACEHOLDER[language] || PLACEHOLDER['default']
+			inline : `color:${themeColor};`,
+			text: username,
+			placeholder : placeholder
 		}));
 		input = input.render();
 		return input;
@@ -275,13 +284,13 @@ class IndianNewYear {
 		const alphaExp = /^[a-zA-Z]| +$/;
 		const name = e.target.value;
     if (name.match(alphaExp)) {
-			this.state.store.dispatch(setUserName(name))
+			this.state.store.dispatch(setUsername(name))
 		}
 	}
 
 	render() {
 		const appContainer = document.getElementById("app");
-		const { user: { shared } } = this.getReduxState();
+		const { generic: { shared } } = this.getReduxState();
 		console.log('SHARED ', shared, this.$container);
 		// this.update();
 		if( !this.$container) return;
@@ -298,4 +307,4 @@ class IndianNewYear {
 
 };
 
-export default IndianNewYear;
+export default GenericPage;

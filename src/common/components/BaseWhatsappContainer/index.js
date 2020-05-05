@@ -1,7 +1,7 @@
 import whatsapp from "@/common/assets/whatsapp-text.svg";
 import refresh from "@/common/assets/refresh.svg"
 import { createNewDiv, uploadFile } from "@/utils";
-export default function({ wrapperClass, svgClass, Authorization, refreshHandler, eventHandler, params, refreshClass = 'W(8vw) H(8vw) Mx(10px) Bdrs(4vw) Bd Bgc(lightgrey) P(0.5vw)' }) {
+export default function({ wrapperClass, svgClass, Authorization, refreshHandler, eventHandler, beforeShare, params, refreshClass = 'W(8vw) H(8vw) Mx(10px) Bdrs(4vw) Bd Bgc(lightgrey) P(0.5vw)' }) {
 	const icon = createNewDiv({
 		type: 'img',
 		setAttribute: {
@@ -27,12 +27,13 @@ export default function({ wrapperClass, svgClass, Authorization, refreshHandler,
 	// 	uploadFile({ Authorization, hide:  e.target.parentNode }).then(eventHandler)
 	// }
 
-	const clickHandler = (e, params) => {
+	const clickHandler = (e, { params, beforeShare }) => {
+		beforeShare();
 		uploadFile({ params, hide:  e.target.parentNode }).then(eventHandler)
 	}
 	wrapper.appendChild(reficon);
 	wrapper.appendChild(icon);
 	reficon.addEventListener('click',  refreshHandler)
-	icon.addEventListener("click", (e) => clickHandler(e, params));
+	icon.addEventListener("click", (e) => clickHandler(e, { params, beforeShare }));
 	return wrapper;
 }

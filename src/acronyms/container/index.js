@@ -4,7 +4,7 @@ import {
 	getAppVersion,
 	getDataExcel,
 	addComponents,
-	bigQueryEvent
+	genericBigQueryEvent
 } from "@/utils";
 import { ACRONYMS_EXCEL_BY_LANGUAGE, BACKGROUND, DISPLAY_TEXT_EXCEL } from '@/acronyms/helper'
 import { setUserName, toggleSharedState, setLanguage, setText1, setText2, setTagId, setTagName, setPlaceHolder, setButtonText } from '@/common/actions/TemplateUserForm';
@@ -156,7 +156,7 @@ class AcronymsWebCard {
 
 		this.state.store.dispatch(toggleSharedState());
 		const { Authorization, language } = this.state;
-		bigQueryEvent({
+		genericBigQueryEvent({
 			Authorization,
 			payload: {
 				id: "CORONA_ACRONYM",
@@ -172,7 +172,7 @@ class AcronymsWebCard {
 	shareEventHandler(data) {
 		const { language, Authorization } = this.state;
 		const { user: { username } } = this.getReduxState();
-		bigQueryEvent({
+		genericBigQueryEvent({
 			Authorization,
 			payload: {
 				id: "CORONA_ACRONYM",

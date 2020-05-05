@@ -1,0 +1,104 @@
+.cardripple {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.cardripple:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle,black 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform .5s, opacity 1s;
+}
+
+.cardripple:active:after {
+  transform: scale(0, 0);
+  opacity: .3;
+  transition: 0s;
+}
+
+.textripple {
+	color: white;
+	background-color: none;
+	animation-name: textColor;
+	animation-duration: 0.4s;
+}
+
+.positionripple {
+	bottom: 17.3vw;
+	animation-name: positionAnim;
+	animation-duration: 0.4s;
+}
+
+
+.imageripple {
+	opacity: 1;
+	animation-name: imgAnim;
+	animation-duration: 0.5s;
+}
+
+.imgBgripple {
+	background-color: none;
+	animation-name: imgBgAnim;
+	animation-duration: 0.5s;
+}
+
+.iconripple {
+	animation-name: iconAnim;
+	animation-duration: 0.5s;
+}
+
+@keyframes textColor {
+	0%   {
+		color: #4a4a59;
+		background-color: #eaf5fe;
+	}
+	50% { color: lightgrey; background-color: none; }
+  100% {color: white; background-color: none; }
+}
+
+@keyframes imgAnim {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0.4
+	}
+}
+
+@keyframes iconAnim {
+	from {
+		opacity: 0
+	}
+	to {
+		opacity: 1
+	}
+}
+
+@keyframes imgBgAnim {
+	from {
+		background-color: none;
+	}
+	to {
+		background-color: #1990bf;
+	}
+}
+
+@keyframes positionAnim {
+	0% {
+		bottom: 10.3vw;
+	}
+	100% {
+		bottom: 17.3vw;
+	}
+}

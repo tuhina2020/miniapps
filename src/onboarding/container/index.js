@@ -4,18 +4,21 @@ import {
 	getAppVersion,
 	getDataExcel,
 	addComponents,
-	bigQueryEvent,
+	genericBigQueryEvent,
 	getParams,
 	setOnboardingTags,
 	getDataSharechatExcel
 } from "@/utils";
-import { setOnboardingDisplayData, setOnboardingMetaData, setSelectedGenres, setTransition } from "@/common/actions/TemplateOnboardingData";
+import { setOnboardingDisplayData, setOnboardingMetaData, setSelectedTags, setTransition, setSelectedGenres } from "@/common/actions/TemplateOnboardingData";
+import { onboardingBigQueryEvent } from '@/onboarding/helper';
 import ImageContainer from "@/common/components/BaseImageContainer";
 import TextContainer from "@/common/components/BaseTextContainer";
 import CardsContainer from '@/onboarding/Cards';
 import _map from 'lodash/map';
 import _each from 'lodash/each';
 import _filter from 'lodash/filter';
+import _difference from 'lodash/difference';
+import _empty from 'lodash/isEmpty';
 import './index.css'
 
 class OnBoarding {
@@ -31,6 +34,7 @@ class OnBoarding {
 		this.cardClickHandler = this.cardClickHandler.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.renderPage2 = this.renderPage2.bind(this);
+		this.selectionEvent = this.selectionEvent.bind(this);
 	}
 
 	getData() {
@@ -89,18 +93,17 @@ class OnBoarding {
 				type: 'Boolean'
 			}]
 		});
+		console.log(devObj, 'DEV OBJ');
 		this.state.dev = devObj.dev;
 	}
 
 	getDisplayText() {
 		const { displayExcelObj, Authorization } = this.state;
 		return getDataSharechatExcel({ ...displayExcelObj, Authorization }).then(data => {
-			console.log('DATA FROM EXCEL', data);
 			const parsedData = _map(data, d => {
 				const tags = d.tags.split('|');
 				return { ...d, tags };
 			});
-			console.log('DATA FROM DISPLAY ', parsedData);
 			this.state.store.dispatch(setOnboardingDisplayData(parsedData));
 		});
 	}
@@ -110,9 +113,8 @@ class OnBoarding {
 		return getDataSharechatExcel({ sheetId, page: meta, columns: 2, Authorization, dev }).then(data => {
 			const obj = {};
 			_each(data, d => {
-				obj[d.key] = d.value;
+				obj[d.key] = parseInt(d.value) || parseInt(d.value) === 0 ?  parseInt(d.value) : d.value;
 			});
-			console.log('DATA FROM META ', obj);
 			this.state.store.dispatch(setOnboardingMetaData(obj));
 		});
 	}
@@ -122,28 +124,63 @@ class OnBoarding {
 	}
 
 	cardClickHandler(ids) {
-		console.log('FINAL IDS ', ids);
-		const { onboarding: { displayObj } } = this.getReduxState();
+		const { onboarding: { displayObj, selectedGenres } } = this.getReduxState();
 		const tagObjects = _filter(displayObj, d=> ids.includes(d.id));
 		const tagList = tagObjects.reduce((acc, current) => [...acc, ...current.tags], []);
+		const newGenres = tagObjects.reduce((acc,current) => [...acc, current.genre], []);
+		const submit = document.getElementsByClassName('submit-text')[0];
 		if ( tagList.length === 0 ) {
-			document.getElementsByClassName('submit-text')[0].classList.add('Op(0.5)');
+			submit.classList.remove('submit-text-valid');
+			submit.classList.add('Op(0.3)');
+			submit.classList.remove('ripple');
 		} else {
-			document.getElementsByClassName('submit-text')[0].classList.remove('Op(0.5)');
+			submit.classList.add('submit-text-valid');
+			submit.classList.remove('Op(0.3)');
+			submit.classList.add('ripple');
 		}
-		this.state.store.dispatch(setSelectedGenres(tagList));
+		this.selectionEvent({ oldGenres: selectedGenres, newGenres })
+		this.state.store.dispatch(setSelectedTags(tagList));
+		this.state.store.dispatch(setSelectedGenres(newGenres));
+	}
+
+	selectionEvent({ oldGenres, newGenres }) {
+		const changed = _difference(oldGenres, newGenres);
+		const { Authorization, dev } = this.state
+		let payload;
+		if (_empty(changed)) {
+			payload = {
+				"topics" : newGenres,
+				"action": "topicSelected",
+				"changed": _difference(newGenres, oldGenres)
+			}
+			onboardingBigQueryEvent({ Authorization, dev, payload });
+		} else {
+			payload = {
+				topics : newGenres,
+				action: "topicUnselected",
+				changed 
+			}
+			onboardingBigQueryEvent({ Authorization, dev, payload });
+		}
 	}
 
 	onSubmit() {
-		const { onboarding: { selectedTags } } = this.getReduxState();
+		const { onboarding: { selectedTags, selectedGenres, metadata: { tagOpen } } } = this.getReduxState();
 		if ( selectedTags.length === 0) return;
 		const payload = {
 			tagIds: selectedTags
 		}
 		const { Authorization, dev } = this.state;
-		for (let index = 0; index < 2; index++) {
-			setOnboardingTags({ payload, Authorization, dev });
+		if (tagOpen) {
+			for (let index = 0; index < tagOpen; index++) {
+				setOnboardingTags({ payload, Authorization, dev });
+			}
 		}
+		const payload2 = {
+			"topics" : selectedGenres,
+			"action": "submitted"
+		}
+		onboardingBigQueryEvent({ Authorization, dev, payload : payload2 });
 		this.state.store.dispatch(setTransition(true));
 		setTimeout(this.renderPage2, 1200);
 	}
@@ -155,27 +192,27 @@ class OnBoarding {
 	}
 
 	registerComponents() {
-		const { onboarding: { metadata: { heading, submitCTAText, backgroundPage2 }, displayObj } } = this.getReduxState();
+		const { onboarding: { metadata: { heading, submitCTAText, backgroundPage2, maxOptions }, displayObj } } = this.getReduxState();
 		this.$header = new TextContainer({
 			text: heading,
 			textBoxClass: "Ff(Inter) Fw(600) Fz(5.5vw) Lh(6.6vw) C(#4a4a59)",
 			wrapperClass: "M(4.4vw) Mb(0)"
 		});
 		this.$header = this.$header.render();
-		this.$cardContainer = new CardsContainer({ cards : displayObj, cardClickHandler : this.cardClickHandler });
+		this.$cardContainer = new CardsContainer({ cards : displayObj, cardClickHandler : this.cardClickHandler, maxOptions });
 		this.$cardContainer = this.$cardContainer.render();
 
 		let submitTextContainer = new TextContainer({
 			text: submitCTAText,
-			wrapperClass: 'Ta(c) Bdrs(10vw) Bd($bdblue) W(26.67vw) Op(0.5) ripple submit-text',
-			textBoxClass: "Fz(3.8vw) Ff(Inter) Fw(600) C(#1990bf) P(2.7vw) Lh(5vw) Py(2.2vw) Bdrs(10vw)"
+			wrapperClass: 'Ta(c) Bdrs(10vw) Bd($bdblue) W(100%) Op(0.3) submit-text Bgc(#1990bf) Trsp(a) Trsdu(0.8s) Trstf(e)',
+			textBoxClass: "Fz(3.8vw) Ff(Inter) Fw(600) C(white) Bgc(#1990bf) P(2.7vw) Lh(5vw) Py(2.2vw) Bdrs(10vw)"
 		});
 
 		submitTextContainer = submitTextContainer.render();
 		this.$submitButtonContainer = createNewDiv({
 			type: 'div',
 			setAttribute: {
-				class: 'D(f) Jc(c) My(2.2vw)'
+				class: 'D(f) Jc(c) My(2.2vw) Mx(5.5vw)'
 			}
 		});
 		let img = new ImageContainer({
@@ -221,7 +258,12 @@ class OnBoarding {
 
 	render() {
 		console.log('RENDERED');
-		this.registerComponents();
+		const { Authorization, dev } = this.state;
+		const payload = {
+			"topics" : [],
+			"action": "intialized"
+		}
+		onboardingBigQueryEvent({ Authorization, dev, payload });
 		const appContainer = document.getElementById("app");
 		appContainer.innerHTML = '';
 		addComponents({ components : [this.$container], container :  appContainer});

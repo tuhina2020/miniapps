@@ -1,7 +1,7 @@
 import {
 	createNewDiv,
 	addComponents,
-	bigQueryEvent,
+	genericBigQueryEvent,
 } from "@/utils";
 
 import _map from 'lodash/map';
@@ -11,10 +11,9 @@ import _compact from 'lodash/compact';
 import _values from 'lodash/values';
 import _omitBy from 'lodash/omitBy';
 import _keys from 'lodash/keys';
-
-import ImageContainer from "@/common/components/BaseImageContainer";
 import TextContainer from "@/common/components/BaseTextContainer";
 import IconContainer from "@/common/components/BaseIconContainer";
+import './index.css'
 
 class Cards {
 	constructor(props) {
@@ -23,6 +22,7 @@ class Cards {
 			selection : this.getSelection(props.cards)
 		}
 		this.clickHandler = this.clickHandler.bind(this);
+		this.delayClick = this.delayClick.bind(this);
 		this.renderLine = this.renderLine.bind(this);
 		this.updateSelection = this.updateSelection.bind(this);
 	}
@@ -41,38 +41,22 @@ class Cards {
 		const cardContainer = createNewDiv({
 			type: 'div',
 			setAttribute: {
-				class: `single-card-container-${id} Mx(2.2vw) My(2.2vw) H(22.22vw) Bdrs(1.1vw)`
+				class: `single-card-container-${id} Mx(2.2vw) My(2.2vw) H(22.22vw) Bdrs(1.1vw) Bxsh($bxshimageOnboarding)`
 			}
 		});
-
-		let img = new ImageContainer({
-			src: picture,
-			// clickHandler: () => this.bannerClickHandler({
-			// 	url: topClickEvent
-			// }),
-			imgClass: `W(42.22vw) H(a) Bdrs(1.1vw) Bxsh($bxshimageOnboarding) image-container-${id}`,
-			// wrapperClass: 'Mx(2.2vw) My(2.2vw)'
-		});
-		img = img.render();
-		let text = new TextContainer({
-			text: genreText,
-			textBoxClass: "Ff(Mukta) Fw(600) Fz(4.4vw) Lh(5.5vw) C(#4a4a59)",
-			wrapperClass: `Ta(c) Bgc(#eaf5fe) Pos(r) B(5.3vw) Op(0.9) Bdrsbend(1.1vw) Bdrsbstart(1.1vw) W(42.22vw) text-container-${id}`
-		});
 		let text1 = new TextContainer({
-			text: genreText,
+			text,
 			textBoxClass: "Ff(Mukta) Fw(600) Fz(4.4vw) Lh(5.5vw) C(white)",
-			wrapperClass: `Ta(c) Pos(r) B(13vw) W(42.22vw) hidden-text-container-${id} Op(0)`
+			wrapperClass: `Ta(c) Pos(r) B(13vw) W(42.22vw) hidden-text-container-${id} D(n)`
 		});
 		const cornerIcon = new IconContainer({
 			iconFilePath: 'check-black',
-			wrapperClass: `Op(0) icon-container-${id} Pos(r) B(21vw) Start(1vw) W(5vw) H(5vw) Bgc(white) Bdrs(1vw) ` ,
+			wrapperClass: `icon-container-${id} Pos(r) B(21vw) Start(1vw) W(5vw) H(5vw) Bgc(white) Bdrs(1vw) D(f) Op(0) Trsp(a) Trsdu(0.4s) Trstf(e)` ,
 			svgClass: 'H(5vw) Fill(#1990bf) C(white) Bg(n) W(5vw)'
 		});
-		text1 = text1.render();
 		text = text.render();
 		addComponents({
-			components : [img, cornerIcon, text, text1],
+			components : [text],
 			container: cardContainer
 		});
 		cardContainer.addEventListener('click', e => this.clickHandler(id));
@@ -82,12 +66,21 @@ class Cards {
 	clickHandler(id) {
 		const flag = this.updateSelection(id);
 		if ( !flag ) return;
-		document.getElementsByClassName(`image-container-${id}`)[0].parentNode.classList.toggle('Bdrs(1.1vw)');
+		setTimeout(() => this.delayClick(id), 500);
+	}
+
+	delayClick(id) {
 		document.getElementsByClassName(`image-container-${id}`)[0].parentNode.classList.toggle('Bgc(#1990bf)');
+		document.getElementsByClassName(`image-container-${id}`)[0].parentNode.classList.toggle('imgBgripple');
+		document.getElementsByClassName(`image-container-${id}`)[0].classList.toggle('imageripple');
 		document.getElementsByClassName(`image-container-${id}`)[0].classList.toggle('Op(0.4)');
-		document.getElementsByClassName(`text-container-${id}`)[0].classList.toggle('Op(0)');
-		document.getElementsByClassName(`hidden-text-container-${id}`)[0].classList.toggle('Op(0)');
+		document.getElementsByClassName(`text-${id}`)[0].classList.toggle('textripple');
+		document.getElementsByClassName(`text-${id}`)[0].classList.toggle('C(#4a4a59)');
+		document.getElementsByClassName(`text-container-${id}`)[0].classList.toggle('positionripple');
+		document.getElementsByClassName(`text-container-${id}`)[0].classList.toggle('Bgc(#eaf5fe)');
+		document.getElementsByClassName(`text-container-${id}`)[0].classList.toggle('B(10.3vw)');
 		document.getElementsByClassName(`icon-container-${id}`)[0].classList.toggle('Op(0)');
+		document.getElementsByClassName(`icon-container-${id}`)[0].classList.toggle('iconripple');
 		const { cardClickHandler } = this.props;
 		const { selection } = this.state;
 		cardClickHandler(_keys(_omitBy(selection, k => !k)));
@@ -95,10 +88,10 @@ class Cards {
 
 	updateSelection(id) {
 		let { selection } = this.state;
+		const { maxOptions = 3 } = this.props;
 		const count = _compact(_values(selection)).length;
 		const selected = selection[id];
-		const maxCount = 3;
-		if ( count >= maxCount && !selected) return false;
+		if ( count >= maxOptions && !selected) return false;
 		selection[id] = selection[id] ? !selection[id] : true;
 		this.state.selection = selection;
 		return true;

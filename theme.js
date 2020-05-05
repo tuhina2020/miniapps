@@ -131,7 +131,9 @@ module.exports = lang => ({
 			"0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.14)",
 		feedCard: "0 2px 2px 0 rgba(0, 0, 0, 0.24), 0 0 2px 0 rgba(0, 0, 0, 0.12)",
 		white: "0px 0px 0px 1px rgba(255, 255, 255, 0.7)",
-		imageOnboarding: "0px 1px 3px rgba(0, 0, 0, 0.1), 0px 2px 2px rgba(0, 0, 0, 0.06), 0px 0px 2px rgba(0, 0, 0, 0.07)"
+		imageOnboarding: "0px 1px 3px rgba(0, 0, 0, 0.1), 0px 2px 2px rgba(0, 0, 0, 0.06), 0px 0px 2px rgba(0, 0, 0, 0.07)",
+		covidZone: "0px 1px 2px rgba(0, 0, 0, 0.45)",
+		covidZone2: "0px 3px 4px rgba(0, 0, 0, 0.25)"
 	},
 	transition: {
 		prefix: "trs",
@@ -139,14 +141,18 @@ module.exports = lang => ({
 		transform: "transform .3s cubic-bezier(.25,.8,.5,1)",
 		generallong: ".5s cubic-bezier(.25,.8,.5,1)",
 		opacity: "opacity .5s cubic-bezier(.25,.8,.5,1)",
-		icon: "transform .4s cubic-bezier(.33, 1.89, .65, .67)"
+		icon: "transform .4s cubic-bezier(.33, 1.89, .65, .67)",
+		rippleTranslate: "translate3d(0, 0, 0)",
+		ripple: "transform 5s, opacity 5s",
+		scale: "scale(0, 0)"
 	},
 	background: {
 		prefix: "",
 		overlay: "linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))",
 		modal: "rgba(0, 0, 0, 0.3)",
 		snackbar: "#323232",
-		videoModal: "rgba(0, 0, 0, 0.6)"
+		videoModal: "rgba(0, 0, 0, 0.6)",
+		radial: "radial-gradient(circle,black 10%, transparent 10.01%)"
 	},
 	border: {
 		prefix: "bd",
@@ -155,7 +161,8 @@ module.exports = lang => ({
 		darkDivider: "2px solid rgba(3, 3, 3, 0.12)",
 		input: "1px solid rgba(0,0,0,0.12)",
 		bottom: "0 0 1px",
-		left: "0 0 0 1px"
+		left: "0 0 0 1px",
+		Grey: "1px solid lightgray"
 	},
 	figure: {
 		prefix: "fg",
