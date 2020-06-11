@@ -1,6 +1,5 @@
 import BaseTextContainer from "@/common/components/BaseTextContainer";
 import { createNewDiv, toggleCSSclasses } from '@/utils';
-import './index.css'
 
 class CityList {
 	constructor(props) {

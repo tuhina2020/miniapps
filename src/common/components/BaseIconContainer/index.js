@@ -1,5 +1,5 @@
 import { createNewDiv } from "@/utils";
-export default function({ wrapperClass, svgClass, iconFilePath }) {
+export default function({ wrapperClass, svgClass, iconFilePath, clickHandler = () => {} }) {
 	const img = require(`@/common/assets/${iconFilePath}.svg`);
 	const icon = createNewDiv({
 		type: 'img',
@@ -15,5 +15,6 @@ export default function({ wrapperClass, svgClass, iconFilePath }) {
 		}
 	});
 	wrapper.appendChild(icon);
+	wrapper.addEventListener("click", clickHandler);
 	return wrapper;
 }

@@ -21,6 +21,8 @@
 		"local:onboarding": "grunt atomizer:pwa --basePath=onboarding  && npm run local onboarding",
 		"build:covidzone": "grunt atomizer:pwa --basePath=covidzone  && npm run build covidzone",
 		"local:covidzone": "grunt atomizer:pwa --basePath=covidzone  && npm run local covidzone",
+		"build:alliance_quiz": "grunt atomizer:pwa --basePath=alliance-quiz  && npm run build alliance-quiz",
+		"local:alliance_quiz": "grunt atomizer:pwa --basePath=alliance-quiz  && npm run local alliance-quiz",
 		"build:generic": "grunt atomizer:pwa --basePath=genericpages  && npm run build genericpages",
     "local:generic": "grunt atomizer:pwa --basePath=genericpages  && npm run local genericpages",
     "build:easter": "grunt atomizer:pwa && npm run build easter",
@@ -29,7 +31,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+		"@babel/core": "^7.9.0",
+		"@babel/runtime": "^7.9.2",
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@google-cloud/storage": "^4.7.0",
@@ -71,7 +74,6 @@
     "webpack-md5-hash": "0.0.6"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
     "dom-to-image": "^2.6.0",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6"

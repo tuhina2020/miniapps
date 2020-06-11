@@ -98,11 +98,12 @@ export const uploadFile = ({ imgData = document.body, params, hide }) => {
 				}
 		})
 		.catch(err => {
-				console.log(err);
-				hide.style.display = 'flex'
+			hide.style.display = 'flex'
+			console.log(err);
 		});
 	})
 	.catch(err => {
+		hide.style.display = 'flex'
 		console.log(err, 'MIND BLOWN')
 	})
 }
@@ -242,7 +243,7 @@ export const genericBigQueryEvent = ({ Authorization, payload }) => {
 }
 
 export const getDateFormat = () => {
-	const d = new Date('2010-08-05')
+	const d = new Date();
 	const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'long', day: '2-digit' }) 
 	const [{ value: mm },,{ value: dd },,{ value: yy }] = dtf.formatToParts(d) 
 	return `${dd} ${mm} ${yy}`

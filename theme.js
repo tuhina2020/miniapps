@@ -176,6 +176,7 @@ module.exports = lang => ({
 	},
 	borderRadius: {
 		prefix: "bdrs",
-		modal: "10px 10px 0 0"
+		modal: "10px 10px 0 0",
+		quizbanner: "3vw 3vw 0 0",
 	}
 });

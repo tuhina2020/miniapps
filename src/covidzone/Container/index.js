@@ -4,7 +4,7 @@ import {
 	getAppVersion,
 	registerCleverTap,
 	getDataSharechatExcel,
-	getDataExcel,
+	// getDataSharechatExcel,
 	addComponents,
 	genericBigQueryEvent,
 	getParams,
@@ -42,6 +42,7 @@ class CovidZone {
     this.state.Authorization = getAuthorization(this.state);
 		this.state.appVersion = getAppVersion();
 		this.getFonts();
+		this.initEvent();
 		this.getData = this.getData.bind(this);
 		this.inputHandler = this.inputHandler.bind(this);
 		this.focusHandler = this.focusHandler.bind(this);
@@ -51,6 +52,20 @@ class CovidZone {
 		this.refresh = this.refresh.bind(this);
 		this.eventHandler = this.eventHandler.bind(this);
 		this.sharedHandlerBefore = this.sharedHandlerBefore.bind(this);
+	}
+
+	initEvent() {
+		const { language, Authorization } = this.state;
+		genericBigQueryEvent({
+			Authorization,
+			payload: {
+				id: `covidzone_${language}`,
+				actionType: "view",
+				data: `language-${language}`,
+				postId: 0,
+				webcardName : 'covidzone'
+			}
+		});
 	}
 
 	getData() {
@@ -63,7 +78,7 @@ class CovidZone {
 
 	getAllData() {
 		const { displayExcelObj : { sheetId }, Authorization } = this.state;
-		return getDataExcel({ sheetId, columns: 3, page : 1, Authorization }).then(data => {
+		return getDataSharechatExcel({ sheetId, columns: 3, page : 1, Authorization }).then(data => {
 			const parsedData = _filter(data, d => d.district !== "*District*" && d.state !== "NULL" && d.district !== "NULL" );
 			this.state.store.dispatch(setGenericData(parsedData));
 		});
@@ -71,15 +86,16 @@ class CovidZone {
 
 	getMetaData() {
 		const { displayExcelObj : { sheetId }, Authorization } = this.state;
-		return getDataExcel({ sheetId, columns: 7, page : 4, Authorization }).then(data => {
+		return getDataSharechatExcel({ sheetId, columns: 7, page : 4, Authorization }).then(data => {
 			this.state.store.dispatch(setGenericMetaData(data));
 		});
 	}
 
 	getLangDisplayData() {
 		const { displayExcelObj : { sheetId }, Authorization } = this.state;
-		return getDataExcel({ sheetId, columns: 2, page : 3, Authorization }).then(data => {
-			this.state.store.dispatch(setGenericStatesMetaData(data));
+		return getDataSharechatExcel({ sheetId, columns: 2, page : 3, Authorization }).then(data => {
+			const parsedData = data.filter(obj => obj.district);
+			this.state.store.dispatch(setGenericStatesMetaData(parsedData));
 		});
 	}
 
@@ -128,6 +144,7 @@ class CovidZone {
 	registerComponents() {
 		this.getCurrentLangData();
 		this.getFilteredList();
+		console.log('CUREENT ', this.state.current);
 		const { current : { tagId, tagString, helper }, language, Authorization } = this.state;
 		const { covidzone: { states, data, filteredData } } = this.getReduxState();
 		this.$container = createNewDiv({
@@ -173,7 +190,7 @@ class CovidZone {
 		});
 		this.$city = new CityList({
 			topCities : filteredData,
-			statusList: data,
+			statusList : data,
 			visible: false,
 			helper,
 			onClick: this.clickHandler
@@ -246,7 +263,7 @@ class CovidZone {
 				actionType: "citySelected",
 				data: `language-${language}`,
 				postId: 0,
-				nameSubmitted1: username,
+				nameSubmitted1: city.district,
 				webcardName : `covidzone`
 			}
 		});
@@ -259,9 +276,9 @@ class CovidZone {
 		this.$earth.classList.toggle('T(100vw)')
 		this.$earth.classList.toggle('T(30vw)')
 		this.$textBox1.classList.toggle('Op(0)');
-		this.$textBox1.firstChild.style.fontSize = '6vw';
 		this.$textBox1.firstChild.classList.toggle('C(#9e9f9f)');
 		this.$textBox1.firstChild.classList.toggle('C(#24565a)');
+		this.$textBox1.firstChild.fontSize = '6vw';
 		this.$share.classList.toggle('T(101vw)');
 		this.$share.classList.toggle('T(87vw)');
 		this.$bottomImg.classList.toggle("D(f)");
@@ -273,7 +290,7 @@ class CovidZone {
 		}
 		let ele1 = new BaseTextContainer({
 			text: `${city.district}`,
-			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(4.5vw) Whs(nw) C(#24565a)",
+			textBoxClass: "Ta(c) Ff($ffroboto) Fw(700) Fz(3.8vw) Whs(nw) C(#24565a)",
 		});
 		
 		ele1 = ele1.render();
@@ -315,7 +332,6 @@ class CovidZone {
 	}
 
 	renderCity() {
-		console.log('RENDER CITY');
 		const { covidzone: { states, data, filteredData, username } } = this.getReduxState();
 		const { current : { helper } } = this.state;
 		let city = new CityList({
@@ -327,7 +343,6 @@ class CovidZone {
 		});
 		city = city.render();
 		const node = document.getElementsByClassName('overall')[0];
-		console.log('FILTERE ', filteredData, city, node);
 		if (node) {
 			node.parentNode.replaceChild(city, node)
 		}
@@ -338,7 +353,7 @@ class CovidZone {
 		let textBox = new BaseTextContainer({
 			text: text1,
 			wrapperClass: "Pos(a) T(8vw) Trsp(a) Trsdu(0.5s) Trstf(e) W(80vw)",
-			textBoxClass: "Ta(c) Ff($ffroboto) C(#9e9f9f) Fw(700) Fz(4.5vw)",
+			textBoxClass: "Ta(c) Ff($ffroboto) C(#9e9f9f) Fw(700) Fz(4.5vw) Lh(7.5vw)",
 		});
 		
 		textBox = textBox.render();
@@ -363,7 +378,6 @@ class CovidZone {
 
 	focusHandler() {
 		const { covidzone: { username, filteredData, focussed } } = this.getReduxState();
-		console.log('THIS IS INPUT ', username.length, filteredData.length);
 		const { Authorization, language } = this.state;
 		if (username.length !== 0 || focussed) return;
 		this.$content3.classList.toggle('B(56vw)');
@@ -434,7 +448,6 @@ class CovidZone {
 	render() {
 		const appContainer = document.getElementById("app");
 		const { covidzone: { selected } } = this.getReduxState();
-		console.log('SHARED ', selected, this.$container);
 		// this.update();
 		if( !this.$container) return;
 		this.$container.innerHTML = ''
