@@ -38,7 +38,7 @@
     "@google-cloud/storage": "^4.7.0",
     "async": "^3.1.0",
     "atomizer": "^3.7.0",
-    "aws-sdk": "^2.503.0",
+    "aws-sdk": "^2.1373.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
