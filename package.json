@@ -60,7 +60,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-connect": "^0.10.1",
     "grunt-contrib-watch": "^0.6.1",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.1",
     "load-grunt-tasks": "^3.1.0",
     "mini-css-extract-plugin": "^0.8.0",
     "path": "^0.12.7",
@@ -70,7 +70,7 @@
     "url-loader": "^2.1.0",
     "webpack": "^4.42.1",
     "webpack-atomizer-loader": "^1.0.2",
-    "webpack-cli": "^3.3.6",
+    "webpack-cli": "^3.3.12",
     "webpack-md5-hash": "0.0.6"
   },
   "dependencies": {
